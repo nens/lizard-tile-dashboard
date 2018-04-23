@@ -127,7 +127,7 @@ export function fetchBootstrap(dispatch, sessionState) {
 
   dispatch(fetchBootstrapAction());
 
-  getBootstrap("parramatta-dashboard").then(
+  getBootstrap("ijgenzon-dashboard").then(
     bootstrap => {
       dispatch(receiveBootstrapSuccessAction(bootstrap));
     },

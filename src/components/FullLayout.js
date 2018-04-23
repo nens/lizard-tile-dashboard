@@ -96,7 +96,7 @@ class FullLayout extends Component {
     }
 
     return (
-      <DocumentTitle title={`Parramatta | ${selectedTile.title}`}>
+      <DocumentTitle title={`IJGENZON | ${selectedTile.title}`}>
         <div className={styles.FullLayout}>
           {!isMobile ? (
             <div
