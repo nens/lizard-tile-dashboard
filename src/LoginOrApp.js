@@ -9,15 +9,12 @@ import { connect } from "react-redux";
 
 import App from "./App";
 import styles from "./App.css";
-import { TermsAndConditions } from "./components/TermsAndConditions";
 import { fetchBootstrap } from "./actions";
 
-class TermsOrLoginOrAppComponent extends Component {
+class LoginOrAppComponent extends Component {
   constructor() {
     super();
-    this.state = {
-      termsSigned: false
-    };
+    this.state = {}; // Keep it here because we'll probably use it later on.
   }
 
   componentDidMount() {
@@ -43,11 +40,9 @@ class TermsOrLoginOrAppComponent extends Component {
       );
     } else if (!this.props.sessionState.bootstrap.authenticated) {
       this.props.sessionState.bootstrap.doLogin();
-    } else if (!this.state.termsSigned) {
-      return <TermsAndConditions termsSigned={this.termsSigned.bind(this)} />;
     } else {
       return (
-        <Router basename="/clients/parramatta">
+        <Router basename="/clients/ijgenzon">
           <App />
         </Router>
       );
@@ -68,5 +63,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  TermsOrLoginOrAppComponent
+  LoginOrAppComponent
 );
