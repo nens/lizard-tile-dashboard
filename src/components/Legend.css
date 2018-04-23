@@ -1,0 +1,69 @@
+.Legend {
+  transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  z-index: 9999993;
+  position: absolute;
+  bottom: 0;
+  height: 360px;
+  width: 250px;
+  background-color: #fff;
+  right: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 0px 2px rgba(0, 0, 0, 0.29);
+}
+.LegendMobile {
+  transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  z-index: 9999993;
+  position: absolute;
+  bottom: 0;
+  height: 360px;
+  width: 100%;
+  background-color: #fff;
+  right: 0;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 0px 2px rgba(0, 0, 0, 0.29);
+}
+.LegendTitle {
+  background-color: #d8d8d8;
+  color: #fff;
+  padding: 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 50px;
+}
+.LegendTitle i {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+}
+.LegendStep {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 20px;
+}
+.LegendStepLabel {
+  filter: invert(100%);
+}
+.LegendSubHeader {
+  text-align: center;
+  background-color: #eee;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.LegendVectorStep > div {
+  color: #fff;
+  display: flex;
+  align-items: left;
+  justify-content: center;
+  width: 100%;
+  height: 20px;
+}

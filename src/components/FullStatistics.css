@@ -1,0 +1,35 @@
+.FullStatistics {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.Number {
+  font-size: 125px;
+  color: #747474;
+  margin: 20px;
+}
+.Title {
+  font-size: 30px;
+  color: #747474;
+  padding: 20px;
+}
+.Table {
+  border-spacing: 0;
+  border-collapse: separate;
+  width: 90%;
+}
+.Table tr td {
+  padding: 10px;
+}
+.Table thead {
+  background-color: #ddd;
+  color: #818181;
+}
+
+.Active {
+  color: red;
+}
+.InActive {
+  color: green;
+}
