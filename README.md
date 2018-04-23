@@ -1,4 +1,4 @@
-Ijgenzon Dashboard
+IJGENZON Dashboard
 ====================
 
 This is the React/Redux-based dashboard web-app for the Ijgenzon group.
