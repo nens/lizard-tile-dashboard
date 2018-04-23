@@ -1,4 +1,4 @@
-Parramatta Dashboard
+Ijgenzon Dashboard
 ====================
 
 This is the React/Redux-based dashboard web-app for the Ijgenzon group.
