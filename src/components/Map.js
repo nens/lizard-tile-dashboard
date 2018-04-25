@@ -68,10 +68,10 @@ class MapComponent extends Component {
       raster.uuid
     );
 
-    console.log(
-      "[dbg] rasterObject= ",
-      JSON.parse(JSON.stringify(rasterObject))
-    );
+    // console.log(
+    //   "[dbg] rasterObject= ",
+    //   JSON.parse(JSON.stringify(rasterObject))
+    // );
 
     if (!rasterObject) {
       return null;
@@ -91,7 +91,7 @@ class MapComponent extends Component {
     const rasterOpacity = raster.opacity
       ? Number.parseFloat(raster.opacity)
       : 0;
-    console.log("[dbg] rasterOpacity =", rasterOpacity);
+    // console.log("[dbg] rasterOpacity =", rasterOpacity);
 
     return (
       <WMSTileLayer

@@ -368,3 +368,17 @@ export const getConfiguredPortalBBox = function(state) {
   ];
   return new BoundingBox(bbox[0], bbox[1], bbox[2], bbox[3]);
 };
+
+export const getConfiguredColumnCount = function(state) {
+  const configuration = getConfiguration(state);
+  if (
+    configuration &&
+    configuration.meta &&
+    configuration.meta.gridView &&
+    configuration.meta.gridView.columnCount
+  ) {
+    return configuration.meta.gridView.columnCount;
+  } else {
+    return null;
+  }
+};

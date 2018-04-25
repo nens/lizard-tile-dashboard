@@ -20,7 +20,8 @@ import {
   getConfiguredTitle,
   getConfiguredLogoPath,
   getConfiguredMapBackgrounds,
-  getCurrentMapBackground
+  getCurrentMapBackground,
+  getConfiguredColumnCount
 } from "../reducers";
 import {
   setDateAction,
@@ -29,9 +30,9 @@ import {
   setMapBackgroundAction
 } from "../actions";
 
-const layoutFromLocalStorage = JSON.parse(
+const layoutFromLocalStorage = null; /*JSON.parse(
   localStorage.getItem("dashboard-layout")
-);
+);*/
 
 class GridLayout extends Component {
   constructor(props) {
@@ -44,11 +45,17 @@ class GridLayout extends Component {
       settingsMenu: false,
       settingsMenuId: 0
     };
+    console.log(
+      "[F] GridLayout.constructor; state.layout:",
+      JSON.parse(JSON.stringify(this.state.layout))
+    );
     this.handleUpdateDimensions = this.handleUpdateDimensions.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
   componentWillMount() {
+    const { columnCount } = this.props;
     if (!this.state.layout && !layoutFromLocalStorage) {
+      console.log("[!] Setting new layout!");
       this.setState({
         mobileLayout: this.props.tiles.map((tile, i) => {
           const y = 8;
@@ -63,14 +70,18 @@ class GridLayout extends Component {
           };
         }),
         layout: this.props.tiles.map((tile, i) => {
-          const w = 4;
-          const y = 8;
+          const W = Math.floor(12 / columnCount);
+          const H = 8;
+
+          console.log("[LAYOUT] W =", W);
+          console.log("[LAYOUT] H =", H);
+
           return {
             i: `${i}`,
-            x: (i * 4) % 12,
-            y: Math.floor(i / 6) * y,
-            w: w,
-            h: y,
+            x: (i * W) % (columnCount * W),
+            y: (i % columnCount) * H,
+            w: W,
+            h: H,
             minW: 2,
             maxW: 4
           };
@@ -115,11 +126,23 @@ class GridLayout extends Component {
     }
   }
 
+  getLayout() {
+    console.log("[F] getLayout");
+    if (this.state.width < 700) {
+      console.log("[*] Using specialized 'this.state.mobileLayout'");
+      return this.state.mobileLayout;
+    } else {
+      console.log("[*] Using regular 'this.state.layout'");
+      return this.state.layout;
+    }
+  }
+
   render() {
     const { width, height, canMove, settingsMenu, settingsMenuId } = this.state;
 
-    const { tiles, history, title, logoPath } = this.props;
+    const { tiles, history, title, logoPath, columnCount } = this.props;
 
+    console.log("[dbg] columnCount:", columnCount);
     console.log("[dbg] logoPath:", logoPath);
 
     const mapBackgrounds = this.props.availableMapBackgrounds;
@@ -372,12 +395,13 @@ class GridLayout extends Component {
             isResizable={canMove}
             className="layout"
             layout={width < 700 ? this.state.mobileLayout : this.state.layout}
-            cols={12}
+            layout={this.getLayout()}
+            cols={3 * columnCount}
             rowHeight={30}
             width={width}
             draggableHandle=".drag-handle"
             onLayoutChange={layout => {
-              // localStorage.setItem("parramatta-layout", JSON.stringify(layout));
+              localStorage.setItem("dashboard-layout", JSON.stringify(layout));
             }}
           >
             {tileComponents.map((component, i) => {
@@ -403,7 +427,8 @@ const mapStateToProps = (state, ownProps) => {
       return getCurrentMapBackground(s) || getConfiguredMapBackgrounds(s)[0];
     })(state),
     title: getConfiguredTitle(state),
-    logoPath: getConfiguredLogoPath(state)
+    logoPath: getConfiguredLogoPath(state),
+    columnCount: getConfiguredColumnCount(state)
   };
 };
 
