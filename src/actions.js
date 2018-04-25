@@ -35,6 +35,13 @@ export const RECEIVE_TIMESERIES_EVENTS = "RECEIVE_TIMESERIES_EVENTS";
 export const FETCH_RASTER_EVENTS = "FETCH_RASTER_EVENTS";
 export const RECEIVE_RASTER_EVENTS = "RECEIVE_RASTER_EVENTS";
 
+// Implemented since IJGENZON/23-04-18; Various actions concerning the reading
+// of configurable JSON (via: https://<PORTAL>.lizard.net/bootstrap/dashboard/);
+// export const SET_TITLE = "SET_TITLE";
+// export const SET_BBOX = "SET_BBOX"; // WIP....
+// export const SET_LOGO = "SET_LOGO";
+// export const SET_AVAILABLE_MAP_BACKGROUNDS = "SET_AVAILABLE_MAP_BACKGROUNDS"
+
 export const receiveAlarmsAction = (alarms, isTimeseries) => {
   return {
     type: RECEIVE_ALARMS,
@@ -107,17 +114,11 @@ export function fetchBootstrapAction() {
 }
 
 export function receiveBootstrapSuccessAction(bootstrap) {
-  return {
-    type: RECEIVE_BOOTSTRAP_SUCCESS,
-    bootstrap
-  };
+  return { type: RECEIVE_BOOTSTRAP_SUCCESS, bootstrap };
 }
 
 export function receiveBootstrapErrorAction(error) {
-  return {
-    type: RECEIVE_BOOTSTRAP_ERROR,
-    error
-  };
+  return { type: RECEIVE_BOOTSTRAP_ERROR, error };
 }
 
 export function fetchBootstrap(dispatch, sessionState) {
@@ -127,7 +128,7 @@ export function fetchBootstrap(dispatch, sessionState) {
 
   dispatch(fetchBootstrapAction());
 
-  getBootstrap("ijgenzon-dashboard").then(
+  getBootstrap("dashboard").then(
     bootstrap => {
       dispatch(receiveBootstrapSuccessAction(bootstrap));
     },
@@ -140,11 +141,7 @@ export function fetchBootstrap(dispatch, sessionState) {
 
 // Timeseries
 export const addTimeseries = (uuid, timeseries) => {
-  return {
-    type: ADD_TIMESERIES,
-    uuid,
-    timeseries
-  };
+  return { type: ADD_TIMESERIES, uuid, timeseries };
 };
 
 const fetchTimeseriesEventsAction = (uuid, start, end) => {
@@ -188,35 +185,43 @@ const receiveRasterEventsAction = (uuid, geomKey, start, end, events) => {
 };
 
 export const setDateAction = function(dispatch) {
-  return date =>
-    dispatch({
-      type: SET_DATE,
-      date: date
-    });
+  return date => dispatch({ type: SET_DATE, date });
 };
 
 export const setTimeAction = function(dispatch) {
-  return time =>
-    dispatch({
-      type: SET_TIME,
-      time: time
-    });
+  return time => dispatch({ type: SET_TIME, time });
 };
 
 export const resetDateTimeAction = function(dispatch) {
-  return () =>
-    dispatch({
-      type: RESET_DATETIME
-    });
+  return () => dispatch({ type: RESET_DATETIME });
 };
 
 export const setMapBackgroundAction = function(dispatch) {
   return mapBackground =>
-    dispatch({
-      type: SET_MAP_BACKGROUND,
-      mapBackground: { ...mapBackground }
-    });
+    dispatch({ type: SET_MAP_BACKGROUND, mapBackground: { ...mapBackground } });
 };
+
+// export const setTitleAction = function(dispatch) {
+//   return title => {
+//     dispatch({ type: SET_TITLE, title })
+//   };
+// }
+
+// export const setLogoPathAction = function(dispatch) {
+//   return logoPath => dispatch({ type: SET_LOGO, logoPath });
+// }
+
+// export const setAvailableMapBackgroundsAction = function(dispatch) {
+//   return mapBackgrounds => {
+//     dispatch({ type: SET_AVAILABLE_MAP_BACKGROUNDS, mapBackgrounds });
+//   }
+// }
+
+// export const setBBoxAction = function(dispatch) {
+//   return bounds => {
+//     dispatch({ type: SET_BBOX, bbox: bounds});
+//   }
+// }
 
 export function updateTimeseriesMetadata(uuid) {
   return dispatch => {

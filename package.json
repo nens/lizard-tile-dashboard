@@ -1,10 +1,10 @@
 {
-  "name": "parramatta-dashboard",
+  "name": "lizard-tile-dashboard",
   "version": "0.2.14",
   "repository": {
     "type": "git",
-    "name": "nens/parramatta-dashboard",
-    "url": "https://github.com/nens/parramatta-dashboard.git"
+    "name": "nens/lizard-tile-dashboard",
+    "url": "https://github.com/nens/lizard-tile-dashboard.git"
   },
   "keywords": [
     "lizard",
@@ -14,9 +14,9 @@
   "author": "Remco Gerlich",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/nens/parramatta-dashboard/issues"
+    "url": "https://github.com/nens/lizard-tile-dashboard/issues"
   },
-  "homepage": "https://parramatta.lizard.net/clients/parramatta/",
+  "homepage": "https://ijgenzon.lizard.net/dashboard",
   "private": true,
   "dependencies": {
     "autoprefixer": "7.1.2",
@@ -152,7 +152,7 @@
   },
   "proxy": {
     "/bootstrap/": {
-      "target": "https://nxt.staging.lizard.net/",
+      "target": "https://ijgenzon.lizard.net/",
       "changeOrigin": true,
       "ssl": false,
       "secure": false,
@@ -162,7 +162,7 @@
       }
     },
     "/api/v3/": {
-      "target": "https://nxt.staging.lizard.net/",
+      "target": "https://ijgenzon.lizard.net/",
       "changeOrigin": true,
       "ssl": false,
       "secure": false,

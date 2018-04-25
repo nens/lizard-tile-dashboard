@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { BOUNDS } from "../config";
+// import { BOUNDS } from "../config";
 import { connect } from "react-redux";
 import { find } from "lodash";
 import { updateTimeseriesMetadata, fetchRaster, addAsset } from "../actions";
 import {
   getReferenceLevels,
   getAllTiles,
-  getCurrentMapBackground
+  getConfiguredMapBackgrounds,
+  getCurrentMapBackground,
+  getConfiguredPortalBBox
 } from "../reducers";
 import { withRouter } from "react-router-dom";
 
@@ -26,7 +28,7 @@ import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
 class MapComponent extends Component {
   componentDidMount() {
     const { tile } = this.props;
-    const inBboxFilter = this.getBbox().toLizardBbox();
+    const inBboxFilter = this.getBBox().toLizardBbox();
 
     if (tile.assetTypes) {
       tile.assetTypes.forEach(assetType => {
@@ -49,13 +51,14 @@ class MapComponent extends Component {
     }
   }
 
-  getBbox() {
-    // Either get it from the tile or return the global constant.
+  getBBox() {
+    // Either get it from the tile or return the JSON configured constant.
     if (this.props && this.props.tile && this.props.tile.bbox) {
       const bbox = this.props.tile.bbox;
       return new BoundingBox(bbox[0], bbox[1], bbox[2], bbox[3]);
+    } else {
+      return this.props.portalBBox;
     }
-    return BOUNDS;
   }
 
   tileLayerForRaster(raster) {
@@ -63,6 +66,11 @@ class MapComponent extends Component {
       this.props.getRaster,
       this.props.fetchRaster,
       raster.uuid
+    );
+
+    console.log(
+      "[dbg] rasterObject= ",
+      JSON.parse(JSON.stringify(rasterObject))
     );
 
     if (!rasterObject) {
@@ -80,13 +88,20 @@ class MapComponent extends Component {
       wmsUrl = rasterObject.wms_info.endpoint;
     }
 
+    const rasterOpacity = raster.opacity
+      ? Number.parseFloat(raster.opacity)
+      : 0;
+    console.log("[dbg] rasterOpacity =", rasterOpacity);
+
     return (
       <WMSTileLayer
         url={wmsUrl}
         key={rasterObject.uuid}
         layers={rasterObject.wms_info.layer}
         styles={rasterObject.options.styles}
-        opacity={raster.opacity ? Number.parseFloat(raster.opacity) : 0}
+        opacity={rasterOpacity}
+        transparent={true}
+        format={"image/png"}
       />
     );
   }
@@ -396,7 +411,7 @@ class MapComponent extends Component {
         style={{ width, height }}
       >
         <Map
-          bounds={this.getBbox().toLeafletBounds()}
+          bounds={this.getBBox().toLeafletBounds()}
           attributionControl={false}
           dragging={true}
           touchZoom={true}
@@ -427,7 +442,7 @@ class MapComponent extends Component {
     return (
       <div className={styles.MapStyleTile}>
         <Map
-          bounds={this.getBbox().toLeafletBounds()}
+          bounds={this.getBBox().toLeafletBounds()}
           attributionControl={false}
           dragging={false}
           touchZoom={false}
@@ -459,8 +474,16 @@ function mapStateToProps(state) {
     alarms: state.alarms,
     timeseriesMetadata: state.timeseries,
     allTiles: getAllTiles(state),
-    mapBackground: getCurrentMapBackground(state),
-    referenceLevels: getReferenceLevels(state)
+    mapBackground: (s => {
+      const current = getCurrentMapBackground(s);
+      if (current) {
+        return current;
+      } else {
+        return getConfiguredMapBackgrounds(state)[0];
+      }
+    })(state),
+    referenceLevels: getReferenceLevels(state),
+    portalBBox: getConfiguredPortalBBox(state)
   };
 }
 

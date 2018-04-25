@@ -9,21 +9,28 @@ import TimeseriesTile from "./TimeseriesTile";
 import StatisticsTile from "./StatisticsTile";
 import ExternalTile from "./ExternalTile";
 import Map from "./Map";
-import parramattaLogo from "../graphics/parramatta-header-logo.svg";
-import logoCombo from "../graphics/logo-combo.png";
+
+// import wtf from "../graphics/rws.png";
+
 import styles from "./GridLayout.css";
-import { getAllTiles, getConfiguredDate, getConfiguredTime } from "../reducers";
+import {
+  getAllTiles,
+  getConfiguredDate,
+  getConfiguredTime,
+  getConfiguredTitle,
+  getConfiguredLogoPath,
+  getConfiguredMapBackgrounds,
+  getCurrentMapBackground
+} from "../reducers";
 import {
   setDateAction,
   setTimeAction,
   resetDateTimeAction,
   setMapBackgroundAction
 } from "../actions";
-import { getCurrentMapBackground } from "../reducers";
-import { MAP_BACKGROUNDS } from "../config";
 
 const layoutFromLocalStorage = JSON.parse(
-  localStorage.getItem("parramatta-layout")
+  localStorage.getItem("dashboard-layout")
 );
 
 class GridLayout extends Component {
@@ -98,31 +105,34 @@ class GridLayout extends Component {
   }
 
   toggleMapBackground() {
-    const current = this.props.currentMapBackground;
+    const available = this.props.availableMapBackgrounds;
+    const current = this.props.currentMapBackground || available[0];
 
-    if (current.url === MAP_BACKGROUNDS[1].url) {
-      this.props.setMapBackground(MAP_BACKGROUNDS[0]);
+    if (current.url === available[1].url) {
+      this.props.setMapBackground(available[0]);
     } else {
-      this.props.setMapBackground(MAP_BACKGROUNDS[1]);
+      this.props.setMapBackground(available[1]);
     }
   }
 
   render() {
     const { width, height, canMove, settingsMenu, settingsMenuId } = this.state;
-    const { tiles, history } = this.props;
+
+    const { tiles, history, title, logoPath } = this.props;
+
+    console.log("[dbg] logoPath:", logoPath);
+
+    const mapBackgrounds = this.props.availableMapBackgrounds;
 
     const nensMail = () => unescape("servicedesk%40nelen%2Dschuurmans%2Enl");
-    const chrisTel = () => unescape("%30%34%30%35%20%30%35%32%20%34%36%32");
-    const chrisMail = () =>
-      unescape("cgooch%40cityofparramatta%2Ensw%2Egov%2Eau");
 
     if (settingsMenu) {
       return (
-        <DocumentTitle title="Parramatta | Dashboard | Settings">
+        <DocumentTitle title={title + " | Settings"}>
           <div className={styles.SettingsMenu} style={{ height: height }}>
             <img
-              src={parramattaLogo}
-              alt="Parramatta dashboard"
+              src={logoPath}
+              alt="Dashboard"
               className={styles.HeaderImage}
             />
             <div
@@ -221,12 +231,12 @@ class GridLayout extends Component {
                     <hr />
                     <div className={styles.MapSettings}>
                       <p>
-                        There are {MAP_BACKGROUNDS
-                          ? MAP_BACKGROUNDS.length
+                        There are {mapBackgrounds
+                          ? mapBackgrounds.length
                           : 0}{" "}
                         available map background(s):
-                        {MAP_BACKGROUNDS[0].description} and{" "}
-                        {MAP_BACKGROUNDS[1].description}.
+                        {mapBackgrounds[0].description} and&nbsp;
+                        {mapBackgrounds[1].description}.
                       </p>
                       <p>
                         Currently selected:&nbsp;
@@ -247,10 +257,7 @@ class GridLayout extends Component {
                     <hr />
                     <p>
                       For software issues with the FISH Dashboard please contact
-                      Nelen & Schuurmans on {nensMail()}. For any other issues,
-                      or suggestions for improvements to the FISH system, please
-                      contact Chris Gooch on tel.&nbsp;
-                      {chrisTel()} or email {chrisMail()}
+                      Nelen & Schuurmans on {nensMail()}.
                     </p>
                   </div>
                 ) : null}
@@ -322,15 +329,15 @@ class GridLayout extends Component {
     });
 
     return (
-      <DocumentTitle title="Parramatta | Dashboard">
+      <DocumentTitle title={title}>
         <div className={styles.GridLayout}>
           <img
-            src={logoCombo}
+            src={logoPath}
             alt="Logos for relevant organisations"
             className={styles.LogoCombo}
           />
 
-          <span className={styles.HeaderTitle}>FISH&nbsp;DASHBOARD</span>
+          <span className={styles.HeaderTitle}>{title}</span>
 
           {width > 700 ? (
             <div
@@ -391,7 +398,12 @@ const mapStateToProps = (state, ownProps) => {
     alarms: state.alarms,
     date: getConfiguredDate(state),
     time: getConfiguredTime(state),
-    currentMapBackground: getCurrentMapBackground(state)
+    availableMapBackgrounds: getConfiguredMapBackgrounds(state),
+    currentMapBackground: (s => {
+      return getCurrentMapBackground(s) || getConfiguredMapBackgrounds(s)[0];
+    })(state),
+    title: getConfiguredTitle(state),
+    logoPath: getConfiguredLogoPath(state)
   };
 };
 
