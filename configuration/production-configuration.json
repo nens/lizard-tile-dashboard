@@ -1,50 +1,36 @@
 {
-  "meta": {
-    "title": "IJGENZON DASHBOARD",
-    "logo": "graphics/rws.png",
-    "backgroundMaps": [
-      {
-        "description": "Labelled Satellite Map",
-        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa79205/{z}/{x}/{y}.png"
-      },
-      {
-        "description": "Topographical Map",
-        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa98k8k/{z}/{x}/{y}.png"
-      }
-    ]
-  },
   "referenceLevels": {
     "205510": "test"
   },
   "tiles": [
     {
+      "rasters": [
+        {
+          "opacity": "0.5",
+          "uuid": "1d65a4e1-ac2f-4e66-9e52-1d130d870a34"
+        }
+      ],
       "wmsLayers": [
         {
-          "layers": "cadaster",
+          "layers": "s0175_ijgenzon:s0175_debieten_meetlocaties",
           "format": "image/png",
-          "url": "https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1",
+          "url": "https://maps1.project.lizard.net/geoserver/s0175_ijgenzon/wms?&SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.11",
           "height": 256,
-          "zindex": 1004,
+          "zindex": 1009,
           "width": 256,
           "srs": "EPSG:3857",
           "transparent": true
         }
       ],
-      "rasters": [
-        {
-          "opacity": "0.5",
-          "uuid": "45650909-aad7-4a7d-9e00-8f38e2b74d0a"
-        }
+      "bbox_same_as_portal_": [
+        "4.562668790367655",
+        "51.941318146188465",
+        "7.227498375212766",
+        "53.49891763395444"
       ],
-      "shortTitle": "Max water depth (1991)",
-      "title": "Max water depth (1991 rain event)",
-      "viewInLizardLink": "https://parramatta.lizard.net/en/map/topography,assetgroup$9c2d7b6,scenario$969e390,raster$969e6e1/point@-33.7916,150.9768,14/-3Days0Hours+3Days0Hours",
-      "bbox": [
-        "150.96240520477298",
-        "-33.81217200269498",
-        "151.03141307830813",
-        "-33.78071682642826"
-      ],
+      "shortTitle": "Hoogte en debieten",
+      "title": "Hoogte en debieten",
+      "viewInLizardLink": "https://ijgenzon.lizard.net/nl/map/neutral,raster$1d65a4e,wmslayer$403a7a0c/point@52.7271,5.8951,9/-5Days1Hours+1Days0Hours",
       "type": "map",
       "id": 1
     },
@@ -74,12 +60,12 @@
       "assetTypes": [
         "measuringstation"
       ],
-      "title": "Measuring stations",
+      "title": "Meetstations Purmerend",
       "bbox": [
-        "150.96240520477298",
-        "-33.81217200269498",
-        "151.03141307830813",
-        "-33.78071682642826"
+        "5.027103424072266",
+        "52.532513955470336",
+        "4.902219772338867",
+        "52.48142115832729"
       ],
       "extraLegends": [
         {
@@ -106,7 +92,7 @@
     {
       "type": "statistics",
       "id": 3,
-      "title": "Breached thresholds"
+      "title": "Carbidschiettoernooien"
     },
     {
       "shortTitle": "Marsden Weir / Riverside Theatre",
@@ -285,167 +271,27 @@
       ],
       "type": "timeseries",
       "id": 9
-    },
-    {
-      "shortTitle": "Johnstons Bridge (Toongabbie Creek)",
-      "title": "Johnstons Bridge (Toongabbie Creek Warning Area) [LGH: 17.837 mAHD]",
-      "colors": [
-        "#26A7F1",
-        "#000058",
-        "#c626f1",
-        "#3179c6"
-      ],
-      "timeseries": [
-        "c1ab578c-8dd5-43c1-90d9-6e8aa57022e7",
-        "49969142-7890-4177-8cb3-7b920715ac7a",
-        "2cafd42b-acc9-42a1-8ec4-2d5505449d16"
-      ],
-      "rasterIntersections": [
-        {
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              "150.9661425",
-              "-33.7814549"
-            ]
-          },
-          "uuid": "6ccb42c"
-        }
-      ],
-      "type": "timeseries",
-      "id": 10
-    },
-    {
-      "shortTitle": "McCoy Park (Toongabbie creek)",
-      "title": "McCoy Park (Toongsabie Creek) [LGH: 24.42 mAHD]",
-      "colors": [
-        "#26A7F1",
-        "#000058",
-        "#c626f1",
-        "#f1c026",
-        "#3179c6"
-      ],
-      "timeseries": [
-        "0f0d0957-40af-4f7e-91bd-d4af804a9af6",
-        "66f8a822-8632-4ada-a00a-9b76401cd713",
-        "369c6009-ed0f-44b8-8b77-944f9a56da30",
-        "14e002e7-efe2-43d7-8faa-7d1003d9f9fd"
-      ],
-      "rasterIntersections": [
-        {
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              "150.9519277",
-              "-33.7794067"
-            ]
-          },
-          "uuid": "6ccb42c"
-        }
-      ],
-      "type": "timeseries",
-      "id": 11
-    },
-    {
-      "shortTitle": "Blacktown Creek (international Peace Park)",
-      "title": "Blacktown Creek (International Peace Park) [LGH: 35.273 mAHD]",
-      "colors": [
-        "#26A7F1",
-        "#000058",
-        "#3179c6"
-      ],
-      "timeseries": [
-        "86cefeba-6a03-4998-b8b0-aae61083dc5b"
-      ],
-      "rasterIntersections": [
-        {
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              "150.926134",
-              "-33.773506"
-            ]
-          },
-          "uuid": "6ccb42c"
-        }
-      ],
-      "type": "timeseries",
-      "id": 12
-    },
-    {
-      "shortTitle": "Seven Hills Radio Station (Rain)",
-      "title": "Seven Hills Radio Station",
-      "colors": [
-        "#000058",
-        "#3179c6"
-      ],
-      "timeseries": [
-        "5608af04-4f38-4747-9c05-e81a7c30604a"
-      ],
-      "rasterIntersections": [
-        {
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              "150.9245252",
-              "-33.784774"
-            ]
-          },
-          "uuid": "6ccb42c"
-        }
-      ],
-      "type": "timeseries",
-      "id": 13
-    },
-    {
-      "shortTitle": "Baulkham Hills Reservoir (Rain)",
-      "title": "Baulkham Hills Reservoir (Swimming Pool)",
-      "colors": [
-        "#000058",
-        "#3179c6"
-      ],
-      "timeseries": [
-        "e9521be2-3425-4ad4-81af-1b88a6750c41"
-      ],
-      "rasterIntersections": [
-        {
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              "150.9917166",
-              "-33.7443841"
-            ]
-          },
-          "uuid": "6ccb42c"
-        }
-      ],
-      "type": "timeseries",
-      "id": 14
-    },
-    {
-      "shortTitle": "Toongabbie Bowling Club (Rain)",
-      "title": "Toongabbie Bowling Club",
-      "colors": [
-        "#000058",
-        "#3179c6"
-      ],
-      "timeseries": [
-        "48d39158-b98e-4267-bd7e-a73fabec53c9"
-      ],
-      "rasterIntersections": [
-        {
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              "150.9524883",
-              "-33.7839869"
-            ]
-          },
-          "uuid": "6ccb42c"
-        }
-      ],
-      "type": "timeseries",
-      "id": 15
     }
-  ]
+  ],
+  "meta": {
+    "logo": "/static/media/rws.556d5d5b.png",
+    "mapBackgrounds": [
+      {
+        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png",
+        "description": "Neutral Map"
+      },
+      {
+        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa98k8k/{z}/{x}/{y}.png",
+        "description": "Topographical Map"
+      },
+      {
+        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa79205/{z}/{x}/{y}.png",
+        "description": "Labelled Satellite Map"
+      }
+    ],
+    "title": "IJGENZON DASHBOARD",
+    "gridView": {
+      "columnCount": 4
+    }
+  }
 }
