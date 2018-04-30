@@ -4,12 +4,6 @@
   },
   "tiles": [
     {
-      "rasters": [
-        {
-          "opacity": "0.5",
-          "uuid": "1d65a4e1-ac2f-4e66-9e52-1d130d870a34"
-        }
-      ],
       "wmsLayers": [
         {
           "layers": "s0175_ijgenzon:s0175_debieten_meetlocaties",
@@ -22,15 +16,21 @@
           "transparent": true
         }
       ],
+      "rasters": [
+        {
+          "opacity": "0.5",
+          "uuid": "1d65a4e1-ac2f-4e66-9e52-1d130d870a34"
+        }
+      ],
+      "shortTitle": "Hoogte en debieten",
+      "title": "Hoogte en debieten",
+      "viewInLizardLink": "https://ijgenzon.lizard.net/nl/map/neutral,raster$1d65a4e,wmslayer$403a7a0c/point@52.7271,5.8951,9/-5Days1Hours+1Days0Hours",
       "bbox_same_as_portal_": [
         "4.562668790367655",
         "51.941318146188465",
         "7.227498375212766",
         "53.49891763395444"
       ],
-      "shortTitle": "Hoogte en debieten",
-      "title": "Hoogte en debieten",
-      "viewInLizardLink": "https://ijgenzon.lizard.net/nl/map/neutral,raster$1d65a4e,wmslayer$403a7a0c/point@52.7271,5.8951,9/-5Days1Hours+1Days0Hours",
       "type": "map",
       "id": 1
     },
@@ -249,25 +249,12 @@
       "colors": [
         "#26A7F1",
         "#000058",
-        "#c626f1",
-        "#3179c6"
+        "#c626f1"
       ],
       "timeseries": [
         "937fcb8d-5d05-4803-9764-1ef55c01285e",
         "4b462f9c-7f54-4d64-bec8-961114d5a536",
         "e53b782c-3176-4511-ae09-8e969c64293b"
-      ],
-      "rasterIntersections": [
-        {
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              "151.0056911",
-              "-33.7761602"
-            ]
-          },
-          "uuid": "6ccb42c"
-        }
       ],
       "type": "timeseries",
       "id": 9
@@ -289,9 +276,9 @@
         "description": "Labelled Satellite Map"
       }
     ],
-    "title": "IJGENZON DASHBOARD",
     "gridView": {
       "columnCount": 4
-    }
+    },
+    "title": "IJGENZON DASHBOARD"
   }
 }

@@ -10,7 +10,7 @@ import StatisticsTile from "./StatisticsTile";
 import ExternalTile from "./ExternalTile";
 import Map from "./Map";
 
-// import wtf from "../graphics/rws.png";
+import definedVariableThatRemainsUnused from "../graphics/rws.png";
 
 import styles from "./GridLayout.css";
 import {
@@ -30,9 +30,9 @@ import {
   setMapBackgroundAction
 } from "../actions";
 
-const layoutFromLocalStorage = null; /*JSON.parse(
+const layoutFromLocalStorage = JSON.parse(
   localStorage.getItem("dashboard-layout")
-);*/
+);
 
 class GridLayout extends Component {
   constructor(props) {
@@ -54,17 +54,18 @@ class GridLayout extends Component {
   }
   componentWillMount() {
     const { columnCount } = this.props;
+    console.log("[!] on componentWillMount, setting page layout..");
     if (!this.state.layout && !layoutFromLocalStorage) {
-      console.log("[!] Setting new layout!");
+      console.log("[*] ...based on client-config");
       this.setState({
         mobileLayout: this.props.tiles.map((tile, i) => {
-          const y = 8;
+          const Y = 8;
           return {
             i: `${i}`,
             x: 0,
             y: i * 8,
             w: 12,
-            h: y,
+            h: Y,
             minW: 2,
             maxW: 12
           };
@@ -83,11 +84,12 @@ class GridLayout extends Component {
             w: W,
             h: H,
             minW: 2,
-            maxW: 4
+            maxW: W
           };
         })
       });
     } else {
+      console.log("[*] ...based on previously setlocalStorage");
       this.setState({
         layout: layoutFromLocalStorage
       });
@@ -390,13 +392,18 @@ class GridLayout extends Component {
             )}
             <Ink />
           </div>
+          {/*
+            <ReactGridLayout
+              ...
+              layout={width < 700 ? this.state.mobileLayout : this.state.layout}
+              cols={columnCount}
+
+          */}
           <ReactGridLayout
             isDraggable={canMove}
             isResizable={canMove}
             className="layout"
-            layout={width < 700 ? this.state.mobileLayout : this.state.layout}
             layout={this.getLayout()}
-            cols={3 * columnCount}
             rowHeight={30}
             width={width}
             draggableHandle=".drag-handle"
