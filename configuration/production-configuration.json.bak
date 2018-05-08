@@ -1,0 +1,284 @@
+{
+  "referenceLevels": {
+    "205510": "test"
+  },
+  "tiles": [
+    {
+      "wmsLayers": [
+        {
+          "layers": "s0175_ijgenzon:s0175_debieten_meetlocaties",
+          "format": "image/png",
+          "url": "https://maps1.project.lizard.net/geoserver/s0175_ijgenzon/wms?&SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.11",
+          "height": 256,
+          "zindex": 1009,
+          "width": 256,
+          "srs": "EPSG:3857",
+          "transparent": true
+        }
+      ],
+      "rasters": [
+        {
+          "opacity": "0.5",
+          "uuid": "1d65a4e1-ac2f-4e66-9e52-1d130d870a34"
+        }
+      ],
+      "shortTitle": "Hoogte en debieten",
+      "title": "Hoogte en debieten",
+      "viewInLizardLink": "https://ijgenzon.lizard.net/nl/map/neutral,raster$1d65a4e,wmslayer$403a7a0c/point@52.7271,5.8951,9/-5Days1Hours+1Days0Hours",
+      "bbox_same_as_portal_": [
+        "4.562668790367655",
+        "51.941318146188465",
+        "7.227498375212766",
+        "53.49891763395444"
+      ],
+      "type": "map",
+      "id": 1
+    },
+    {
+      "wmsLayers": [
+        {
+          "layers": "gauges",
+          "format": "image/png",
+          "url": "https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1",
+          "height": 256,
+          "zindex": 1004,
+          "width": 256,
+          "srs": "EPSG:3857",
+          "transparent": true
+        },
+        {
+          "layers": "fwa",
+          "format": "image/png",
+          "url": "https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1",
+          "height": 256,
+          "zindex": 1003,
+          "width": 256,
+          "srs": "EPSG:3857",
+          "transparent": true
+        }
+      ],
+      "assetTypes": [
+        "measuringstation"
+      ],
+      "title": "Meetstations Purmerend",
+      "bbox": [
+        "5.027103424072266",
+        "52.532513955470336",
+        "4.902219772338867",
+        "52.48142115832729"
+      ],
+      "extraLegends": [
+        {
+          "steps": [
+            {
+              "color": "red",
+              "text": "foo"
+            },
+            {
+              "color": "green",
+              "text": "bar"
+            },
+            {
+              "color": "blue",
+              "text": "baz"
+            }
+          ],
+          "title": "= Some extra legend ="
+        }
+      ],
+      "type": "map",
+      "id": 2
+    },
+    {
+      "type": "statistics",
+      "id": 3,
+      "title": "Carbidschiettoernooien"
+    },
+    {
+      "shortTitle": "Marsden Weir / Riverside Theatre",
+      "title": "Marsden Weir [LGH: 3.741 mAHD] / Riverside Theatre [LGH: 0.0 mAHD]",
+      "colors": [
+        "#26A7F1",
+        "#c626f1",
+        "#000058",
+        "#3179c6"
+      ],
+      "legendStrings": [
+        "Roses are #ff0000",
+        "Violets are #0000ff",
+        "All my base",
+        "Are belong to you"
+      ],
+      "timeseries": [
+        "62617bb2-30f5-4df7-8dca-31a055e29c53",
+        "ce26f2e1-34c8-4fbb-abfa-204a06282f43",
+        "e626f522-47da-4c84-bd85-45d56b5fce01"
+      ],
+      "rasterIntersections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              "151.0016102",
+              "-33.8115756"
+            ]
+          },
+          "uuid": "6ccb42c"
+        }
+      ],
+      "type": "timeseries",
+      "id": 4
+    },
+    {
+      "shortTitle": "Redbank Road (Parramatta River)",
+      "title": "Redbank Road (Westmead and North Parramatta Warning Area) [LGH: 6.993 mAHD]",
+      "colors": [
+        "#26A7F1",
+        "#000058",
+        "#3179c6"
+      ],
+      "timeseries": [
+        "88ddb4f6-8599-4890-9bb3-72727b27f3cf",
+        "a62833d5-8533-4e43-8c72-960572caf027"
+      ],
+      "rasterIntersections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              "150.9917336",
+              "-33.799914"
+            ]
+          },
+          "uuid": "6ccb42c"
+        }
+      ],
+      "type": "timeseries",
+      "id": 5
+    },
+    {
+      "shortTitle": "North Parramatta (Darling Mills Creek)",
+      "title": "North Parramatta (Viaduct, Darling Mills Creek) [LGH: 9.178 mAHD]",
+      "colors": [
+        "#26A7F1",
+        "#000058",
+        "#c626f1",
+        "#3179c6"
+      ],
+      "timeseries": [
+        "1818a7e3-9994-400f-b8a4-c190f8102417",
+        "6d5a3a3b-76a6-47eb-b5ac-907568a20bfd",
+        "e3e48d7a-4cb9-4361-9e6a-c3e6572a64e8"
+      ],
+      "rasterIntersections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              "151.0006538",
+              "-33.7960283"
+            ]
+          },
+          "uuid": "6ccb42c"
+        }
+      ],
+      "type": "timeseries",
+      "id": 6
+    },
+    {
+      "shortTitle": "Briens Road (Toongabbie Creek)",
+      "title": "Briens Road (Lower Toongabbie and Wentworthville Warning Area) [LGH: 9.345 mAHD]",
+      "colors": [
+        "#26A7F1",
+        "#000058",
+        "#c626f1",
+        "#3179c6"
+      ],
+      "timeseries": [
+        "0de5c794-05cf-46cd-8ac5-00882ef371b7",
+        "41821176-f028-4c47-a5fd-dc16aa1778da",
+        "60c7370a-bb3b-4796-88ac-2f22e6e6f5e9"
+      ],
+      "rasterIntersections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              "150.981166",
+              "-33.7999344"
+            ]
+          },
+          "uuid": "6ccb42c"
+        }
+      ],
+      "type": "timeseries",
+      "id": 7
+    },
+    {
+      "shortTitle": "Lake Parramatta (Hunts Creek)",
+      "title": "Lake Parramatta (Hunts Creek) [LGH: ??.??? mAHD]",
+      "colors": [
+        "#26A7F1",
+        "#000058",
+        "#c626f1",
+        "#3179c6"
+      ],
+      "timeseries": [
+        "0c11bc91-5222-4e65-ab66-f593f3cdc20a",
+        "e3e48d7a-4cb9-4361-9e6a-c3e6572a64e8",
+        "814f851a-fe5f-4125-bbde-8d0fe9bde044"
+      ],
+      "rasterIntersections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              "151.005854",
+              "-33.79155"
+            ]
+          },
+          "uuid": "6ccb42c"
+        }
+      ],
+      "type": "timeseries",
+      "id": 8
+    },
+    {
+      "shortTitle": "Loyalty Road Basin (Darling Mills Creek)",
+      "title": "Loyalty Road Basin (Darling Mills Creek Warning Area) [LGH: 20.989 mAHD]",
+      "colors": [
+        "#26A7F1",
+        "#000058",
+        "#c626f1"
+      ],
+      "timeseries": [
+        "937fcb8d-5d05-4803-9764-1ef55c01285e",
+        "4b462f9c-7f54-4d64-bec8-961114d5a536",
+        "e53b782c-3176-4511-ae09-8e969c64293b"
+      ],
+      "type": "timeseries",
+      "id": 9
+    }
+  ],
+  "meta": {
+    "logo": "/static/media/rws.556d5d5b.png",
+    "mapBackgrounds": [
+      {
+        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png",
+        "description": "Neutral Map"
+      },
+      {
+        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa98k8k/{z}/{x}/{y}.png",
+        "description": "Topographical Map"
+      },
+      {
+        "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.iaa79205/{z}/{x}/{y}.png",
+        "description": "Labelled Satellite Map"
+      }
+    ],
+    "gridView": {
+      "columnCount": 4
+    },
+    "title": "IJGENZON DASHBOARD"
+  }
+}
