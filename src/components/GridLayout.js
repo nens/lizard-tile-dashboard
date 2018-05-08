@@ -46,10 +46,9 @@ class GridLayout extends Component {
       settingsMenu: false,
       settingsMenuId: 0
     };
-    console.log(
-      "[F] GridLayout.constructor; state.layout:",
-      JSON.parse(JSON.stringify(this.state.layout))
-    );
+    // console.log(
+    //   JSON.parse(JSON.stringify(this.state.layout))
+    // );
     this.handleUpdateDimensions = this.handleUpdateDimensions.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }

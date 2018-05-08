@@ -11,8 +11,6 @@ class Tile extends Component {
       headerColors
     } = this.props;
 
-    console.log("[F] Tileṙender; headerColors =", headerColors);
-
     return (
       <div
         style={{
