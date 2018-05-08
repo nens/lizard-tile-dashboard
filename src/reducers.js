@@ -9,7 +9,11 @@ import {
   RECEIVE_RASTER_EVENTS,
   SET_DATE,
   SET_TIME,
+  // SET_TITLE,
+  // SET_LOGO,
+  // SET_BBOX,
   RESET_DATETIME,
+  // SET_AVAILABLE_MAP_BACKGROUNDS,
   SET_MAP_BACKGROUND,
   RECEIVE_ALARMS,
   FETCH_BOOTSTRAP,
@@ -17,7 +21,8 @@ import {
   RECEIVE_BOOTSTRAP_ERROR,
   RECEIVE_BOOTSTRAP_SUCCESS
 } from "./actions";
-import { MAP_BACKGROUNDS } from "./config";
+
+import { BoundingBox } from "./util/bounds";
 
 import { makeReducer } from "lizard-api-client";
 
@@ -188,7 +193,10 @@ function settings(
   state = {
     configuredDate: null,
     configuredTime: null,
-    mapBackground: MAP_BACKGROUNDS[0]
+    configuredTitle: null,
+    configuredLogoPath: null,
+    mapBackground: null,
+    configuredMapBackgrounds: null
   },
   action
 ) {
@@ -201,6 +209,12 @@ function settings(
       return { ...state, configuredDate: null, configuredTime: null };
     case SET_MAP_BACKGROUND:
       return { ...state, mapBackground: action.mapBackground };
+    // case SET_TITLE:
+    //   return { ...state, configuredTitle: action.title }
+    // case SET_LOGO:
+    //   return { ...state, configuredLogoPath: action.logoPath }
+    // case SET_AVAILABLE_MAP_BACKGROUNDS:
+    //   return { ...state, configuredMapBackgrounds: action.mapBackgrounds }
     default:
       return state;
   }
@@ -306,12 +320,65 @@ export const getConfiguredDateTime = function(state) {
   );
 };
 
-export const getConfiguredNow = function(state) {
+export const getConfiguredNow = state => {
   // Usually the current date/time, but sometimes a different one is configured
   const configured = getConfiguredDateTime(state);
   return configured || null;
 };
 
-export const getCurrentMapBackground = function(state) {
+export const getCurrentMapBackground = state => {
   return state.settings.mapBackground;
+};
+
+export const getConfiguredTitle = state => {
+  const configuration = getConfiguration(state);
+  return configuration && configuration.meta && configuration.meta.title
+    ? configuration.meta.title
+    : null;
+};
+
+export const getConfiguredLogoPath = state => {
+  const configuration = getConfiguration(state);
+  return configuration && configuration.meta && configuration.meta.logo
+    ? configuration.meta.logo
+    : null;
+};
+
+export const getConfiguredMapBackgrounds = state => {
+  const configuration = getConfiguration(state);
+  if (
+    configuration &&
+    configuration.meta &&
+    configuration.meta.mapBackgrounds
+  ) {
+    return configuration.meta.mapBackgrounds;
+  } else {
+    return null;
+  }
+};
+
+export const getConfiguredPortalBBox = function(state) {
+  if (!state.session || !state.session.hasBootstrap) return null;
+  const bounds = state.session.bootstrap.state.spatial.bounds;
+  const bbox = [
+    bounds._southWest.lng, // westmost
+    bounds._southWest.lat, // southmost
+    bounds._northEast.lng, // eastmost
+    bounds._northEast.lat // northmost
+  ];
+  return new BoundingBox(bbox[0], bbox[1], bbox[2], bbox[3]);
+};
+
+export const getConfiguredColumnCount = function(state) {
+  const configuration = getConfiguration(state);
+  if (
+    configuration &&
+    configuration.meta &&
+    configuration.meta.gridView &&
+    configuration.meta.gridView.columnCount
+  ) {
+    return configuration.meta.gridView.columnCount;
+  } else {
+    return null;
+  }
 };

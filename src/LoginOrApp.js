@@ -21,10 +21,6 @@ class LoginOrAppComponent extends Component {
     this.props.fetchBootstrap(this.props.sessionState);
   }
 
-  termsSigned() {
-    this.setState({ termsSigned: true });
-  }
-
   hasBootstrap() {
     const session = this.props.sessionState;
     const result = !!(session && session.hasBootstrap && session.bootstrap);
@@ -42,7 +38,7 @@ class LoginOrAppComponent extends Component {
       this.props.sessionState.bootstrap.doLogin();
     } else {
       return (
-        <Router basename="/clients/ijgenzon">
+        <Router basename="/dashboard">
           <App />
         </Router>
       );

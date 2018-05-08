@@ -40,8 +40,8 @@ class StatisticsTile extends Component {
           {width > 200 ? (
             <span>
               of
-              {" " + alarmCount + " " + this.pluralizeAlarms(alarmCount)}
-              total
+              {" " + alarmCount + " " + this.pluralizeAlarms(alarmCount) + " "}
+              &nbsp;total
             </span>
           ) : null}
         </div>
