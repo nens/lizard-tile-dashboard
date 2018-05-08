@@ -21,7 +21,8 @@ import {
   getConfiguredLogoPath,
   getConfiguredMapBackgrounds,
   getCurrentMapBackground,
-  getConfiguredColumnCount
+  getConfiguredColumnCount,
+  getConfiguredTileHeaderColors
 } from "../reducers";
 import {
   setDateAction,
@@ -54,9 +55,7 @@ class GridLayout extends Component {
   }
   componentWillMount() {
     const { columnCount } = this.props;
-    console.log("[!] on componentWillMount, setting page layout..");
     if (!this.state.layout && !layoutFromLocalStorage) {
-      console.log("[*] ...based on client-config");
       this.setState({
         mobileLayout: this.props.tiles.map((tile, i) => {
           const Y = 8;
@@ -73,10 +72,6 @@ class GridLayout extends Component {
         layout: this.props.tiles.map((tile, i) => {
           const W = Math.floor(12 / columnCount);
           const H = 8;
-
-          console.log("[LAYOUT] W =", W);
-          console.log("[LAYOUT] H =", H);
-
           return {
             i: `${i}`,
             x: (i * W) % (columnCount * W),
@@ -129,7 +124,6 @@ class GridLayout extends Component {
   }
 
   getLayout() {
-    console.log("[F] getLayout");
     if (this.state.width < 700) {
       console.log("[*] Using specialized 'this.state.mobileLayout'");
       return this.state.mobileLayout;
@@ -342,7 +336,7 @@ class GridLayout extends Component {
             <Tile
               {...this.props}
               title={shortTitle}
-              backgroundColor={"#cccccc"}
+              backgroundColor={"#FFFFFF"}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
               <ExternalTile isFull={false} tile={tile} />
@@ -435,7 +429,8 @@ const mapStateToProps = (state, ownProps) => {
     })(state),
     title: getConfiguredTitle(state),
     logoPath: getConfiguredLogoPath(state),
-    columnCount: getConfiguredColumnCount(state)
+    columnCount: getConfiguredColumnCount(state),
+    headerColors: getConfiguredTileHeaderColors(state)
   };
 };
 

@@ -16,6 +16,7 @@
   overflow: hidden;
   cursor: grab;
   z-index: 999999;
+  font-size: 40px;
 }
 .TileTitle:active {
   cursor: grabbing;
@@ -36,4 +37,8 @@
   right: 5px;
   top: 7px;
   color: #d8d8d8;
+}
+.TileHeaderText {
+  font-size: 18px !important;
+  line-height: 18px;
 }

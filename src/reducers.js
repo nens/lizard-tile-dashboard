@@ -382,3 +382,12 @@ export const getConfiguredColumnCount = function(state) {
     return null;
   }
 };
+
+export const getConfiguredTileHeaderColors = function(state) {
+  const configuration = getConfiguration(state);
+  if (configuration && configuration.meta && configuration.meta.headerColors) {
+    return configuration.meta.headerColors;
+  } else {
+    return { bg: "#FFFFFF", fg: "#777777" };
+  }
+};
