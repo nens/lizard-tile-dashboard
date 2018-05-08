@@ -91,25 +91,7 @@ class TimeseriesChartComponent extends Component {
       combinedEvents,
       wantedAxes: axes
     });
-
-    /* this.interval = setInterval(
-     *   this.updateDateTimeState.bind(this),
-     *   5 * 60 * 1000
-     * );*/
   }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (
-      nextState.start !== this.state.start ||
-      nextState.end !== this.state.end
-    ) {
-      this.updateTimeseries();
-    }
-  }
-
-  /* componentWillUnmount() {
-   *   clearInterval(this.interval);
-   * }*/
 
   /////////////////////////////////////////////////////////////////////////////
   // Component - custom functions /////////////////////////////////////////////
