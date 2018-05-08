@@ -24,4 +24,8 @@ tmp
 tmp/*
 nano.save*
 
-deploy*
+# ansible host files
+deploy/hosts
+deploy/production_hosts
+deploy/auth.json
+
