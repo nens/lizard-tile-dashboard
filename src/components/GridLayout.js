@@ -134,9 +134,6 @@ class GridLayout extends Component {
 
     const { tiles, history, title, logoPath, columnCount } = this.props;
 
-    console.log("[dbg] columnCount:", columnCount);
-    console.log("[dbg] logoPath:", logoPath);
-
     const mapBackgrounds = this.props.availableMapBackgrounds;
 
     const nensMail = () => unescape("servicedesk%40nelen%2Dschuurmans%2Enl");
@@ -346,53 +343,51 @@ class GridLayout extends Component {
     return (
       <DocumentTitle title={title}>
         <div className={styles.GridLayout}>
-          <img
-            src={logoPath}
-            alt="Logos for relevant organisations"
-            className={styles.LogoCombo}
-          />
-
-          <span className={styles.HeaderTitle}>{title}</span>
-
-          {width > 700 ? (
-            <div
-              className={styles.SettingsButton}
-              onClick={() =>
-                this.setState({
-                  settingsMenu: true
-                })}
-            >
-              <span>
-                <i className="material-icons">settings</i>&nbsp;&nbsp;Settings
-              </span>
-              <Ink />
+          <div className={styles.GridLayoutHeaderContainer}>
+            <div className={styles.GridLayoutLogoContainer}>
+              <img src={logoPath} alt="Logos for relevant organisations" />
             </div>
-          ) : null}
 
-          <div
-            className={styles.LogoutButton}
-            onClick={() => this.props.session.bootstrap.doLogout()}
-          >
-            {width > 700 ? (
-              <span>
-                <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
-              </span>
-            ) : (
-              <i className="material-icons">lock</i>
-            )}
-            <Ink />
+            <div className={styles.GridLayoutHeaderTitle}>{title}</div>
+
+            <div className={styles.GridLayoutHeaderButtons}>
+              {width > 700 ? (
+                <div
+                  className={styles.SettingsButton}
+                  onClick={() =>
+                    this.setState({
+                      settingsMenu: true
+                    })}
+                >
+                  <span>
+                    <i className="material-icons">
+                      settings
+                    </i>&nbsp;&nbsp;Settings
+                  </span>
+                  <Ink />
+                </div>
+              ) : null}
+
+              <div
+                className={styles.LogoutButton}
+                onClick={() => this.props.session.bootstrap.doLogout()}
+              >
+                {width > 700 ? (
+                  <span>
+                    <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
+                  </span>
+                ) : (
+                  <i className="material-icons">lock</i>
+                )}
+                <Ink />
+              </div>
+            </div>
           </div>
-          {/*
-            <ReactGridLayout
-              ...
-              layout={width < 700 ? this.state.mobileLayout : this.state.layout}
-              cols={columnCount}
 
-          */}
           <ReactGridLayout
             isDraggable={canMove}
             isResizable={canMove}
-            className="layout"
+            className={`${styles.GridLayoutContainer}` + " layout"}
             layout={this.getLayout()}
             rowHeight={30}
             width={width}
