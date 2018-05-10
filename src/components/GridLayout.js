@@ -144,7 +144,7 @@ class GridLayout extends Component {
           <div className={styles.SettingsMenu} style={{ height: height }}>
             <img
               src={logoPath}
-              alt="Dashboard"
+              alt="Rijkswaterstaat logo"
               className={styles.HeaderImage}
             />
             <div

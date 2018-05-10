@@ -9,7 +9,11 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
 import styles from "./FullLayout.css";
-import { getAllTiles, getTileById } from "../reducers";
+import {
+  getAllTiles,
+  getTileById,
+  getConfiguredTileHeaderColors
+} from "../reducers";
 
 import mapIcon from "../graphics/icon-map.svg";
 import timeIcon from "../graphics/icon-chart.svg";
@@ -99,6 +103,9 @@ class FullLayout extends Component {
         break;
     }
 
+    const fgColor = this.props.configuredTileHeaderColors.fg;
+    const bgColor = this.props.configuredTileHeaderColors.bg;
+
     return (
       <DocumentTitle title={`IJGENZON | ${selectedTile.title}`}>
         <div className={styles.FullLayout}>
@@ -185,16 +192,26 @@ class FullLayout extends Component {
               </Scrollbars>
             </div>
           ) : null}
-          <div className={styles.TitleBar}>
+          <div
+            className={styles.TitleBar}
+            style={{ color: fgColor, backgroundColor: bgColor }}
+          >
             <NavLink to="/">
               <div className={styles.BackButton}>
-                <i className="material-icons">arrow_back</i>
+                <i className="material-icons" style={{ color: fgColor }}>
+                  arrow_back
+                </i>
               </div>
             </NavLink>
             <div className={styles.Title}>{selectedTile.title}</div>
             {selectedTile.viewInLizardLink ? (
               <div className={styles.ViewInLizardButton}>
-                <a href={selectedTile.viewInLizardLink} target="_blank">
+                <a
+                  href={selectedTile.viewInLizardLink}
+                  target="_blank"
+                  className={styles.ViewInLizardLink}
+                  style={{ color: fgColor }}
+                >
                   View in Lizard
                 </a>
               </div>
@@ -213,7 +230,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     allTiles: getAllTiles(state),
     getTileById: id => getTileById(state, id),
-    alarms: state.alarms
+    alarms: state.alarms,
+    configuredTileHeaderColors: getConfiguredTileHeaderColors(state)
   };
 };
 

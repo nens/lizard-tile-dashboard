@@ -18,10 +18,13 @@
   cursor: pointer;
   left: 15px;
   top: 15px;
-  color: #747474;
 }
 .BackButton i {
   font-size: 22px;
+  font-weight: 400;
+}
+.BackButton i:hover {
+  font-weight: 700;
 }
 .Title {
   position: absolute;
@@ -93,4 +96,11 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+.ViewInLizardLink {
+  font-style: italic;
+  font-weight: 400;
+}
+.ViewInLizardLink:hover {
+  font-weight: 700;
 }
