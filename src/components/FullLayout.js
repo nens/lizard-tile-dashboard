@@ -11,6 +11,10 @@ import { NavLink, withRouter } from "react-router-dom";
 import styles from "./FullLayout.css";
 import { getAllTiles, getTileById } from "../reducers";
 
+import mapIcon from "../graphics/icon-map.svg";
+import timeIcon from "../graphics/icon-chart.svg";
+import radarIcon from "../graphics/icon-radar.svg";
+
 class FullLayout extends Component {
   constructor(props) {
     super(props);
@@ -109,19 +113,24 @@ class FullLayout extends Component {
                   switch (tile.type) {
                     case "map":
                       previewTile = (
-                        <Map isFull={false} bbox={tile.bbox} tile={tile} />
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img style={{ width: 75 }} src={mapIcon} alt="Map" />
+                        </div>
                       );
                       break;
                     case "timeseries":
                       previewTile = (
-                        <TimeseriesTile
-                          isFull={false}
-                          timeseries={tile.timeseries}
-                          tile={tile}
-                          showAxis={false}
-                          marginLeft={0}
-                          marginTop={0}
-                        />
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img
+                            style={{ width: 75 }}
+                            src={timeIcon}
+                            alt="Timeseries"
+                          />
+                        </div>
                       );
                       break;
                     case "statistics":
@@ -134,12 +143,15 @@ class FullLayout extends Component {
                       break;
                     case "external":
                       previewTile = (
-                        <ExternalTile
-                          isFull={false}
-                          tile={tile}
-                          width={300}
-                          height={300}
-                        />
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img
+                            style={{ width: 75 }}
+                            src={radarIcon}
+                            alt="Map"
+                          />
+                        </div>
                       );
                       break;
                     default:
