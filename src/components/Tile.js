@@ -29,7 +29,12 @@ class Tile extends Component {
           >
             {title}
           </div>
-          <i className={`${styles.TileHandle} material-icons`}>more_vert</i>
+          <i
+            className={`${styles.TileHandle} material-icons`}
+            style={{ color: headerColors.fg }}
+          >
+            more_vert
+          </i>
         </div>
         {children}
       </div>

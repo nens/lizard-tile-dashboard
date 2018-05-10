@@ -7,6 +7,10 @@
   border: 2px solid #fff;
   overflow: hidden;
 }
+.Tile:hover div {
+  font-weight: 500;
+}
+
 .TileTitle {
   position: absolute;
   width: 100%;
@@ -23,7 +27,6 @@
 }
 .TileTitle div {
   position: absolute;
-  color: #747474;
   top: 12px;
   left: 10px;
   white-space: nowrap;
@@ -35,8 +38,7 @@
 .TileHandle {
   position: absolute;
   right: 5px;
-  top: 7px;
-  color: #d8d8d8;
+  top: 9px;
 }
 .TileHeaderText {
   font-size: 18px !important;
