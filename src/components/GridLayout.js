@@ -31,16 +31,12 @@ import {
   setMapBackgroundAction
 } from "../actions";
 
-const layoutFromLocalStorage = JSON.parse(
-  localStorage.getItem("dashboard-layout")
-);
-
 class GridLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
       canMove: false,
-      layout: layoutFromLocalStorage || null,
+      layout: null,
       width: window.innerWidth,
       height: window.innerHeight,
       settingsMenu: false,
@@ -51,7 +47,7 @@ class GridLayout extends Component {
   }
   componentWillMount() {
     const { columnCount } = this.props;
-    if (!this.state.layout && !layoutFromLocalStorage) {
+    if (!this.state.layout) {
       this.setState({
         mobileLayout: this.props.tiles.map((tile, i) => {
           const Y = 8;
@@ -78,11 +74,6 @@ class GridLayout extends Component {
             maxW: W
           };
         })
-      });
-    } else {
-      console.log("[*] ...based on previously setlocalStorage");
-      this.setState({
-        layout: layoutFromLocalStorage
       });
     }
   }
@@ -132,7 +123,7 @@ class GridLayout extends Component {
   render() {
     const { width, height, canMove, settingsMenu, settingsMenuId } = this.state;
 
-    const { tiles, history, title, logoPath, columnCount } = this.props;
+    const { tiles, history, title, logoPath } = this.props;
 
     const mapBackgrounds = this.props.availableMapBackgrounds;
 
@@ -387,14 +378,11 @@ class GridLayout extends Component {
           <ReactGridLayout
             isDraggable={canMove}
             isResizable={canMove}
-            className={`${styles.GridLayoutContainer}` + " layout"}
+            className={`${styles.GridLayoutContainer + " layout"}`}
             layout={this.getLayout()}
             rowHeight={30}
             width={width}
             draggableHandle=".drag-handle"
-            onLayoutChange={layout => {
-              localStorage.setItem("dashboard-layout", JSON.stringify(layout));
-            }}
           >
             {tileComponents.map((component, i) => {
               return <div key={i}>{component}</div>;

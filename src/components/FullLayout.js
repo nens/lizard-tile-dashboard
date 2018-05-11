@@ -19,6 +19,9 @@ import mapIcon from "../graphics/icon-map.svg";
 import timeIcon from "../graphics/icon-chart.svg";
 import radarIcon from "../graphics/icon-radar.svg";
 
+const FULL_LAYOUT_HEADER_HEIGHT = 50;
+const FULL_LAYOUT_SIDEBAR_WIDTH = 195;
+
 class FullLayout extends Component {
   constructor(props) {
     super(props);
@@ -82,7 +85,7 @@ class FullLayout extends Component {
             timeseries={selectedTile.timeseries}
             tile={selectedTile}
             showAxis={true}
-            marginLeft={isMobile ? 0 : 195}
+            marginLeft={isMobile ? 0 : FULL_LAYOUT_SIDEBAR_WIDTH}
             marginTop={50}
           />
         );
@@ -92,6 +95,8 @@ class FullLayout extends Component {
           <ExternalTile
             tile={selectedTile}
             isFull={true}
+            fullLayoutHeaderHeight={FULL_LAYOUT_HEADER_HEIGHT}
+            fullLayoutSidebarWidth={FULL_LAYOUT_SIDEBAR_WIDTH}
             width={width}
             height={height}
             showingBar={!isMobile}
@@ -112,7 +117,7 @@ class FullLayout extends Component {
           {!isMobile ? (
             <div
               className={styles.SidebarWrapper}
-              style={{ height: height - 70 }}
+              style={{ height: height - FULL_LAYOUT_HEADER_HEIGHT }}
             >
               <Scrollbars height={height}>
                 {allTiles.map((tile, i) => {
@@ -194,7 +199,11 @@ class FullLayout extends Component {
           ) : null}
           <div
             className={styles.TitleBar}
-            style={{ color: fgColor, backgroundColor: bgColor }}
+            style={{
+              color: fgColor,
+              backgroundColor: bgColor,
+              height: FULL_LAYOUT_HEADER_HEIGHT + "px"
+            }}
           >
             <NavLink to="/">
               <div className={styles.BackButton}>
