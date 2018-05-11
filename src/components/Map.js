@@ -68,11 +68,6 @@ class MapComponent extends Component {
       raster.uuid
     );
 
-    // console.log(
-    //   "[dbg] rasterObject= ",
-    //   JSON.parse(JSON.stringify(rasterObject))
-    // );
-
     if (!rasterObject) {
       return null;
     }
@@ -398,7 +393,7 @@ class MapComponent extends Component {
               width={layer.width}
               height={layer.height}
               srs={layer.srs}
-              opacity={layer.opacity !== undefined ? layer.opacity : 0.5}
+              opacity={layer.opacity !== undefined ? layer.opacity : 1}
             />
           );
         })

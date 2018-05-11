@@ -35,13 +35,6 @@ export const RECEIVE_TIMESERIES_EVENTS = "RECEIVE_TIMESERIES_EVENTS";
 export const FETCH_RASTER_EVENTS = "FETCH_RASTER_EVENTS";
 export const RECEIVE_RASTER_EVENTS = "RECEIVE_RASTER_EVENTS";
 
-// Implemented since IJGENZON/23-04-18; Various actions concerning the reading
-// of configurable JSON (via: https://<PORTAL>.lizard.net/bootstrap/dashboard/);
-// export const SET_TITLE = "SET_TITLE";
-// export const SET_BBOX = "SET_BBOX"; // WIP....
-// export const SET_LOGO = "SET_LOGO";
-// export const SET_AVAILABLE_MAP_BACKGROUNDS = "SET_AVAILABLE_MAP_BACKGROUNDS"
-
 export const receiveAlarmsAction = (alarms, isTimeseries) => {
   return {
     type: RECEIVE_ALARMS,

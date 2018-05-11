@@ -3,7 +3,13 @@ import styles from "./Tile.css";
 
 class Tile extends Component {
   render() {
-    const { onClick, title, children, backgroundColor } = this.props;
+    const {
+      onClick,
+      title,
+      children,
+      backgroundColor,
+      headerColors
+    } = this.props;
 
     return (
       <div
@@ -13,9 +19,22 @@ class Tile extends Component {
         className={styles.Tile}
         onClick={onClick}
       >
-        <div className={styles.TileTitle}>
-          <div className="drag-handle">{title}</div>
-          <i className={`${styles.TileHandle} material-icons`}>more_vert</i>
+        <div
+          className={styles.TileTitle}
+          style={{ backgroundColor: headerColors.bg }}
+        >
+          <div
+            style={{ color: headerColors.fg }}
+            className={styles.TileHeaderText + " drag-handle"}
+          >
+            {title}
+          </div>
+          <i
+            className={`${styles.TileHandle} material-icons`}
+            style={{ color: headerColors.fg }}
+          >
+            more_vert
+          </i>
         </div>
         {children}
       </div>

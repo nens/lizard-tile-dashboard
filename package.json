@@ -62,7 +62,7 @@
     "react-grid-layout": "^0.15.3",
     "react-ink": "^6.2.0",
     "react-intl": "^2.4.0",
-    "react-leaflet": "^1.7.0",
+    "react-leaflet": "^1.7.2",
     "react-md-spinner": "^0.2.5",
     "react-plotly.js": "^2.1.0",
     "react-redux": "^5.0.6",

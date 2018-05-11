@@ -23,3 +23,9 @@ yarn-error.log*
 tmp
 tmp/*
 nano.save*
+
+# ansible host files
+deploy/hosts
+deploy/production_hosts
+deploy/auth.json
+

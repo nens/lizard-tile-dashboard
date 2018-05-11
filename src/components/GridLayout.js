@@ -21,7 +21,8 @@ import {
   getConfiguredLogoPath,
   getConfiguredMapBackgrounds,
   getCurrentMapBackground,
-  getConfiguredColumnCount
+  getConfiguredColumnCount,
+  getConfiguredTileHeaderColors
 } from "../reducers";
 import {
   setDateAction,
@@ -30,33 +31,23 @@ import {
   setMapBackgroundAction
 } from "../actions";
 
-const layoutFromLocalStorage = JSON.parse(
-  localStorage.getItem("dashboard-layout")
-);
-
 class GridLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
       canMove: false,
-      layout: layoutFromLocalStorage || null,
+      layout: null,
       width: window.innerWidth,
       height: window.innerHeight,
       settingsMenu: false,
       settingsMenuId: 0
     };
-    console.log(
-      "[F] GridLayout.constructor; state.layout:",
-      JSON.parse(JSON.stringify(this.state.layout))
-    );
     this.handleUpdateDimensions = this.handleUpdateDimensions.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
   componentWillMount() {
     const { columnCount } = this.props;
-    console.log("[!] on componentWillMount, setting page layout..");
-    if (!this.state.layout && !layoutFromLocalStorage) {
-      console.log("[*] ...based on client-config");
+    if (!this.state.layout) {
       this.setState({
         mobileLayout: this.props.tiles.map((tile, i) => {
           const Y = 8;
@@ -73,10 +64,6 @@ class GridLayout extends Component {
         layout: this.props.tiles.map((tile, i) => {
           const W = Math.floor(12 / columnCount);
           const H = 8;
-
-          console.log("[LAYOUT] W =", W);
-          console.log("[LAYOUT] H =", H);
-
           return {
             i: `${i}`,
             x: (i * W) % (columnCount * W),
@@ -87,11 +74,6 @@ class GridLayout extends Component {
             maxW: W
           };
         })
-      });
-    } else {
-      console.log("[*] ...based on previously setlocalStorage");
-      this.setState({
-        layout: layoutFromLocalStorage
       });
     }
   }
@@ -129,7 +111,6 @@ class GridLayout extends Component {
   }
 
   getLayout() {
-    console.log("[F] getLayout");
     if (this.state.width < 700) {
       console.log("[*] Using specialized 'this.state.mobileLayout'");
       return this.state.mobileLayout;
@@ -142,10 +123,7 @@ class GridLayout extends Component {
   render() {
     const { width, height, canMove, settingsMenu, settingsMenuId } = this.state;
 
-    const { tiles, history, title, logoPath, columnCount } = this.props;
-
-    console.log("[dbg] columnCount:", columnCount);
-    console.log("[dbg] logoPath:", logoPath);
+    const { tiles, history, title, logoPath } = this.props;
 
     const mapBackgrounds = this.props.availableMapBackgrounds;
 
@@ -157,7 +135,7 @@ class GridLayout extends Component {
           <div className={styles.SettingsMenu} style={{ height: height }}>
             <img
               src={logoPath}
-              alt="Dashboard"
+              alt="Rijkswaterstaat logo"
               className={styles.HeaderImage}
             />
             <div
@@ -342,7 +320,7 @@ class GridLayout extends Component {
             <Tile
               {...this.props}
               title={shortTitle}
-              backgroundColor={"#cccccc"}
+              backgroundColor={"#FFFFFF"}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
               <ExternalTile isFull={false} tile={tile} />
@@ -356,60 +334,55 @@ class GridLayout extends Component {
     return (
       <DocumentTitle title={title}>
         <div className={styles.GridLayout}>
-          <img
-            src={logoPath}
-            alt="Logos for relevant organisations"
-            className={styles.LogoCombo}
-          />
-
-          <span className={styles.HeaderTitle}>{title}</span>
-
-          {width > 700 ? (
-            <div
-              className={styles.SettingsButton}
-              onClick={() =>
-                this.setState({
-                  settingsMenu: true
-                })}
-            >
-              <span>
-                <i className="material-icons">settings</i>&nbsp;&nbsp;Settings
-              </span>
-              <Ink />
+          <div className={styles.GridLayoutHeaderContainer}>
+            <div className={styles.GridLayoutLogoContainer}>
+              <img src={logoPath} alt="Logos for relevant organisations" />
             </div>
-          ) : null}
 
-          <div
-            className={styles.LogoutButton}
-            onClick={() => this.props.session.bootstrap.doLogout()}
-          >
-            {width > 700 ? (
-              <span>
-                <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
-              </span>
-            ) : (
-              <i className="material-icons">lock</i>
-            )}
-            <Ink />
+            <div className={styles.GridLayoutHeaderTitle}>{title}</div>
+
+            <div className={styles.GridLayoutHeaderButtons}>
+              {width > 700 ? (
+                <div
+                  className={styles.SettingsButton}
+                  onClick={() =>
+                    this.setState({
+                      settingsMenu: true
+                    })}
+                >
+                  <span>
+                    <i className="material-icons">
+                      settings
+                    </i>&nbsp;&nbsp;Settings
+                  </span>
+                  <Ink />
+                </div>
+              ) : null}
+
+              <div
+                className={styles.LogoutButton}
+                onClick={() => this.props.session.bootstrap.doLogout()}
+              >
+                {width > 700 ? (
+                  <span>
+                    <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
+                  </span>
+                ) : (
+                  <i className="material-icons">lock</i>
+                )}
+                <Ink />
+              </div>
+            </div>
           </div>
-          {/*
-            <ReactGridLayout
-              ...
-              layout={width < 700 ? this.state.mobileLayout : this.state.layout}
-              cols={columnCount}
 
-          */}
           <ReactGridLayout
             isDraggable={canMove}
             isResizable={canMove}
-            className="layout"
+            className={`${styles.GridLayoutContainer + " layout"}`}
             layout={this.getLayout()}
             rowHeight={30}
             width={width}
             draggableHandle=".drag-handle"
-            onLayoutChange={layout => {
-              localStorage.setItem("dashboard-layout", JSON.stringify(layout));
-            }}
           >
             {tileComponents.map((component, i) => {
               return <div key={i}>{component}</div>;
@@ -435,7 +408,8 @@ const mapStateToProps = (state, ownProps) => {
     })(state),
     title: getConfiguredTitle(state),
     logoPath: getConfiguredLogoPath(state),
-    columnCount: getConfiguredColumnCount(state)
+    columnCount: getConfiguredColumnCount(state),
+    headerColors: getConfiguredTileHeaderColors(state)
   };
 };
 

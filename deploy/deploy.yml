@@ -16,7 +16,7 @@
 
   - name: mkdir
     sudo: yes
-    sudo_user: "{{ build_user }}"
+    # sudo_user: "{{ build_user }}"
     file: path={{ deploy_path }} state=directory owner={{ build_user }}
 
   - name: unzip release

@@ -9,11 +9,7 @@ import {
   RECEIVE_RASTER_EVENTS,
   SET_DATE,
   SET_TIME,
-  // SET_TITLE,
-  // SET_LOGO,
-  // SET_BBOX,
   RESET_DATETIME,
-  // SET_AVAILABLE_MAP_BACKGROUNDS,
   SET_MAP_BACKGROUND,
   RECEIVE_ALARMS,
   FETCH_BOOTSTRAP,
@@ -380,5 +376,14 @@ export const getConfiguredColumnCount = function(state) {
     return configuration.meta.gridView.columnCount;
   } else {
     return null;
+  }
+};
+
+export const getConfiguredTileHeaderColors = function(state) {
+  const configuration = getConfiguration(state);
+  if (configuration && configuration.meta && configuration.meta.headerColors) {
+    return configuration.meta.headerColors;
+  } else {
+    return { bg: "#FFFFFF", fg: "#777777" };
   }
 };

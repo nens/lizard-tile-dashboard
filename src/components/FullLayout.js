@@ -9,7 +9,18 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
 import styles from "./FullLayout.css";
-import { getAllTiles, getTileById } from "../reducers";
+import {
+  getAllTiles,
+  getTileById,
+  getConfiguredTileHeaderColors
+} from "../reducers";
+
+import mapIcon from "../graphics/icon-map.svg";
+import timeIcon from "../graphics/icon-chart.svg";
+import radarIcon from "../graphics/icon-radar.svg";
+
+const FULL_LAYOUT_HEADER_HEIGHT = 50;
+const FULL_LAYOUT_SIDEBAR_WIDTH = 195;
 
 class FullLayout extends Component {
   constructor(props) {
@@ -74,7 +85,7 @@ class FullLayout extends Component {
             timeseries={selectedTile.timeseries}
             tile={selectedTile}
             showAxis={true}
-            marginLeft={isMobile ? 0 : 195}
+            marginLeft={isMobile ? 0 : FULL_LAYOUT_SIDEBAR_WIDTH}
             marginTop={50}
           />
         );
@@ -84,6 +95,8 @@ class FullLayout extends Component {
           <ExternalTile
             tile={selectedTile}
             isFull={true}
+            fullLayoutHeaderHeight={FULL_LAYOUT_HEADER_HEIGHT}
+            fullLayoutSidebarWidth={FULL_LAYOUT_SIDEBAR_WIDTH}
             width={width}
             height={height}
             showingBar={!isMobile}
@@ -95,13 +108,16 @@ class FullLayout extends Component {
         break;
     }
 
+    const fgColor = this.props.configuredTileHeaderColors.fg;
+    const bgColor = this.props.configuredTileHeaderColors.bg;
+
     return (
       <DocumentTitle title={`IJGENZON | ${selectedTile.title}`}>
         <div className={styles.FullLayout}>
           {!isMobile ? (
             <div
               className={styles.SidebarWrapper}
-              style={{ height: height - 70 }}
+              style={{ height: height - FULL_LAYOUT_HEADER_HEIGHT }}
             >
               <Scrollbars height={height}>
                 {allTiles.map((tile, i) => {
@@ -109,19 +125,24 @@ class FullLayout extends Component {
                   switch (tile.type) {
                     case "map":
                       previewTile = (
-                        <Map isFull={false} bbox={tile.bbox} tile={tile} />
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img style={{ width: 75 }} src={mapIcon} alt="Map" />
+                        </div>
                       );
                       break;
                     case "timeseries":
                       previewTile = (
-                        <TimeseriesTile
-                          isFull={false}
-                          timeseries={tile.timeseries}
-                          tile={tile}
-                          showAxis={false}
-                          marginLeft={0}
-                          marginTop={0}
-                        />
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img
+                            style={{ width: 75 }}
+                            src={timeIcon}
+                            alt="Timeseries"
+                          />
+                        </div>
                       );
                       break;
                     case "statistics":
@@ -134,12 +155,15 @@ class FullLayout extends Component {
                       break;
                     case "external":
                       previewTile = (
-                        <ExternalTile
-                          isFull={false}
-                          tile={tile}
-                          width={300}
-                          height={300}
-                        />
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img
+                            style={{ width: 75 }}
+                            src={radarIcon}
+                            alt="Map"
+                          />
+                        </div>
                       );
                       break;
                     default:
@@ -173,16 +197,30 @@ class FullLayout extends Component {
               </Scrollbars>
             </div>
           ) : null}
-          <div className={styles.TitleBar}>
+          <div
+            className={styles.TitleBar}
+            style={{
+              color: fgColor,
+              backgroundColor: bgColor,
+              height: FULL_LAYOUT_HEADER_HEIGHT + "px"
+            }}
+          >
             <NavLink to="/">
               <div className={styles.BackButton}>
-                <i className="material-icons">arrow_back</i>
+                <i className="material-icons" style={{ color: fgColor }}>
+                  arrow_back
+                </i>
               </div>
             </NavLink>
             <div className={styles.Title}>{selectedTile.title}</div>
             {selectedTile.viewInLizardLink ? (
               <div className={styles.ViewInLizardButton}>
-                <a href={selectedTile.viewInLizardLink} target="_blank">
+                <a
+                  href={selectedTile.viewInLizardLink}
+                  target="_blank"
+                  className={styles.ViewInLizardLink}
+                  style={{ color: fgColor }}
+                >
                   View in Lizard
                 </a>
               </div>
@@ -201,7 +239,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     allTiles: getAllTiles(state),
     getTileById: id => getTileById(state, id),
-    alarms: state.alarms
+    alarms: state.alarms,
+    configuredTileHeaderColors: getConfiguredTileHeaderColors(state)
   };
 };
 
