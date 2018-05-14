@@ -12,7 +12,8 @@ import styles from "./FullLayout.css";
 import {
   getAllTiles,
   getTileById,
-  getConfiguredTileHeaderColors
+  getConfiguredTileHeaderColors,
+  getConfiguredTitle
 } from "../reducers";
 
 import mapIcon from "../graphics/icon-map.svg";
@@ -45,7 +46,7 @@ class FullLayout extends Component {
   }
   render() {
     const { id } = this.props.match.params;
-    const { getTileById, allTiles } = this.props;
+    const { getTileById, allTiles, title } = this.props;
     const { height, width } = this.state;
     const tilesById = getTileById(id);
     const selectedTile = tilesById[0];
@@ -112,7 +113,7 @@ class FullLayout extends Component {
     const bgColor = this.props.configuredTileHeaderColors.bg;
 
     return (
-      <DocumentTitle title={`IJGENZON | ${selectedTile.title}`}>
+      <DocumentTitle title={`${title} | ${selectedTile.title}`}>
         <div className={styles.FullLayout}>
           {!isMobile ? (
             <div
@@ -240,7 +241,8 @@ const mapStateToProps = (state, ownProps) => {
     allTiles: getAllTiles(state),
     getTileById: id => getTileById(state, id),
     alarms: state.alarms,
-    configuredTileHeaderColors: getConfiguredTileHeaderColors(state)
+    configuredTileHeaderColors: getConfiguredTileHeaderColors(state),
+    title: getConfiguredTitle(state)
   };
 };
 
