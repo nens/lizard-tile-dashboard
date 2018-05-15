@@ -329,8 +329,10 @@ export const getCurrentMapBackground = state => {
 export const getConfiguredTitle = state => {
   const configuration = getConfiguration(state);
   return configuration && configuration.meta && configuration.meta.title
-    ? configuration.meta.title
-    : null;
+    ? // Read from client-config iff specified:
+      configuration.meta.title
+    : // Else, use portal name (only works in production env):
+      window.location.href.split("/")[2].split(".")[0];
 };
 
 export const getConfiguredLogoPath = state => {

@@ -1,7 +1,7 @@
-IJGENZON Dashboard
-====================
+Lizard-Tile-Dashboard
+=====================
 
-This is the React/Redux-based dashboard web-app for the IJGENZON group.
+This is the React/Redux-based dashboard web-app, useable by each Lizard portal.
 
 
 Installation
