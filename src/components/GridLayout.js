@@ -10,9 +10,6 @@ import StatisticsTile from "./StatisticsTile";
 import ExternalTile from "./ExternalTile";
 import Map from "./Map";
 
-// TODO: make this variable!!!
-// import RWS_LOGO from "../graphics/rws.png";
-
 import styles from "./GridLayout.css";
 import {
   getAllTiles,
