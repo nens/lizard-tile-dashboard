@@ -133,10 +133,9 @@ module.exports = {
           // assets smaller than specified size as data URLs to avoid requests.
           {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-            loader: require.resolve("url-loader"),
+            loader: require.resolve("file-loader"),
             options: {
-              limit: 10000,
-              name: "static/media/[name].[hash:8].[ext]"
+              name: "static/media/[name].[ext]"
             }
           },
           // Process JS with Babel.

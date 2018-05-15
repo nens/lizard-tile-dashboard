@@ -10,9 +10,6 @@ import StatisticsTile from "./StatisticsTile";
 import ExternalTile from "./ExternalTile";
 import Map from "./Map";
 
-// TODO: make this variable!!!
-import RWS_LOGO from "../graphics/rws.png";
-
 import styles from "./GridLayout.css";
 import {
   getAllTiles,
@@ -408,7 +405,7 @@ const mapStateToProps = (state, ownProps) => {
       return getCurrentMapBackground(s) || getConfiguredMapBackgrounds(s)[0];
     })(state),
     title: getConfiguredTitle(state),
-    logoPath: RWS_LOGO /*getConfiguredLogoPath(state)*/,
+    logoPath: getConfiguredLogoPath(state),
     columnCount: getConfiguredColumnCount(state),
     headerColors: getConfiguredTileHeaderColors(state)
   };

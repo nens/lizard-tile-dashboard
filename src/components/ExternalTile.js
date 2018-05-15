@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styles from "./ExternalTile.css";
-import last from "lodash/last";
 
 class ExternalTileComponent extends Component {
   constructor() {
@@ -15,11 +14,17 @@ class ExternalTileComponent extends Component {
   }
 
   componentDidMount() {
-    console.log("[F] componentDidMount");
     if (this.props.isFull) {
+      const {
+        width,
+        height,
+        fullLayoutSidebarWidth,
+        fullLayoutHeaderHeight
+      } = this.props;
+
       this.setState({
-        fullRenderWidth: this.props.width - this.props.fullLayoutSidebarWidth,
-        fullRenderHeight: this.props.height - this.props.fullLayoutHeaderHeight
+        fullRenderWidth: width - fullLayoutSidebarWidth,
+        fullRenderHeight: height - fullLayoutHeaderHeight
       });
       window.addEventListener("resize", this.alignImgVertically, true);
     }
@@ -38,10 +43,6 @@ class ExternalTileComponent extends Component {
       imgOriginalHeight = imgElem.height;
 
     if (imgOriginalHeight !== TILE_INNER_HEIGHT) {
-      console.log(
-        "[+] Adjusting height for img:",
-        last(imgElem.src.split("/"))
-      );
       // We need to scale the image height (and width, to keep the aspect
       // consistent) to fit the tile nicely:
       const scaleFactor = TILE_INNER_HEIGHT / imgOriginalHeight,
@@ -51,34 +52,6 @@ class ExternalTileComponent extends Component {
       imgElem.height = adjustedHeight;
     }
   }
-
-  // setImgDimsFull() {
-  //   console.log("[F] setImgDimsFull");
-
-  //   // case A: image is smaller than available w*h
-  //   // ==> scale up
-
-  //   const imgElem = document.getElementById(this.state.randomId),
-  //     imgOriginalWidth = imgElem.width,
-  //     imgOriginalHeight = imgElem.height;
-
-  //   const aspectMode = imgOriginalWidth > imgOriginalHeight
-  //     ? "LANDSCAPE"
-  //     : "PORTRAIT";
-
-  //   console.log("*** aspectMode =", aspectMode);
-
-  //   if (aspectMode === "PORTRAIT") {
-
-  //   }
-
-  //   // case B: image is wider than available width
-  //   // ==> scale down
-  //   // case C: image is higher than available height
-  //   // ==> scale down
-
-  //   // ==> NOT NEEDED, FIXED VIA CSS: SET MAX_WIDTH/MAX_HEIGHT To 100% :)
-  // }
 
   alignImgVertically() {
     console.log("[F] alignImgVertically");
