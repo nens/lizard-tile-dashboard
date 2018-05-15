@@ -318,7 +318,6 @@ class TimeseriesChartComponent extends Component {
   }
 
   getThresholdAnnotation(threshold, yref) {
-    console.log("[F] getThresholdAnnotation; threshold =", threshold);
     return {
       text: " " + threshold.label + " ",
       bordercolor: threshold.color,
