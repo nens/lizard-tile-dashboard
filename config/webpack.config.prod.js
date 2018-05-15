@@ -135,7 +135,7 @@ module.exports = {
             test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
             loader: require.resolve("file-loader"),
             options: {
-              name: "static/media/[name].[hash:8].[ext]"
+              name: "static/media/[name].[ext]"
             }
           },
           // Process JS with Babel.
