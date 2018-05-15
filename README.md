@@ -67,6 +67,26 @@ To execute both subsequently, run: `$ yarn run i18n:extract-then-update`.
 
 See `src/translations/locales/[language].json`. (where language is 'nl', for now)
 
+Adding a portal-specific logo
+=============================
+
+1) The _advisor_ selects the logo he wants (```.png``` or ```.jp(e)g```, e.g. ```lutjebroek.png```), and scales it in a way that the height becomes **exactly 72px**. This scaling is required to keep the dashboard looking good.
+2) The _advisor_ sends a coder the scaled image via email.
+3) The _advisor_ can already update the client-configuration for this dashboard instance:
+```
+{
+    ...
+    "meta": {
+        ...
+        "logo": "/logos/lutjebroek.png",
+        ...
+    }
+...
+}
+```
+4) The _coder_ moves the received image into the following folder: https://github.com/nens/lizard-tile-dashboard/tree/master/public/logos/
+5) Now, the logo will be read correctly from the client-config, both while developing and in production/staging environment
+
 
 Redux
 =====
