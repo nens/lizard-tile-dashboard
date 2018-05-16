@@ -240,10 +240,6 @@ class TimeseriesChartComponent extends Component {
           color = "#888";
         }
 
-        // if (isFull) {
-        //   label = `${alarm.name} ${threshold.warning_level}${active}`;
-        // }
-
         // Figure out which Y axis the value is on so we know where to plot it
         // The TimeseriesAlarm also have an ObservationType itself, it should be exactly
         // the same as that of the timeseries, but I think using the timeseries' observation
