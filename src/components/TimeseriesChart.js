@@ -48,8 +48,8 @@ class TimeseriesChartComponent extends Component {
 
         // Mutual exclusive; Comment 0 or both:
         ///////////////////////////////////////////////////////////////////////
-        // 'zoomIn2d',
-        // 'zoomOut2d',
+        'zoomIn2d',
+        'zoomOut2d',
 
         // Used to reset scaling (=achieved via zoomIn2d/zoomOut2d):
         ///////////////////////////////////////////////////////////////////////
