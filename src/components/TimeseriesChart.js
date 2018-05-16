@@ -220,6 +220,8 @@ class TimeseriesChartComponent extends Component {
       // A timeseriesAlarm can have multiple thresholds, make a reference line
       // for each.
       return alarm.thresholds.forEach(threshold => {
+        console.log("[!] alarm threshold:", threshold);
+        console.log("*** alarm:", alarm);
         let label = "";
         let active;
         let color;
@@ -238,9 +240,9 @@ class TimeseriesChartComponent extends Component {
           color = "#888";
         }
 
-        if (isFull) {
-          label = `${alarm.name} ${threshold.warning_level}${active}`;
-        }
+        // if (isFull) {
+        //   label = `${alarm.name} ${threshold.warning_level}${active}`;
+        // }
 
         // Figure out which Y axis the value is on so we know where to plot it
         // The TimeseriesAlarm also have an ObservationType itself, it should be exactly
@@ -267,17 +269,6 @@ class TimeseriesChartComponent extends Component {
               width: isFull ? 2 : 1,
               dash: "dot"
             }
-          });
-
-          annotations.push({
-            text: label,
-            xref: "paper",
-            x: 0,
-            xanchor: "left",
-            yref: axisIndex === 0 ? "y" : "y2",
-            y: threshold.value,
-            yanchor: "bottom",
-            showarrow: false
           });
         }
       });
@@ -311,8 +302,7 @@ class TimeseriesChartComponent extends Component {
       y1: parseFloat(threshold.value),
       line: {
         width: 2,
-        color: threshold.color,
-        dash: "dot"
+        color: threshold.color
       }
     };
   }
@@ -381,14 +371,14 @@ class TimeseriesChartComponent extends Component {
       y0: 0,
       y1: 1,
       line: {
-        color: "red",
+        color: "black",
         width: isFull ? 2 : 1
       }
     };
 
     const nowAnnotation = {
       text: " NOW ",
-      bordercolor: "red",
+      bordercolor: "black",
       x: now,
       xanchor: "right",
       yref: "paper",
