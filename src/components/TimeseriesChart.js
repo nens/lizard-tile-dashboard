@@ -51,7 +51,7 @@ class TimeseriesChartComponent extends Component {
         // 'zoomIn2d',
         // 'zoomOut2d',
 
-        // Used to rest scaling (=achieved via zoomIn2d/zoomOut2d):
+        // Used to reset scaling (=achieved via zoomIn2d/zoomOut2d):
         ///////////////////////////////////////////////////////////////////////
         //'resetScale2d',
 
