@@ -23,8 +23,6 @@ import {
   currentPeriod
 } from "./TimeseriesChartUtils.js";
 
-// const log = console.log;
-
 class TimeseriesChartComponent extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +32,36 @@ class TimeseriesChartComponent extends Component {
       componentHasMountedOnce: false,
       componentRef: "comp-" + parseInt(Math.random(), 10),
       wantedAxes: null,
-      combinedEvents: null
+      combinedEvents: null,
+      modeBarButtonsToRemove: [
+        // Nice to have, always work as expected:
+        ///////////////////////////////////////////////////////////////////////
+        // 'toImage'               /* Download plot as png */,
+        "sendDataToCloud" /* Edit in chart studio */,
+
+        // Mutual exclusive; comment 0 or all 4:
+        ///////////////////////////////////////////////////////////////////////
+        "zoom2d",
+        "pan2d",
+        "select2d",
+        "lasso2d",
+
+        // Mutual exclusive; Comment 0 or both:
+        ///////////////////////////////////////////////////////////////////////
+        'zoomIn2d',
+        'zoomOut2d',
+
+        // Used to reset scaling (=achieved via zoomIn2d/zoomOut2d):
+        ///////////////////////////////////////////////////////////////////////
+        //'resetScale2d',
+
+        // Mutual exclusive; comment 0 or both:
+        ///////////////////////////////////////////////////////////////////////
+        "hoverClosestCartesian" /* Show closest data on hover */,
+        "hoverCompareCartesian" /* Compare data on hover */,
+
+        "toggleSpikelines"
+      ]
     };
   }
 
@@ -92,6 +119,18 @@ class TimeseriesChartComponent extends Component {
       wantedAxes: axes
     });
   }
+
+  // This code might be reinstated after fixing the Great Timeseries Retrieval
+  // Ineffiency...
+  /////////////////////////////////////////////////////////////////////////////
+  // componentWillUpdate(nextProps, nextState) {
+  //   if (
+  //     nextState.start !== this.state.start ||
+  //     nextState.end !== this.state.end
+  //   ) {
+  //     this.updateTimeseries();
+  //   }
+  // }
 
   /////////////////////////////////////////////////////////////////////////////
   // Component - custom functions /////////////////////////////////////////////
@@ -220,8 +259,6 @@ class TimeseriesChartComponent extends Component {
       // A timeseriesAlarm can have multiple thresholds, make a reference line
       // for each.
       return alarm.thresholds.forEach(threshold => {
-        console.log("[!] alarm threshold:", threshold);
-        console.log("*** alarm:", alarm);
         let label = "";
         let active;
         let color;
@@ -239,10 +276,6 @@ class TimeseriesChartComponent extends Component {
           active = "";
           color = "#888";
         }
-
-        // if (isFull) {
-        //   label = `${alarm.name} ${threshold.warning_level}${active}`;
-        // }
 
         // Figure out which Y axis the value is on so we know where to plot it
         // The TimeseriesAlarm also have an ObservationType itself, it should be exactly
@@ -537,6 +570,7 @@ class TimeseriesChartComponent extends Component {
   renderFull(axes, combinedEvents, thresholds) {
     const Plot = plotComponentFactory(window.Plotly);
     const layout = this.getLayout(this.state.wantedAxes, thresholds);
+    const { modeBarButtonsToRemove } = this.state;
 
     return (
       <div
@@ -552,7 +586,10 @@ class TimeseriesChartComponent extends Component {
         <Plot
           data={combinedEvents}
           layout={layout}
-          config={{ displayModeBar: true }}
+          config={{
+            displayModeBar: true,
+            modeBarButtonsToRemove
+          }}
         />
       </div>
     );

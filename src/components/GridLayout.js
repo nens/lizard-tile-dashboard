@@ -109,13 +109,7 @@ class GridLayout extends Component {
   }
 
   getLayout() {
-    if (this.state.width < 700) {
-      console.log("[*] Using specialized 'this.state.mobileLayout'");
-      return this.state.mobileLayout;
-    } else {
-      console.log("[*] Using regular 'this.state.layout'");
-      return this.state.layout;
-    }
+    return this.state.width < 700 ? this.state.mobileLayout : this.state.layout;
   }
 
   render() {
@@ -331,45 +325,41 @@ class GridLayout extends Component {
 
     return (
       <DocumentTitle title={title}>
-        <div className={styles.GridLayout}>
-          <div className={styles.GridLayoutHeaderContainer}>
-            <div className={styles.GridLayoutLogoContainer}>
-              <img src={logoPath} alt="Logos for relevant organisations" />
-            </div>
+        <div className={styles.GridLayoutHeaderContainer}>
+          <div className={styles.GridLayoutLogoContainer}>
+            <img src={logoPath} alt="Logos for relevant organisations" />
+          </div>
 
-            <div className={styles.GridLayoutHeaderTitle}>{title}</div>
+          <div className={styles.GridLayoutHeaderTitle}>{title}</div>
 
-            <div className={styles.GridLayoutHeaderButtons}>
-              {width > 700 ? (
-                <div
-                  className={styles.SettingsButton}
-                  onClick={() =>
-                    this.setState({
-                      settingsMenu: true
-                    })}
-                >
-                  <span>
-                    <i className="material-icons">
-                      settings
-                    </i>&nbsp;&nbsp;Settings
-                  </span>
-                  <Ink />
-                </div>
-              ) : null}
-
+          <div className={styles.GridLayoutHeaderButtons}>
+            {width > 700 ? (
               <div
-                className={styles.LogoutButton}
-                onClick={() => this.props.session.bootstrap.doLogout()}
+                className={styles.SettingsButton}
+                onClick={() =>
+                  this.setState({
+                    settingsMenu: true
+                  })}
               >
-                {width > 700 ? (
-                  <span>
-                    <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
-                  </span>
-                ) : (
-                  <i className="material-icons">lock</i>
-                )}
+                <span>
+                  <i className="material-icons">settings</i>&nbsp;&nbsp;Settings
+                </span>
                 <Ink />
               </div>
+            ) : null}
+
+            <div
+              className={styles.LogoutButton}
+              onClick={() => this.props.session.bootstrap.doLogout()}
+            >
+              {width > 700 ? (
+                <span>
+                  <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
+                </span>
+              ) : (
+                <i className="material-icons">lock</i>
+              )}
+              <Ink />
             </div>
           </div>
 
