@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>IconGaugeNoThreshold</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="IconGaugeNoThreshold">
+            <g id="Shape">
+                <g id="path0_fill-link">
+                    <path d="M10,0 C4.48,0 0,4.48 0,10 C0,15.52 4.48,20 10,20 C15.52,20 20,15.52 20,10 C20,4.48 15.52,0 10,0 Z" id="path0_fill" fill="#FF001B" fill-rule="nonzero"></path>
+                    <path d="M9.06736021,2.95800781 L11.0078125,2.95800781 L11.0078125,7.57494602 L10.5394275,13.6543926 L9.56442188,13.6543926 L9.06736021,7.57494602 L9.06736021,2.95800781 Z M9.06736021,15.0117533 L10.969577,15.0117533 L10.969577,17 L9.06736021,17 L9.06736021,15.0117533 Z" id="!" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
