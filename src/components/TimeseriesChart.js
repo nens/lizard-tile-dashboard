@@ -143,7 +143,6 @@ class TimeseriesChartComponent extends Component {
   }
 
   updateTimeseries() {
-    console.log("[F] updateTimeseries");
     (this.props.tile.timeseries || []).map(uuid =>
       this.props.getTimeseriesEvents(uuid, this.state.start, this.state.end, {
         minpoints: MAX_TIMESERIES_POINTS
