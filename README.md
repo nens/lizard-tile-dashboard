@@ -85,7 +85,7 @@ Adding a portal-specific logo
 }
 ```
 
-**NB! Mind the omission of the leading slash: "logos/lutjebroek.png" a.o.t. "/logos/lutjebrowk.png"**
+**NB!** Mind the omission of the leading slash: _logos/lutjebroek.png_ a.o.t. _/logos/lutjebroek.png_"
 
 4) The _coder_ moves the received image into the following folder: https://github.com/nens/lizard-tile-dashboard/tree/master/public/logos/
 5) Now, the logo will be read correctly from the client-config, both while developing and in production/staging environment
