@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 // import ReactDOM from "react-dom"; re-anbale for Plot hack??
 import { connect } from "react-redux";
-import moment from "moment";
-import "moment/locale/en-au";
 import {
   addAsset,
   getRasterEvents,
@@ -48,8 +46,8 @@ class TimeseriesChartComponent extends Component {
 
         // Mutual exclusive; Comment 0 or both:
         ///////////////////////////////////////////////////////////////////////
-        'zoomIn2d',
-        'zoomOut2d',
+        "zoomIn2d",
+        "zoomOut2d",
 
         // Used to reset scaling (=achieved via zoomIn2d/zoomOut2d):
         ///////////////////////////////////////////////////////////////////////
@@ -259,21 +257,14 @@ class TimeseriesChartComponent extends Component {
       // A timeseriesAlarm can have multiple thresholds, make a reference line
       // for each.
       return alarm.thresholds.forEach(threshold => {
-        let label = "";
-        let active;
         let color;
 
         if (
           alarm.warning_threshold &&
           alarm.warning_threshold.value === threshold.value
         ) {
-          const time = moment(alarm.warning_timestamp)
-            .locale("en-au")
-            .format("LLL");
-          active = `, active since ${time}`;
           color = "red";
         } else {
-          active = "";
           color = "#888";
         }
 

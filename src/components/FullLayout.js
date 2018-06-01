@@ -18,7 +18,6 @@ import {
 
 import mapIcon from "../graphics/icon-map.svg";
 import timeIcon from "../graphics/icon-chart.svg";
-import radarIcon from "../graphics/icon-radar.svg";
 
 const FULL_LAYOUT_HEADER_HEIGHT = 50;
 const FULL_LAYOUT_SIDEBAR_WIDTH = 195;
@@ -55,7 +54,7 @@ class FullLayout extends Component {
       ratio = PREVIEW_TILE_WIDTH / naturalWidth;
       w = ratio * naturalWidth;
       h = ratio * naturalHeight;
-      marginTop = parseInt(Math.floor(PREVIEW_TILE_WIDTH - h) / 2);
+      marginTop = parseInt(Math.floor(PREVIEW_TILE_WIDTH - h) / 2, 10);
       imgTag.style["margin-top"] = marginTop + "px";
     } else {
       ratio = PREVIEW_TILE_WIDTH / naturalHeight;
@@ -181,7 +180,7 @@ class FullLayout extends Component {
                       break;
                     case "external":
                       const randomId =
-                        "img-id-" + parseInt(Math.random() * 10000);
+                        "img-id-" + parseInt(Math.random() * 10000, 10);
                       previewTile = (
                         <div
                           style={{ display: "flex", justifyContent: "center" }}
@@ -191,7 +190,7 @@ class FullLayout extends Component {
                             onLoad={() =>
                               this.updateExternalPreviewTile(randomId)}
                             src={tile.imageUrl}
-                            alt="Image preview"
+                            alt="Preview"
                           />
                         </div>
                       );
