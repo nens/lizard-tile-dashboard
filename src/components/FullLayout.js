@@ -22,6 +22,7 @@ import radarIcon from "../graphics/icon-radar.svg";
 
 const FULL_LAYOUT_HEADER_HEIGHT = 50;
 const FULL_LAYOUT_SIDEBAR_WIDTH = 195;
+const PREVIEW_TILE_WIDTH = 150;
 
 class FullLayout extends Component {
   constructor(props) {
@@ -43,6 +44,26 @@ class FullLayout extends Component {
       width: window.innerWidth,
       height: window.innerHeight
     });
+  }
+  updateExternalPreviewTile(randomId) {
+    const imgTag = document.getElementById(randomId);
+    const { naturalWidth, naturalHeight } = imgTag;
+
+    let ratio, w, h, marginTop;
+
+    if (naturalWidth > naturalHeight) {
+      ratio = PREVIEW_TILE_WIDTH / naturalWidth;
+      w = ratio * naturalWidth;
+      h = ratio * naturalHeight;
+      marginTop = parseInt(Math.floor(PREVIEW_TILE_WIDTH - h) / 2);
+      imgTag.style["margin-top"] = marginTop + "px";
+    } else {
+      ratio = PREVIEW_TILE_WIDTH / naturalHeight;
+      w = ratio * naturalWidth;
+      h = ratio * naturalHeight;
+    }
+    imgTag.style.width = w + "px";
+    imgTag.style.height = h + "px";
   }
   render() {
     const { id } = this.props.match.params;
@@ -129,7 +150,11 @@ class FullLayout extends Component {
                         <div
                           style={{ display: "flex", justifyContent: "center" }}
                         >
-                          <img style={{ width: 75 }} src={mapIcon} alt="Map" />
+                          <img
+                            style={{ width: PREVIEW_TILE_WIDTH / 2 }}
+                            src={mapIcon}
+                            alt="Map"
+                          />
                         </div>
                       );
                       break;
@@ -139,7 +164,7 @@ class FullLayout extends Component {
                           style={{ display: "flex", justifyContent: "center" }}
                         >
                           <img
-                            style={{ width: 75 }}
+                            style={{ width: PREVIEW_TILE_WIDTH / 2 }}
                             src={timeIcon}
                             alt="Timeseries"
                           />
@@ -155,14 +180,18 @@ class FullLayout extends Component {
                       );
                       break;
                     case "external":
+                      const randomId =
+                        "img-id-" + parseInt(Math.random() * 10000);
                       previewTile = (
                         <div
                           style={{ display: "flex", justifyContent: "center" }}
                         >
                           <img
-                            style={{ width: 75 }}
-                            src={radarIcon}
-                            alt="Map"
+                            id={randomId}
+                            onLoad={() =>
+                              this.updateExternalPreviewTile(randomId)}
+                            src={tile.imageUrl}
+                            alt="Image preview"
                           />
                         </div>
                       );
