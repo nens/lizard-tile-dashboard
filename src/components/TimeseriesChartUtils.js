@@ -98,7 +98,8 @@ export function getNow(configuredNow) {
   // Use modulo operator so the "now" time only changes every five minutes, so we
   // don't have to fetch different data for each chart after every second.
   const currentTimestamp = new Date().getTime();
-  return new Date(currentTimestamp - currentTimestamp % 300);
+  const FIVE_MIN_IN_MS = 5 * 60 * 1000;
+  return new Date(currentTimestamp - currentTimestamp % FIVE_MIN_IN_MS);
 }
 
 export function currentPeriod(configuredNow, bootstrap) {
