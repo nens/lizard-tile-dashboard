@@ -72,7 +72,7 @@ class TimeseriesChartComponent extends Component {
 
     const axes = this.getAxesData();
 
-    const timeseriesEvents = this.props.tile.timeseries
+    const timeseriesEvents = (this.props.tile.timeseries || [])
       .filter(
         uuid =>
           this.props.timeseries[uuid] &&
@@ -159,7 +159,7 @@ class TimeseriesChartComponent extends Component {
 
   allUuids() {
     // Return UUIDs of all timeseries plus those of all rasters
-    return this.props.tile.timeseries.concat(
+    return (this.props.tile.timeseries || []).concat(
       (this.props.tile.rasterIntersections || []).map(
         intersection => intersection.uuid
       )
@@ -167,7 +167,10 @@ class TimeseriesChartComponent extends Component {
   }
 
   observationType(uuid) {
-    if (this.props.tile.timeseries.indexOf(uuid) !== -1) {
+    if (
+      this.props.tile.timeseries &&
+      this.props.tile.timeseries.indexOf(uuid) !== -1
+    ) {
       // It's a timeseries.
       if (this.props.timeseries[uuid]) {
         return this.props.timeseries[uuid].observation_type;
@@ -510,7 +513,7 @@ class TimeseriesChartComponent extends Component {
   render() {
     const { tile } = this.props;
 
-    const timeseriesEvents = tile.timeseries
+    const timeseriesEvents = (tile.timeseries || [])
       .filter(
         uuid =>
           this.props.timeseries[uuid] &&
