@@ -8,6 +8,8 @@ import { withRouter } from "react-router-dom";
 import TimeseriesTile from "./TimeseriesTile";
 import StatisticsTile from "./StatisticsTile";
 import ExternalTile from "./ExternalTile";
+import last from "lodash/last";
+import map from "lodash/map";
 import Map from "./Map";
 
 import styles from "./GridLayout.css";
@@ -42,6 +44,9 @@ class GridLayout extends Component {
     };
     this.handleUpdateDimensions = this.handleUpdateDimensions.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.getMapBackgroundsDescription = this.getMapBackgroundsDescription.bind(
+      this
+    );
   }
   componentWillMount() {
     const { columnCount } = this.props;
@@ -100,18 +105,41 @@ class GridLayout extends Component {
   toggleMapBackground() {
     const available = this.props.availableMapBackgrounds;
     const current = this.props.currentMapBackground || available[0];
+    const allDescriptions = map(available, "description");
+    const currentIdx = allDescriptions.indexOf(current.description);
+    const newIdx = currentIdx === available.length - 1 ? 0 : currentIdx + 1;
+    this.props.setMapBackground(available[newIdx]);
+  }
+  getMapBackgroundsDescription() {
+    const available = this.props.availableMapBackgrounds;
 
-    if (current.url === available[1].url) {
-      this.props.setMapBackground(available[0]);
+    if (!available || available.length === 0) {
+      console.error("[E] configuration error: no background-maps were found!");
+    } else if (available.length === 1) {
+      return (
+        "There is only a single map background configured: " +
+        available[0].description
+      );
     } else {
-      this.props.setMapBackground(available[1]);
+      let i,
+        description = "";
+      for (i = 0; i < available.length - 1; i++)
+        description += available[i].description + ", ";
+      description =
+        description.slice(0, description.length - 2) +
+        " and " +
+        last(available).description;
+      return (
+        "There are " +
+        available.length +
+        " map backgrounds configured: " +
+        description
+      );
     }
   }
-
   getLayout() {
     return this.state.width < 700 ? this.state.mobileLayout : this.state.layout;
   }
-
   render() {
     const { width, height, canMove, settingsMenu, settingsMenuId } = this.state;
 
@@ -225,21 +253,17 @@ class GridLayout extends Component {
                     <h4 style={{ padding: 0, margin: 0 }}>Map settings</h4>
                     <hr />
                     <div className={styles.MapSettings}>
-                      <p>
-                        There are {mapBackgrounds
-                          ? mapBackgrounds.length
-                          : 0}{" "}
-                        available map background(s):
-                        {mapBackgrounds[0].description} and&nbsp;
-                        {mapBackgrounds[1].description}.
-                      </p>
+                      <p>{this.getMapBackgroundsDescription()}</p>
                       <p>
                         Currently selected:&nbsp;
                         <strong>
                           {this.props.currentMapBackground.description}
                         </strong>.
                       </p>
-                      <button onClick={this.toggleMapBackground.bind(this)}>
+                      <button
+                        onClick={this.toggleMapBackground.bind(this)}
+                        disabled={mapBackgrounds.length < 2}
+                      >
                         Switch
                       </button>
                     </div>
