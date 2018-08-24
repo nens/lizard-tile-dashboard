@@ -55,7 +55,7 @@ export function fetchAlarms(dispatch) {
     }
   );
 
-  getRasterAlarms().then(
+  getRasterAlarms({ active: true, page_size: 1000 }).then(
     alarms => {
       dispatch(receiveAlarmsAction(alarms, false));
     },
