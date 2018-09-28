@@ -48,6 +48,23 @@ To be written...
 Deployment
 ==========
 
+For the deployment of frontend repositories we make use of the client
+deployment repository https://github.com/nens/client-deployment. It is already
+included as a git submodule in this repo.
+
+Init the git submodule if you haven't done `clone --recursive`  or ran this command earlier:
+
+```sh
+git submodule init
+```
+
+To update the git submodule:
+
+```sh
+git pull --recurse-submodules
+git submodule update --remote
+```
+
 Uses Ansible for deployment.
 
 Ansible requires:
