@@ -8,9 +8,11 @@ Installation
 ============
 
 - Required: A working nodejs and yarn installation.
-- In the root directory of the repository: `$ yarn install`
-- (temporarily, until release) `$ npm link lizard-api-client`, see [lizard-api-client](https://github.com/nens/lizard-api-client)
-- ...followed by `$ PROXY_USERNAME=<your_sso_username> PROXY_PASSWORD=<your_sso_password> yarn start`
+- (temporarily, until release of lizard-api-client) make sure that you have the github repository `lizard-api-client` as a folder parallel to the root directory of this repository, see [lizard-api-client](https://github.com/nens/lizard-api-client)
+- Inside `lizard-api-client` repository: do `$ yarn install`
+- In the root directory of this repository (parramatta-dashboard): `$ yarn install`
+- ...followed by either `$ ./start`
+or `$ PROXY_USERNAME=<your_sso_username> PROXY_PASSWORD=<your_sso_password> yarn start`
 
 
 create-react-app
