@@ -455,6 +455,7 @@ class MapComponent extends Component {
             ? tile.rasters.map(raster => this.tileLayerForRaster(raster))
             : null}
           {this.markers()}
+          {wmsLayers}
         </Map>
       </div>
     );
