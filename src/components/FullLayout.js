@@ -151,7 +151,7 @@ class FullLayout extends Component {
                         >
                           <img
                             style={{ width: PREVIEW_TILE_WIDTH / 2 }}
-                            src={mapIcon}
+                            src={tile.imageUrl ? tile.imageUrl : mapIcon}
                             alt="Map"
                           />
                         </div>
@@ -164,7 +164,7 @@ class FullLayout extends Component {
                         >
                           <img
                             style={{ width: PREVIEW_TILE_WIDTH / 2 }}
-                            src={timeIcon}
+                            src={tile.imageUrl ? tile.imageUrl : timeIcon}
                             alt="Timeseries"
                           />
                         </div>
