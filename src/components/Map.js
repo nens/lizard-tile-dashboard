@@ -434,6 +434,24 @@ class MapComponent extends Component {
   renderSmall() {
     const { tile } = this.props;
 
+    const wmsLayers = tile.wmsLayers
+      ? tile.wmsLayers.map((layer, i) => {
+          return (
+            <WMSTileLayer
+              key={i}
+              url={layer.url}
+              format={layer.format}
+              layers={layer.layers}
+              transparent={layer.transparent}
+              width={layer.width}
+              height={layer.height}
+              srs={layer.srs}
+              opacity={layer.opacity !== undefined ? layer.opacity : 1}
+            />
+          );
+        })
+      : null;
+
     return (
       <div className={styles.MapStyleTile}>
         <Map
@@ -455,6 +473,7 @@ class MapComponent extends Component {
             ? tile.rasters.map(raster => this.tileLayerForRaster(raster))
             : null}
           {this.markers()}
+          {wmsLayers}
         </Map>
       </div>
     );
