@@ -298,7 +298,11 @@ class GridLayout extends Component {
               title={shortTitle}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
-              <Map isFull={false} bbox={tile.bbox} tile={tile} />
+              {tile.imageUrl && tile.renderAsImage ? (
+                <ExternalTile isFull={false} tile={tile} />
+              ) : (
+                <Map isFull={false} bbox={tile.bbox} tile={tile} />
+              )}
             </Tile>
           );
         case "timeseries":
@@ -308,14 +312,18 @@ class GridLayout extends Component {
               title={shortTitle}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
-              <TimeseriesTile
-                isFull={false}
-                timeseries={tile.timeseries}
-                tile={tile}
-                showAxis={true}
-                marginLeft={0}
-                marginTop={30}
-              />
+              {tile.imageUrl && tile.renderAsImage ? (
+                <ExternalTile isFull={false} tile={tile} />
+              ) : (
+                <TimeseriesTile
+                  isFull={false}
+                  timeseries={tile.timeseries}
+                  tile={tile}
+                  showAxis={true}
+                  marginLeft={0}
+                  marginTop={30}
+                />
+              )}
             </Tile>
           );
         case "statistics":
@@ -325,10 +333,14 @@ class GridLayout extends Component {
               title={shortTitle}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
-              <StatisticsTile
-                alarms={this.props.alarms}
-                title="Triggered alarms"
-              />
+              {tile.imageUrl && tile.renderAsImage ? (
+                <ExternalTile isFull={false} tile={tile} />
+              ) : (
+                <StatisticsTile
+                  alarms={this.props.alarms}
+                  title="Triggered alarms"
+                />
+              )}
             </Tile>
           );
         case "external":
