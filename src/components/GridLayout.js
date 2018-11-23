@@ -289,6 +289,18 @@ class GridLayout extends Component {
 
     const tileComponents = tiles.map(tile => {
       const shortTitle = tile.shortTitle || tile.title;
+      if (tile.imageUrl && tile.renderAsImage) {
+        return (
+          <Tile
+            {...this.props}
+            title={shortTitle}
+            backgroundColor={"#FFFFFF"}
+            onClick={() => history.push(`/full/${tile.id}`)}
+          >
+            <ExternalTile isFull={false} tile={tile} />
+          </Tile>
+        );
+      }
 
       switch (tile.type) {
         case "map":
@@ -298,11 +310,7 @@ class GridLayout extends Component {
               title={shortTitle}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
-              {tile.imageUrl && tile.renderAsImage ? (
-                <ExternalTile isFull={false} tile={tile} />
-              ) : (
-                <Map isFull={false} bbox={tile.bbox} tile={tile} />
-              )}
+              <Map isFull={false} bbox={tile.bbox} tile={tile} />
             </Tile>
           );
         case "timeseries":
@@ -312,18 +320,14 @@ class GridLayout extends Component {
               title={shortTitle}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
-              {tile.imageUrl && tile.renderAsImage ? (
-                <ExternalTile isFull={false} tile={tile} />
-              ) : (
-                <TimeseriesTile
-                  isFull={false}
-                  timeseries={tile.timeseries}
-                  tile={tile}
-                  showAxis={true}
-                  marginLeft={0}
-                  marginTop={30}
-                />
-              )}
+              <TimeseriesTile
+                isFull={false}
+                timeseries={tile.timeseries}
+                tile={tile}
+                showAxis={true}
+                marginLeft={0}
+                marginTop={30}
+              />
             </Tile>
           );
         case "statistics":
@@ -333,14 +337,10 @@ class GridLayout extends Component {
               title={shortTitle}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
-              {tile.imageUrl && tile.renderAsImage ? (
-                <ExternalTile isFull={false} tile={tile} />
-              ) : (
-                <StatisticsTile
-                  alarms={this.props.alarms}
-                  title="Triggered alarms"
-                />
-              )}
+              <StatisticsTile
+                alarms={this.props.alarms}
+                title="Triggered alarms"
+              />
             </Tile>
           );
         case "external":
