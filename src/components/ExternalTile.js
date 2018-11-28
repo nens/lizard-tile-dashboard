@@ -78,7 +78,7 @@ class ExternalTileComponent extends Component {
           showingBar,
           fullLayoutSidebarWidth
         )
-      : this.renderIframe(title, url, showingBar);
+      : this.renderIframe(title, url, showingBar, fullLayoutSidebarWidth);
   }
 
   renderIframe(title, url, showingBar, fullLayoutSidebarWidth) {
