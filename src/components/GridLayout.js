@@ -289,6 +289,18 @@ class GridLayout extends Component {
 
     const tileComponents = tiles.map(tile => {
       const shortTitle = tile.shortTitle || tile.title;
+      if (tile.imageUrl && tile.renderAsImage) {
+        return (
+          <Tile
+            {...this.props}
+            title={shortTitle}
+            backgroundColor={"#FFFFFF"}
+            onClick={() => history.push(`/full/${tile.id}`)}
+          >
+            <ExternalTile isFull={false} tile={tile} />
+          </Tile>
+        );
+      }
 
       switch (tile.type) {
         case "map":
