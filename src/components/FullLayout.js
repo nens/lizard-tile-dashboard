@@ -143,61 +143,90 @@ class FullLayout extends Component {
               <Scrollbars height={height}>
                 {allTiles.map((tile, i) => {
                   let previewTile = null;
-                  switch (tile.type) {
-                    case "map":
-                      previewTile = (
-                        <div
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <img
-                            style={{ width: PREVIEW_TILE_WIDTH / 2 }}
-                            src={tile.imageUrl ? tile.imageUrl : mapIcon}
-                            alt="Map"
-                          />
-                        </div>
-                      );
-                      break;
-                    case "timeseries":
-                      previewTile = (
-                        <div
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <img
-                            style={{ width: PREVIEW_TILE_WIDTH / 2 }}
-                            src={tile.imageUrl ? tile.imageUrl : timeIcon}
-                            alt="Timeseries"
-                          />
-                        </div>
-                      );
-                      break;
-                    case "statistics":
-                      previewTile = (
-                        <StatisticsTile
-                          alarms={this.props.alarms}
-                          title={tile.title}
+
+                  // Show image if imageUrl is set
+                  if (tile.imageUrl) {
+                    const randomId =
+                      "img-id-" + parseInt(Math.random() * 10000, 10);
+                    previewTile = (
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <img
+                          id={randomId}
+                          onLoad={() =>
+                            this.updateExternalPreviewTile(randomId)}
+                          src={tile.imageUrl}
+                          alt="Preview"
                         />
-                      );
-                      break;
-                    case "external":
-                      const randomId =
-                        "img-id-" + parseInt(Math.random() * 10000, 10);
-                      previewTile = (
-                        <div
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <img
-                            id={randomId}
-                            onLoad={() =>
-                              this.updateExternalPreviewTile(randomId)}
-                            src={tile.imageUrl}
-                            alt="Preview"
+                      </div>
+                    );
+                  } else {
+                    switch (tile.type) {
+                      case "map":
+                        previewTile = (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}
+                          >
+                            <img
+                              style={{ width: PREVIEW_TILE_WIDTH / 2 }}
+                              src={mapIcon}
+                              alt="Map"
+                            />
+                          </div>
+                        );
+                        break;
+                      case "timeseries":
+                        previewTile = (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}
+                          >
+                            <img
+                              style={{ width: PREVIEW_TILE_WIDTH / 2 }}
+                              src={timeIcon}
+                              alt="Timeseries"
+                            />
+                          </div>
+                        );
+                        break;
+                      case "statistics":
+                        previewTile = (
+                          <StatisticsTile
+                            alarms={this.props.alarms}
+                            title={tile.title}
                           />
-                        </div>
-                      );
-                      break;
-                    default:
-                      previewTile = null;
-                      break;
+                        );
+                        break;
+                      case "external":
+                        const randomId =
+                          "img-id-" + parseInt(Math.random() * 10000, 10);
+                        previewTile = (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center"
+                            }}
+                          >
+                            <img
+                              id={randomId}
+                              onLoad={() =>
+                                this.updateExternalPreviewTile(randomId)}
+                              src={tile.imageUrl} //TO DO: also add icon for external
+                              alt="Preview"
+                            />
+                          </div>
+                        );
+                        break;
+                      default:
+                        previewTile = null;
+                        break;
+                    }
                   }
 
                   const shortTitle = tile.shortTitle || tile.title;
