@@ -38,7 +38,7 @@ Have a look at the [buck-trap README](https://github.com/nens/buck-trap/blob/mas
 Production bundle
 =================
 
-Run `yarn build` and look in the `dist/` folder.
+Run `GENERATE_SOURCEMAP=false yarn build` and look in the `dist/` folder.
 
 
 Releasing
