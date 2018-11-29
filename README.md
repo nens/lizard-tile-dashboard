@@ -38,13 +38,34 @@ Have a look at the [buck-trap README](https://github.com/nens/buck-trap/blob/mas
 Production bundle
 =================
 
-Run `yarn build` and look in the `build/` folder.
+Run `yarn build` and look in the `dist/` folder.
 
 
 Releasing
 =========
 
-To be written...
+To tag this as a new release and to add the `dist` folder to the release attachments we use nens/buck-trap. If you have not already done so, create a github token and add it to `deploy/auth.json`.
+
+You can create your tokens here: https://github.com/settings/tokens
+Grant the token full access under the repo section
+
+The `auth.json` file should like similar to this:
+
+```
+{
+    "token": "Your-token-that-you-created-on-github"
+}
+```
+
+Release:
+
+`$ yarn run release`
+
+Buck-trap ups version number in `package.json`, compiles the `CHANGELOG.md` tags and creates a github release with a zipped `dist/`.
+
+NOTE: Sometimes buck trap messes up for unknown reasons. It does everything except making the github release. It hangs with the message: `tag already exists`. This sucks because you will have to clean up the tag and revert the release commit.
+
+NOTE on the NOTE: One time reverting the release commit an making a new release it did not update the CHANGELOG.md again which resulted in this PR: #821.
 
 
 Deployment
