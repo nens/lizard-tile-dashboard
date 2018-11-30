@@ -289,7 +289,7 @@ class GridLayout extends Component {
 
     const tileComponents = tiles.map(tile => {
       const shortTitle = tile.shortTitle || tile.title;
-      if (tile.imageUrl && tile.renderAsImage) {
+      if (tile.imageUrl) {
         return (
           <Tile
             {...this.props}
@@ -297,7 +297,7 @@ class GridLayout extends Component {
             backgroundColor={"#FFFFFF"}
             onClick={() => history.push(`/full/${tile.id}`)}
           >
-            <ExternalTile isFull={false} tile={tile} />
+            <ExternalTile isFull={false} tile={tile} source={"GridLayout"} />
           </Tile>
         );
       }
@@ -351,7 +351,7 @@ class GridLayout extends Component {
               backgroundColor={"#FFFFFF"}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
-              <ExternalTile isFull={false} tile={tile} />
+              <ExternalTile isFull={false} tile={tile} source={"GridLayout"} />
             </Tile>
           );
         default:
