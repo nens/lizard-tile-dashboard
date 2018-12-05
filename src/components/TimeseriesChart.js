@@ -24,9 +24,11 @@ import {
 class TimeseriesChartComponent extends Component {
   constructor(props) {
     super(props);
+    console.log("TimeseriesChart this.props", this.props);
+    // console.log("props.configuredNow", props.configuredNow);
 
     this.state = {
-      ...currentPeriod(props.configuredNow, props.bootstrap),
+      ...currentPeriod(props.configuredNow, props.bootstrap), // sets start and end
       componentHasMountedOnce: false,
       componentRef: "comp-" + parseInt(Math.random(), 10),
       wantedAxes: null,
@@ -61,6 +63,7 @@ class TimeseriesChartComponent extends Component {
         "toggleSpikelines"
       ]
     };
+    console.log("this.state", this.state); // has start and end
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -68,6 +71,8 @@ class TimeseriesChartComponent extends Component {
   /////////////////////////////////////////////////////////////////////////////
 
   componentWillMount() {
+    console.log("TimeseriesChart loaded");
+    console.log("this.props.tile.timeseries", this.props.tile.timeseries);
     this.updateTimeseries();
 
     const axes = this.getAxesData();
@@ -135,12 +140,18 @@ class TimeseriesChartComponent extends Component {
   /////////////////////////////////////////////////////////////////////////////
 
   updateDateTimeState() {
+    console.log("[F] updateDateTimeState");
+    console.log(
+      "[F] updateDateTimeState this.props.configuredNow",
+      this.props.configuredNow
+    );
     this.setState(
       currentPeriod(this.props.configuredNow, this.props.bootstrap)
     );
   }
 
   updateTimeseries() {
+    console.log("[F} updateTimeseries this.state", this.state);
     (this.props.tile.timeseries || []).map(uuid =>
       this.props.getTimeseriesEvents(uuid, this.state.start, this.state.end, {
         minpoints: MAX_TIMESERIES_POINTS
@@ -557,7 +568,7 @@ class TimeseriesChartComponent extends Component {
     );
 
     return this.props.isFull
-      ? this.renderFull(axes, combinedEvents, tile.thresholds)
+      ? this.renderFull(axes, combinedEvents, tile.thresholds) // tile in parramatta
       : this.renderTile(axes, combinedEvents);
   }
 
@@ -590,6 +601,7 @@ class TimeseriesChartComponent extends Component {
   }
 
   renderTile(axes, combinedEvents) {
+    // tile
     if (!this.props.height || !this.props.width || !window.Plotly) {
       return null;
     }
