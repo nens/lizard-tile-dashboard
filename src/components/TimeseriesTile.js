@@ -56,45 +56,29 @@ class TimeseriesTileComponent extends Component {
       }
     }
 
+    const newProps = {
+      ...this.props,
+      width: width - this.props.marginLeft,
+      height: height - this.props.marginTop
+    };
+    const timeseriesChart = (
+      <div
+        ref={theDiv => (this.theDiv = theDiv)}
+        style={{
+          width: "100%",
+          height: "100%"
+        }}
+      >
+        <TimeseriesChart {...newProps} />
+      </div>
+    );
+
     // Timeseries with raster data
     if (this.allAssetsPresent()) {
-      const newProps = {
-        ...this.props,
-        width: width - this.props.marginLeft,
-        height: height - this.props.marginTop
-      };
-
-      return (
-        <div
-          ref={theDiv => (this.theDiv = theDiv)}
-          style={{
-            width: "100%",
-            height: "100%"
-          }}
-        >
-          <TimeseriesChart {...newProps} />
-        </div>
-      );
-
+      return timeseriesChart;
       // Only timeseries
     } else {
-      const newProps = {
-        ...this.props,
-        width: width - this.props.marginLeft,
-        height: height - this.props.marginTop
-      };
-
-      return (
-        <div
-          ref={theDiv => (this.theDiv = theDiv)}
-          style={{
-            width: "100%",
-            height: "100%"
-          }}
-        >
-          <TimeseriesChart {...newProps} />
-        </div>
-      );
+      return timeseriesChart;
     }
   }
 }
