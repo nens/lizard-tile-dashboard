@@ -118,7 +118,7 @@ class ExternalTileComponent extends Component {
         referrerPolicy="no-referrer"
         src={url}
         className={styles.ExternalIframe}
-        width={this.state.fullRenderWidth}
+        width={showingBar ? this.state.fullRenderWidth : window.innerWidth}
         height={this.state.fullRenderHeight}
         style={{ left: showingBar ? fullLayoutSidebarWidth : 0 }}
       />
