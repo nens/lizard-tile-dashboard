@@ -67,18 +67,47 @@ class ExternalTileComponent extends Component {
   }
 
   render() {
-    const { isFull, tile, fullLayoutSidebarWidth, showingBar } = this.props;
+    const {
+      isFull,
+      tile,
+      fullLayoutSidebarWidth,
+      showingBar,
+      source
+    } = this.props;
     const { title, url, imageUrl, renderAsImage } = tile;
 
-    return renderAsImage
-      ? this.renderImage(
+    switch (source) {
+      case "GridLayout":
+        console.log(fullLayoutSidebarWidth);
+        return this.renderImage(
           title,
           imageUrl,
-          isFull,
-          showingBar,
-          fullLayoutSidebarWidth
-        )
-      : this.renderIframe(title, url, showingBar, fullLayoutSidebarWidth);
+          isFull, // false
+          showingBar, // false
+          fullLayoutSidebarWidth // undefined
+        );
+        break;
+      case "FullLayout":
+        if (renderAsImage) {
+          return this.renderImage(
+            title,
+            imageUrl,
+            isFull,
+            showingBar,
+            fullLayoutSidebarWidth
+          );
+        } else {
+          return url
+            ? this.renderIframe(title, url, showingBar, fullLayoutSidebarWidth)
+            : this.renderImage(
+                title,
+                imageUrl,
+                isFull,
+                showingBar,
+                fullLayoutSidebarWidth
+              );
+        }
+    }
   }
 
   renderIframe(title, url, showingBar, fullLayoutSidebarWidth) {
@@ -89,7 +118,7 @@ class ExternalTileComponent extends Component {
         referrerPolicy="no-referrer"
         src={url}
         className={styles.ExternalIframe}
-        width={this.state.fullRenderWidth}
+        width={showingBar ? this.state.fullRenderWidth : window.innerWidth}
         height={this.state.fullRenderHeight}
         style={{ left: showingBar ? fullLayoutSidebarWidth : 0 }}
       />
