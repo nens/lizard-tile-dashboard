@@ -13,7 +13,6 @@ import { getTimeseriesMetadataAction, fetchRaster } from "../actions";
 
 class TimeseriesTileComponent extends Component {
   componentWillMount() {
-    console.log("TimeseriesTile component loaded"); // gaat hij1x keer door heen
     (this.props.tile.timeseries || []).map(
       this.props.getTimeseriesMetadataAction
     );
@@ -44,6 +43,10 @@ class TimeseriesTileComponent extends Component {
     );
   }
 
+  allTimeSeriesPresent() {
+    return this.timeseries().every(this.props.getTimeseriesMetadata);
+  }
+
   render() {
     let { width, height } = this.props;
 
@@ -57,14 +60,34 @@ class TimeseriesTileComponent extends Component {
       }
     }
 
-    console.log("TimeseriesTile render");
+    // Timeseries with raster data
     if (this.allAssetsPresent()) {
       const newProps = {
         ...this.props,
         width: width - this.props.marginLeft,
         height: height - this.props.marginTop
       };
-      console.log("this.props.tile", this.props.tile);
+
+      return (
+        <div
+          ref={theDiv => (this.theDiv = theDiv)}
+          style={{
+            width: "100%",
+            height: "100%"
+          }}
+        >
+          <TimeseriesChart {...newProps} />
+        </div>
+      );
+
+      // Only timeseries
+    } else if (this.allTimeSeriesPresent()) {
+      // checken of dit werkt voor lobith, anders gewone if-else
+      const newProps = {
+        ...this.props,
+        width: width - this.props.marginLeft,
+        height: height - this.props.marginTop
+      };
 
       return (
         <div
@@ -78,27 +101,7 @@ class TimeseriesTileComponent extends Component {
         </div>
       );
     } else {
-      console.log("TimeseriesTile render not this.allAssetsPresent");
-      const newProps = {
-        ...this.props,
-        width: width - this.props.marginLeft,
-        height: height - this.props.marginTop
-      };
-      console.log("this.props.tile", this.props.tile);
-      // dit maakt een lege grafiek als er geen data is
-
-      return (
-        <div
-          ref={theDiv => (this.theDiv = theDiv)}
-          style={{
-            width: "100%",
-            height: "100%"
-          }}
-        >
-          <TimeseriesChart {...newProps} />
-        </div>
-      );
-      // return null;
+      return null;
     }
   }
 }
