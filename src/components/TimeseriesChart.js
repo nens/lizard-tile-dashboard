@@ -26,7 +26,7 @@ class TimeseriesChartComponent extends Component {
     super(props);
 
     this.state = {
-      ...currentPeriod(props.configuredNow, props.bootstrap), // sets start and end
+      ...currentPeriod(props.configuredNow, props.bootstrap),
       componentHasMountedOnce: false,
       componentRef: "comp-" + parseInt(Math.random(), 10),
       wantedAxes: null,
@@ -557,7 +557,7 @@ class TimeseriesChartComponent extends Component {
     );
 
     return this.props.isFull
-      ? this.renderFull(axes, combinedEvents, tile.thresholds) // tile in parramatta
+      ? this.renderFull(axes, combinedEvents, tile.thresholds)
       : this.renderTile(axes, combinedEvents);
   }
 
@@ -590,7 +590,6 @@ class TimeseriesChartComponent extends Component {
   }
 
   renderTile(axes, combinedEvents) {
-    // tile
     if (!this.props.height || !this.props.width || !window.Plotly) {
       return null;
     }

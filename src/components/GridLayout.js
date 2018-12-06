@@ -288,8 +288,6 @@ class GridLayout extends Component {
     }
 
     const tileComponents = tiles.map(tile => {
-      if (tile.timeseries) {
-      }
       const shortTitle = tile.shortTitle || tile.title;
       if (tile.imageUrl && tile.renderAsImage) {
         return (
