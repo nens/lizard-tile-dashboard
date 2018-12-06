@@ -43,10 +43,6 @@ class TimeseriesTileComponent extends Component {
     );
   }
 
-  allTimeSeriesPresent() {
-    return this.timeseries().every(this.props.getTimeseriesMetadata);
-  }
-
   render() {
     let { width, height } = this.props;
 
@@ -81,8 +77,7 @@ class TimeseriesTileComponent extends Component {
       );
 
       // Only timeseries
-    } else if (this.allTimeSeriesPresent()) {
-      // checken of dit werkt voor lobith, anders gewone if-else
+    } else {
       const newProps = {
         ...this.props,
         width: width - this.props.marginLeft,
@@ -100,8 +95,6 @@ class TimeseriesTileComponent extends Component {
           <TimeseriesChart {...newProps} />
         </div>
       );
-    } else {
-      return null;
     }
   }
 }
