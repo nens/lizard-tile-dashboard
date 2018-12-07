@@ -95,10 +95,14 @@ export function getNow(configuredNow) {
   if (configuredNow !== null) {
     return configuredNow;
   }
+  const currentTimestamp = new Date().getTime();
   // Use modulo operator so the "now" time only changes every five minutes, so we
   // don't have to fetch different data for each chart after every second.
-  const currentTimestamp = new Date().getTime();
-  // const FIVE_MIN_IN_MS = 5 * 60 * 1000;
+  // const FIVE_MIN_IN_MS = 5 * 60 * 1000;  //
+  // Unfortunately, this no longer shows timeserie tiles when going from
+  // FullLayout to GridLayout in these 5 minutes
+  // Code beneath makes it again possible to get a timeseries tile on GridLayout
+  // every 0.3 second.
   return new Date(currentTimestamp - currentTimestamp % 300);
 }
 
