@@ -77,7 +77,6 @@ class ExternalTileComponent extends Component {
 
     switch (source) {
       case "GridLayout":
-        // console.log(fullLayoutSidebarWidth);
         return this.renderImage(
           title,
           imageUrl,
