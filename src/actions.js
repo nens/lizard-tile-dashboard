@@ -237,6 +237,7 @@ export function getTimeseriesMetadataAction(uuid) {
       return getTimeseries(uuid).then(results => {
         if (results && results.length) {
           dispatch(addTimeseries(uuid, results[0]));
+          console.log("[F] getTimeseriesMetadataAction results[0]", results[0]);
           return results[0];
         }
       });

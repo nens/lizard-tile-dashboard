@@ -54,7 +54,6 @@ class ExternalTileComponent extends Component {
   }
 
   alignImgVertically() {
-    console.log("[F] alignImgVertically");
     const imgElem = document.getElementById(this.state.randomId);
     if (imgElem === null) {
       return;
@@ -78,7 +77,7 @@ class ExternalTileComponent extends Component {
 
     switch (source) {
       case "GridLayout":
-        console.log(fullLayoutSidebarWidth);
+        // console.log(fullLayoutSidebarWidth);
         return this.renderImage(
           title,
           imageUrl,
@@ -86,7 +85,6 @@ class ExternalTileComponent extends Component {
           showingBar, // false
           fullLayoutSidebarWidth // undefined
         );
-        break;
       case "FullLayout":
         if (renderAsImage) {
           return this.renderImage(
@@ -107,6 +105,8 @@ class ExternalTileComponent extends Component {
                 fullLayoutSidebarWidth
               );
         }
+      default:
+        return null;
     }
   }
 

@@ -314,9 +314,13 @@ class GridLayout extends Component {
             </Tile>
           );
         case "timeseries":
+          console.log("this.props", this.props);
+          console.log("tile", tile);
+          console.log("tile.timeseries", tile.timeseries);
+          console.log("[F] GridLayout render timeseries tile");
           return (
             <Tile
-              {...this.props}
+              {...this.props} /* new Props?*/
               title={shortTitle}
               onClick={() => history.push(`/full/${tile.id}`)}
             >
@@ -344,6 +348,7 @@ class GridLayout extends Component {
             </Tile>
           );
         case "external":
+          console.log("[F] GridLayout render external tile");
           return (
             <Tile
               {...this.props}
