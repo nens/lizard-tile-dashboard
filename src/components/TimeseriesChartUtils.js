@@ -102,8 +102,8 @@ export function getNow(configuredNow) {
   // Unfortunately, this no longer shows timeserie tiles when going from
   // FullLayout to GridLayout in these 5 minutes
   // Code beneath makes it again possible to get a timeseries tile on GridLayout
-  // every 0.3 second.
-  return new Date(currentTimestamp - currentTimestamp % 300);
+  // every 1 second.
+  return new Date(currentTimestamp - currentTimestamp % 1000);
 }
 
 export function currentPeriod(configuredNow, bootstrap) {
