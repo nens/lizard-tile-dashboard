@@ -91,11 +91,17 @@ class ExternalTileComponent extends Component {
             <div
               style={{
                 display: "flex",
-                justifyContent: "center"
+                justifyContent: "center",
+                height: "100%"
               }}
             >
               <img
-                style={{ padding: 50, height: 250 }}
+                style={{
+                  marginTop: "40px", // Take into account the title bar
+                  height: "70%",
+                  padding: "5%",
+                  paddingTop: "5%"
+                }}
                 src={externalIcon}
                 alt="External"
               />
