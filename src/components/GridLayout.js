@@ -300,62 +300,66 @@ class GridLayout extends Component {
             <ExternalTile isFull={false} tile={tile} source={"GridLayout"} />
           </Tile>
         );
-      }
-
-      switch (tile.type) {
-        case "map":
-          return (
-            <Tile
-              {...this.props}
-              title={shortTitle}
-              onClick={() => history.push(`/full/${tile.id}`)}
-            >
-              <Map isFull={false} bbox={tile.bbox} tile={tile} />
-            </Tile>
-          );
-        case "timeseries":
-          return (
-            <Tile
-              {...this.props}
-              title={shortTitle}
-              onClick={() => history.push(`/full/${tile.id}`)}
-            >
-              <TimeseriesTile
-                isFull={false}
-                timeseries={tile.timeseries}
-                tile={tile}
-                showAxis={true}
-                marginLeft={0}
-                marginTop={30}
-              />
-            </Tile>
-          );
-        case "statistics":
-          return (
-            <Tile
-              {...this.props}
-              title={shortTitle}
-              onClick={() => history.push(`/full/${tile.id}`)}
-            >
-              <StatisticsTile
-                alarms={this.props.alarms}
-                title="Triggered alarms"
-              />
-            </Tile>
-          );
-        case "external":
-          return (
-            <Tile
-              {...this.props}
-              title={shortTitle}
-              backgroundColor={"#FFFFFF"}
-              onClick={() => history.push(`/full/${tile.id}`)}
-            >
-              <ExternalTile isFull={false} tile={tile} source={"GridLayout"} />
-            </Tile>
-          );
-        default:
-          return null;
+      } else {
+        switch (tile.type) {
+          case "map":
+            return (
+              <Tile
+                {...this.props}
+                title={shortTitle}
+                onClick={() => history.push(`/full/${tile.id}`)}
+              >
+                <Map isFull={false} bbox={tile.bbox} tile={tile} />
+              </Tile>
+            );
+          case "timeseries":
+            return (
+              <Tile
+                {...this.props}
+                title={shortTitle}
+                onClick={() => history.push(`/full/${tile.id}`)}
+              >
+                <TimeseriesTile
+                  isFull={false}
+                  timeseries={tile.timeseries}
+                  tile={tile}
+                  showAxis={true}
+                  marginLeft={0}
+                  marginTop={30}
+                />
+              </Tile>
+            );
+          case "statistics":
+            return (
+              <Tile
+                {...this.props}
+                title={shortTitle}
+                onClick={() => history.push(`/full/${tile.id}`)}
+              >
+                <StatisticsTile
+                  alarms={this.props.alarms}
+                  title="Triggered alarms"
+                />
+              </Tile>
+            );
+          case "external":
+            return (
+              <Tile
+                {...this.props}
+                title={shortTitle}
+                backgroundColor={"#FFFFFF"}
+                onClick={() => history.push(`/full/${tile.id}`)}
+              >
+                <ExternalTile
+                  isFull={false}
+                  tile={tile}
+                  source={"GridLayout"}
+                />
+              </Tile>
+            );
+          default:
+            return null;
+        }
       }
     });
 

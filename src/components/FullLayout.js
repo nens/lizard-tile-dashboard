@@ -18,6 +18,7 @@ import {
 
 import mapIcon from "../graphics/icon-map.svg";
 import timeIcon from "../graphics/icon-chart.svg";
+import externalIcon from "../graphics/icon-external.svg";
 
 const FULL_LAYOUT_HEADER_HEIGHT = 50;
 const FULL_LAYOUT_SIDEBAR_WIDTH = 195;
@@ -205,8 +206,6 @@ class FullLayout extends Component {
                         );
                         break;
                       case "external":
-                        const randomId =
-                          "img-id-" + parseInt(Math.random() * 10000, 10);
                         previewTile = (
                           <div
                             style={{
@@ -215,11 +214,9 @@ class FullLayout extends Component {
                             }}
                           >
                             <img
-                              id={randomId}
-                              onLoad={() =>
-                                this.updateExternalPreviewTile(randomId)}
-                              src={tile.imageUrl} //TO DO: also add icon for external
-                              alt="Preview"
+                              style={{ width: PREVIEW_TILE_WIDTH / 2 }}
+                              src={externalIcon}
+                              alt="External"
                             />
                           </div>
                         );

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styles from "./ExternalTile.css";
+import externalIcon from "../graphics/icon-external.svg";
 
 class ExternalTileComponent extends Component {
   constructor() {
@@ -77,13 +78,36 @@ class ExternalTileComponent extends Component {
 
     switch (source) {
       case "GridLayout":
-        return this.renderImage(
-          title,
-          imageUrl,
-          isFull, // false
-          showingBar, // false
-          fullLayoutSidebarWidth // undefined
-        );
+        if (imageUrl) {
+          return this.renderImage(
+            title,
+            imageUrl,
+            isFull, // false
+            showingBar, // false
+            fullLayoutSidebarWidth // undefined
+          );
+        } else {
+          return (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                height: "100%"
+              }}
+            >
+              <img
+                style={{
+                  marginTop: "40px", // Take into account the title bar
+                  height: "70%",
+                  padding: "5%",
+                  paddingTop: "5%"
+                }}
+                src={externalIcon}
+                alt="External"
+              />
+            </div>
+          );
+        }
       case "FullLayout":
         if (renderAsImage) {
           return this.renderImage(
