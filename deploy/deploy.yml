@@ -5,7 +5,7 @@
   tasks:
 
   - name: download release
-    get_url: url=https://github.com/nens/{{ repo_name }}/releases/download/{{ version }}/{{ version }}.zip dest=/tmp/{{ version }}.zip
+    command: wget -O '/tmp/{{ version }}.zip' 'https://github.com/nens/{{ repo_name }}/releases/download/{{ version }}/{{ version }}.zip'
 
   - name: rm old frontend
     file: path={{ deploy_path }} state=absent
