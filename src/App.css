@@ -6,3 +6,35 @@
   bottom: 50px;
   margin-left: 50%;
 }
+
+
+.logo {
+  padding: 0px;
+  bottom: 0;
+  width: 60px;
+}
+
+.logoContainer {
+  position: fixed;
+left: 0;
+bottom: 0;
+  padding-top: 10px;
+  width: 200px;
+  margin: auto;
+}
+
+.logoContainerSpan {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+a .logoContainerSpan {
+  color: #adadab;
+}
+
+
+.privacyContainerSpan {
+	float: 'right';
+	width: 200px;
+}
