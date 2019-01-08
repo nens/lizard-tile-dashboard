@@ -11,6 +11,8 @@ import ExternalTile from "./ExternalTile";
 import last from "lodash/last";
 import map from "lodash/map";
 import Map from "./Map";
+import logo_Lizard from "../graphics/logo-Lizard.png";
+import { Image } from "react-bootstrap";
 
 import styles from "./GridLayout.css";
 import {
@@ -409,7 +411,7 @@ class GridLayout extends Component {
             className={`${styles.GridLayoutContainer + " layout"}`}
             layout={this.getLayout()}
             rowHeight={30}
-            width={width}
+            width={width - 10}
             draggableHandle=".drag-handle"
           >
             {tileComponents.map((component, i) => {
@@ -417,6 +419,25 @@ class GridLayout extends Component {
             })}
           </ReactGridLayout>
           <footer className={styles.Footer}>Nelen &amp; Schuurmans</footer>
+          <div className="container" id="footer">
+            <div className={styles.logoContainer}>
+              <a href={"https://www.lizard.net/"}>
+                <span className={styles.logoContainerSpan}>
+                  Powered by Lizard
+                </span>
+                <span className={styles.logoContainerSpan}> </span>
+                <span className={styles.logoContainerSpan}>
+                  <Image
+                    src={logo_Lizard}
+                    className={styles.logo}
+                    responsive
+                    title="Lizard"
+                    style={{ margin: "auto" }}
+                  />
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
       </DocumentTitle>
     );

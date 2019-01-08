@@ -25,6 +25,7 @@
 }
 
 .GridLayout {
+  
 }
 .GridCell {
   width: 300px;
@@ -70,8 +71,9 @@
   height: 40px;
   text-align: center;
   background: #ffffff;
-  color: #333;
+  color: #747474;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
 }
 @media only screen and (max-width: 700px) {
   .LogoutButton {
@@ -104,6 +106,7 @@
   background: #ffffff;
   color: #333;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
 }
 @media only screen and (max-width: 700px) {
   .SettingsButton {
@@ -249,4 +252,32 @@
 }
 
 .GridLayoutContainer {
+}
+
+.logo {
+  padding: 0px;
+  bottom: 0;
+  width: 60px;
+}
+
+.logoContainer {
+  padding-top: 10px;
+  width: 200px;
+  margin: auto;
+}
+
+.logoContainerSpan {
+  display: inline-block;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+a .logoContainerSpan {
+  color: #adadab;
+}
+
+
+.privacyContainerSpan {
+	float: 'right';
+	width: 200px;
 }
