@@ -581,6 +581,7 @@ class TimeseriesChartComponent extends Component {
           data={combinedEvents}
           layout={layout}
           config={{
+            displaylogo: false,
             displayModeBar: true,
             modeBarButtonsToRemove
           }}
@@ -610,7 +611,10 @@ class TimeseriesChartComponent extends Component {
         <Plot
           data={combinedEvents}
           layout={this.getLayout(this.state.wantedAxes)}
-          config={{ displayModeBar: false }}
+          config={{
+            displaylogo: false,
+            displayModeBar: false
+          }}
         />
       </div>
     );
