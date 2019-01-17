@@ -277,7 +277,7 @@ class GridLayout extends Component {
                     <h4 style={{ padding: 0, margin: 0 }}>Contact info</h4>
                     <hr />
                     <p>
-                      For software issues with the FISH Dashboard please contact
+                      For software issues with the dashboard please contact
                       Nelen & Schuurmans on {nensMail()}.
                     </p>
                   </div>
@@ -425,7 +425,6 @@ class GridLayout extends Component {
                 <span className={styles.logoContainerSpan}>
                   Powered by Lizard
                 </span>
-                <span className={styles.logoContainerSpan}> </span>
                 <span className={styles.logoContainerSpan}>
                   <Image
                     src={logo_Lizard}
