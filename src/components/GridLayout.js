@@ -411,7 +411,7 @@ class GridLayout extends Component {
             className={`${styles.GridLayoutContainer + " layout"}`}
             layout={this.getLayout()}
             rowHeight={30}
-            width={width - 10}
+            width={width - 10} /* to fix minor overflow on x axis */
             draggableHandle=".drag-handle"
           >
             {tileComponents.map((component, i) => {
