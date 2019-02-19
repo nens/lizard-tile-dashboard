@@ -18,8 +18,16 @@ class LoginOrAppComponent extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchBootstrap(this.props.sessionState);
+    const dashboardName = this.getDashboardName();
+    this.props.fetchBootstrap(this.props.sessionState, dashboardName);
   }
+
+  getDashboardName = () => {
+    return (
+      window.location.href.split("dashboard/")[1] &&
+      window.location.href.split("dashboard/")[1].split("/")[0]
+    );
+  };
 
   hasBootstrap() {
     const session = this.props.sessionState;
@@ -28,6 +36,12 @@ class LoginOrAppComponent extends Component {
   }
 
   render() {
+    const dashboardName = this.getDashboardName();
+
+    const basename = dashboardName
+      ? "/dashboard/" + dashboardName
+      : "/dashboard";
+
     if (!this.hasBootstrap()) {
       return (
         <div className={styles.LoadingIndicator}>
@@ -38,7 +52,7 @@ class LoginOrAppComponent extends Component {
       this.props.sessionState.bootstrap.doLogin();
     } else {
       return (
-        <Router basename="/dashboard">
+        <Router basename={basename}>
           <App />
         </Router>
       );
@@ -54,7 +68,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchBootstrap: sessionState => fetchBootstrap(dispatch, sessionState)
+    fetchBootstrap: (sessionState, dashboardName) =>
+      fetchBootstrap(dispatch, sessionState, dashboardName)
   };
 }
 
