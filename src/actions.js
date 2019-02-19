@@ -122,8 +122,6 @@ export function fetchBootstrap(dispatch, sessionState, dashboardName) {
   dispatch(fetchBootstrapAction());
 
   const finalDashboardName = dashboardName ? dashboardName : "dashboard";
-  console.log("finalDashboardName", finalDashboardName);
-  // getBootstrap("dashboard").then(
   getBootstrap(finalDashboardName).then(
     bootstrap => {
       dispatch(receiveBootstrapSuccessAction(bootstrap));
