@@ -1,6 +1,6 @@
 {
   "name": "lizard-tile-dashboard",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "repository": {
     "type": "git",
     "name": "nens/lizard-tile-dashboard",
@@ -155,7 +155,7 @@
   },
   "proxy": {
     "/bootstrap/": {
-      "target": "https://nxt3.staging.lizard.net/",
+      "target": "http://localhost:8000/",
       "changeOrigin": true,
       "ssl": false,
       "secure": false,
@@ -165,7 +165,7 @@
       }
     },
     "/api/v3/": {
-      "target": "https://nxt3.staging.lizard.net/",
+      "target": "http://localhost:8000/",
       "changeOrigin": true,
       "ssl": false,
       "secure": false,
