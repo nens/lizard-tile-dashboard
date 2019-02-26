@@ -45,15 +45,14 @@ class LoginOrAppComponent extends Component {
     // /dashboard -> undefined
     // / -> undefined
 
-    // split on first occurence of dashboard as in:
-    // https://stackoverflow.com/questions/4607745/split-string-only-on-first-instance-of-specified-character
-    const urlPostDashboard = window.location.href.split(/dashboard(.+)/)[1];
-    // if there was no dashboard in the url, should only happen in dev
+    // split on /dashboard/
+    // slashes are included in split so we do not also split on the second dashboard in /dashboard/dashboard
+    const urlPostDashboard = window.location.href.split("/dashboard/")[1];
+    // if there was no /dashboard/ in the url, should only happen in dev or with a url of /dashboard (no tailing slash)
     if (!urlPostDashboard) {
       return undefined;
     }
-    const dashboardName = urlPostDashboard.split("/")[1];
-
+    const dashboardName = urlPostDashboard.split("/")[0];
     // if dashboardname = 'full' we assume it is not really the dashboardname but the url path to a full tile
     // this rule should ensures that the url /dashboard/full/ returns  undefined
     if (dashboardName === "full") {
