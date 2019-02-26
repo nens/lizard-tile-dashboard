@@ -114,14 +114,15 @@ export function receiveBootstrapErrorAction(error) {
   return { type: RECEIVE_BOOTSTRAP_ERROR, error };
 }
 
-export function fetchBootstrap(dispatch, sessionState) {
+export function fetchBootstrap(dispatch, sessionState, dashboardName) {
   if (sessionState && (sessionState.isFetching || sessionState.hasBootstrap)) {
     return;
   }
 
   dispatch(fetchBootstrapAction());
 
-  getBootstrap("dashboard").then(
+  const finalDashboardName = dashboardName || "dashboard";
+  getBootstrap(finalDashboardName).then(
     bootstrap => {
       dispatch(receiveBootstrapSuccessAction(bootstrap));
     },
