@@ -4,12 +4,25 @@ import FullLayout from "./components/FullLayout";
 import { connect } from "react-redux";
 import { Route, withRouter } from "react-router-dom";
 
-import { fetchAlarms } from "./actions";
+import { fetchAlarms, setNowAction } from "./actions";
+import { getNow } from "./reducers";
 import styles from "./App.css";
 
 class App extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
+    // Every minute, the "now" of the whole app is updated
+    setInterval(this.props.setNowAction, 60000);
+
+    // Alarms are used by multiple tiles so we fetch them from here.
     this.props.fetchAlarms();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.now !== this.props.now) {
+      this.props.fetchAlarms();
+    }
   }
 
   render() {
@@ -22,10 +35,17 @@ class App extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
   return {
-    fetchAlarms: () => fetchAlarms(dispatch)
+    now: getNow(state)
   };
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(App));
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchAlarms: () => fetchAlarms(dispatch),
+    setNowAction: setNowAction(dispatch)
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

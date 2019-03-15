@@ -8,7 +8,7 @@ import {
   fetchRaster
 } from "../actions";
 import { MAX_TIMESERIES_POINTS } from "../config";
-import { getBootstrap, getConfiguredNow } from "../reducers";
+import { getBootstrap, getNow, getCurrentPeriod } from "../reducers";
 
 import { makeGetter } from "lizard-api-client";
 import plotComponentFactory from "react-plotly.js/factory";
@@ -16,9 +16,7 @@ import plotComponentFactory from "react-plotly.js/factory";
 import {
   axisLabel,
   indexForType,
-  combineEventSeries,
-  getNow,
-  currentPeriod
+  combineEventSeries
 } from "./TimeseriesChartUtils.js";
 
 class TimeseriesChartComponent extends Component {
@@ -26,7 +24,6 @@ class TimeseriesChartComponent extends Component {
     super(props);
 
     this.state = {
-      ...currentPeriod(props.configuredNow, props.bootstrap),
       componentHasMountedOnce: false,
       componentRef: "comp-" + parseInt(Math.random(), 10),
       wantedAxes: null,
@@ -118,31 +115,13 @@ class TimeseriesChartComponent extends Component {
     });
   }
 
-  // This code might be reinstated after fixing the Great Timeseries Retrieval
-  // Ineffiency...
-  /////////////////////////////////////////////////////////////////////////////
-  // componentWillUpdate(nextProps, nextState) {
-  //   if (
-  //     nextState.start !== this.state.start ||
-  //     nextState.end !== this.state.end
-  //   ) {
-  //     this.updateTimeseries();
-  //   }
-  // }
-
   /////////////////////////////////////////////////////////////////////////////
   // Component - custom functions /////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////
 
-  updateDateTimeState() {
-    this.setState(
-      currentPeriod(this.props.configuredNow, this.props.bootstrap)
-    );
-  }
-
   updateTimeseries() {
     (this.props.tile.timeseries || []).map(uuid =>
-      this.props.getTimeseriesEvents(uuid, this.state.start, this.state.end, {
+      this.props.getTimeseriesEvents(uuid, this.props.start, this.props.end, {
         minpoints: MAX_TIMESERIES_POINTS
       })
     );
@@ -151,8 +130,8 @@ class TimeseriesChartComponent extends Component {
       this.props.getRasterEvents(
         this.props.getRaster(intersection.uuid).object,
         intersection.geometry,
-        this.state.start,
-        this.state.end
+        this.props.start,
+        this.props.end
       )
     );
   }
@@ -310,7 +289,7 @@ class TimeseriesChartComponent extends Component {
 
     if (allEvents[raster.uuid] && allEvents[raster.uuid][geomKey]) {
       const events = allEvents[raster.uuid][geomKey];
-      if (events.start === this.state.start && events.end === this.state.end) {
+      if (events.start === this.props.start && events.end === this.props.end) {
         return events.events;
       }
     }
@@ -356,7 +335,7 @@ class TimeseriesChartComponent extends Component {
     let thresholdLines, thresholdAnnotations;
 
     // Return lines for alarms and for "now".
-    const now = getNow(this.props.configuredNow).getTime();
+    const now = new Date(this.props.now).getTime();
     const alarmReferenceLines = this.alarmReferenceLines(axes);
 
     if (thresholds) {
@@ -503,7 +482,7 @@ class TimeseriesChartComponent extends Component {
         visible: showAxis,
         type: "date",
         showgrid: true,
-        range: [this.state.start, this.state.end]
+        range: [this.props.start, this.props.end]
       },
       shapes: annotationsAndShapes.shapes,
       annotations: isFull ? annotationsAndShapes.annotations : []
@@ -617,7 +596,9 @@ class TimeseriesChartComponent extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const currentPeriod = getCurrentPeriod(state, ownProps.tile);
+
   return {
     measuringstations: state.assets.measuringstation || {},
     getRaster: makeGetter(state.rasters),
@@ -625,7 +606,9 @@ function mapStateToProps(state) {
     rasterEvents: state.rasterEvents,
     timeseriesEvents: state.timeseriesEvents,
     alarms: state.alarms,
-    configuredNow: getConfiguredNow(state),
+    now: getNow(state, ownProps.tile),
+    start: currentPeriod.start,
+    end: currentPeriod.end,
     bootstrap: getBootstrap(state)
   };
 }
