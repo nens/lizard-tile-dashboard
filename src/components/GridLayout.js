@@ -390,19 +390,21 @@ class GridLayout extends Component {
               </div>
             ) : null}
 
-            <div
-              className={styles.LogoutButton}
-              onClick={() => this.props.session.bootstrap.doLogout()}
-            >
-              {width > 700 ? (
-                <span>
-                  <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
-                </span>
-              ) : (
-                <i className="material-icons">lock</i>
-              )}
-              <Ink />
-            </div>
+            {!this.props.session.bootstrap.configuration.isPublic ? (
+              <div
+                className={styles.LogoutButton}
+                onClick={() => this.props.session.bootstrap.doLogout()}
+              >
+                {width > 700 ? (
+                  <span>
+                    <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
+                  </span>
+                ) : (
+                  <i className="material-icons">lock</i>
+                )}
+                <Ink />
+              </div>
+            ) : null}
           </div>
 
           <ReactGridLayout
