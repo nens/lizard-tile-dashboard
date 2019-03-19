@@ -84,7 +84,10 @@ class LoginOrAppComponent extends Component {
           <MDSpinner size={24} />
         </div>
       );
-    } else if (!this.props.sessionState.bootstrap.authenticated) {
+    } else if (
+      !this.props.sessionState.bootstrap.authenticated &&
+      !this.props.sessionState.bootstrap.configuration.isPublic
+    ) {
       this.props.sessionState.bootstrap.doLogin();
     } else {
       return (
