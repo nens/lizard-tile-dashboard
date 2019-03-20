@@ -200,7 +200,7 @@ function settings(
 ) {
   switch (action.type) {
     case SET_NOW:
-      return { ...state, nowDateTime: action.dateIsoString };
+      return { ...state, nowDateTime: action.nowDateTime };
     case SET_DATE:
       return { ...state, configuredDate: action.date };
     case SET_TIME:
@@ -337,9 +337,10 @@ export const getCurrentPeriod = function(state, tile) {
   } else if (
     bootstrap &&
     bootstrap.configuration &&
-    bootstrap.configuration.periodHoursRelativeToNow
+    bootstrap.configuration.meta &&
+    bootstrap.configuration.meta.periodHoursRelativeToNow
   ) {
-    offsets = bootstrap.configuration.periodHoursRelativeToNow;
+    offsets = bootstrap.configuration.meta.periodHoursRelativeToNow;
   } else {
     offsets = [-24, 12];
   }
