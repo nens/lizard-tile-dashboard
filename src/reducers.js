@@ -9,6 +9,7 @@ import {
   RECEIVE_RASTER_EVENTS,
   SET_DATE,
   SET_TIME,
+  SET_NOW,
   RESET_DATETIME,
   SET_MAP_BACKGROUND,
   RECEIVE_ALARMS,
@@ -189,6 +190,7 @@ function settings(
   state = {
     configuredDate: null,
     configuredTime: null,
+    nowDateTime: new Date().toISOString(),
     configuredTitle: null,
     configuredLogoPath: null,
     mapBackground: null,
@@ -197,6 +199,8 @@ function settings(
   action
 ) {
   switch (action.type) {
+    case SET_NOW:
+      return { ...state, nowDateTime: action.nowDateTime };
     case SET_DATE:
       return { ...state, configuredDate: action.date };
     case SET_TIME:
@@ -205,12 +209,6 @@ function settings(
       return { ...state, configuredDate: null, configuredTime: null };
     case SET_MAP_BACKGROUND:
       return { ...state, mapBackground: action.mapBackground };
-    // case SET_TITLE:
-    //   return { ...state, configuredTitle: action.title }
-    // case SET_LOGO:
-    //   return { ...state, configuredLogoPath: action.logoPath }
-    // case SET_AVAILABLE_MAP_BACKGROUNDS:
-    //   return { ...state, configuredMapBackgrounds: action.mapBackgrounds }
     default:
       return state;
   }
@@ -307,19 +305,52 @@ export const getConfiguredTime = function(state) {
   return state.settings.configuredTime || "";
 };
 
-export const getConfiguredDateTime = function(state) {
-  if (!state.settings.configuredDate || !state.settings.configuredTime)
-    return null;
+export const getNow = function(state, tile) {
+  // Return a *string* containing the current UTC date/time.
+  // This is not the "real" current time, but either a time configured
+  // by the user, or the time updated by the main App component or even
+  // in the Tile.
+  // Use a string instead of a datetime so React can see that it hasn't
+  // changed.
 
-  return new Date(
-    state.settings.configuredDate + " " + state.settings.configuredTime
-  );
+  if (tile && tile.nowDateTime) {
+    return tile.nowDateTime;
+  } else if (state.settings.configuredDate && state.settings.configuredTime) {
+    return (
+      state.settings.configuredDate + "T" + state.settings.configuredTime + "Z"
+    );
+  } else {
+    return state.settings.nowDateTime;
+  }
 };
 
-export const getConfiguredNow = state => {
-  // Usually the current date/time, but sometimes a different one is configured
-  const configured = getConfiguredDateTime(state);
-  return configured || null;
+export const getCurrentPeriod = function(state, tile) {
+  // Return start and end of the current period in charts, as UTC timestamps.
+  // Defined as a period around 'now', in hours.
+  // Now is an ISO string containing the UTC datetime.
+  const now_dt = new Date(getNow(state, tile));
+  const bootstrap = getBootstrap(state);
+  let offsets;
+
+  if (tile.periodHoursRelativeToNow) {
+    offsets = tile.periodHoursRelativeToNow;
+  } else if (
+    bootstrap &&
+    bootstrap.configuration &&
+    bootstrap.configuration.meta &&
+    bootstrap.configuration.meta.periodHoursRelativeToNow
+  ) {
+    offsets = bootstrap.configuration.meta.periodHoursRelativeToNow;
+  } else {
+    offsets = [-24, 12];
+  }
+
+  const period = {
+    start: now_dt.getTime() + offsets[0] * 3600 * 1000,
+    end: now_dt.getTime() + offsets[1] * 3600 * 1000
+  };
+
+  return period;
 };
 
 export const getCurrentMapBackground = state => {

@@ -25,6 +25,7 @@ export const RECEIVE_BOOTSTRAP_ERROR = "RECEIVE_BOOTSTRAP_ERROR";
 // SettingsActions
 export const SET_DATE = "SET_DATE";
 export const SET_TIME = "SET_TIME";
+export const SET_NOW = "SET_NOW";
 export const RESET_DATETIME = "RESET_DATETIME";
 export const SET_MAP_BACKGROUND = "SET_MAP_BACKGROUND";
 
@@ -186,6 +187,17 @@ export const setTimeAction = function(dispatch) {
   return time => dispatch({ type: SET_TIME, time });
 };
 
+export const setNowAction = function(dispatch) {
+  return () => {
+    const now = new Date();
+
+    dispatch({
+      type: SET_NOW,
+      nowDateTime: now.toISOString()
+    });
+  };
+};
+
 export const resetDateTimeAction = function(dispatch) {
   return () => dispatch({ type: RESET_DATETIME });
 };
@@ -194,28 +206,6 @@ export const setMapBackgroundAction = function(dispatch) {
   return mapBackground =>
     dispatch({ type: SET_MAP_BACKGROUND, mapBackground: { ...mapBackground } });
 };
-
-// export const setTitleAction = function(dispatch) {
-//   return title => {
-//     dispatch({ type: SET_TITLE, title })
-//   };
-// }
-
-// export const setLogoPathAction = function(dispatch) {
-//   return logoPath => dispatch({ type: SET_LOGO, logoPath });
-// }
-
-// export const setAvailableMapBackgroundsAction = function(dispatch) {
-//   return mapBackgrounds => {
-//     dispatch({ type: SET_AVAILABLE_MAP_BACKGROUNDS, mapBackgrounds });
-//   }
-// }
-
-// export const setBBoxAction = function(dispatch) {
-//   return bounds => {
-//     dispatch({ type: SET_BBOX, bbox: bounds});
-//   }
-// }
 
 export function updateTimeseriesMetadata(uuid) {
   return dispatch => {
