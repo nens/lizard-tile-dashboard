@@ -3,6 +3,12 @@ Lizard-Tile-Dashboard
 
 This is the React/Redux-based dashboard web-app, useable by each Lizard portal.
 
+Client Configuration
+====================
+
+This product is designed to be configurable for different customers, by configuring the json fields in the "client_configuration" table.
+For more information on how to configure the tile dashboards visit [the configuration docs](./configuration/README.md)
+
 
 Installation
 ============
