@@ -129,13 +129,19 @@ Properties
 Below is a non-exhaustive list of properties.  
 Please help by extending this list.
 
+Tile dashboards:
+| Property name | What it does | format | Required | where it is defined |
+|----------|:-------------:|--------:|--------:|------:|
+| nowDateTimeUTC |  Defines the current time of the dashboard. If defined then gauge data will nog get updated | For example 2018-10-29T10:00:00Z  | No, defaults to current date/time | on root level of JSON |
+| isPublic | If true then the user does not need to login to open the dashboard | true/false  | No, defaults to false | on root level op JSON |
 
-| Property name | What it does | Required | where it is defined |
-|----------|:-------------:|--------:|------:|
-| nowDateTimeUTC |  Defines the current time of the dashboard. If defined then gaugae data will nog get updated | No, defaults to current date/time | on root level of JSON |
-| isPublic | If true then the user does not need to login to open the dashboard | No, defaults to false | on root level op JSON |
 
 
+Parramatta Dashboards
+| Property name | What it does | format | Required | where it is defined |
+|----------|:-------------:|--------:|--------:|------:|
+| refreshAutomatic | If true, then dashboard will be refreshed as defined in refreshEveryMiliseconds | true/false | No, defaults to false | on root level op JSON |
+| refreshEveryMiliseconds | Amount miliseconds that dashboard gets refreshed. Works only if refreshAutomatic=true  | integer | No, defaults to 300000 | on root level op JSON |
 
 
 
