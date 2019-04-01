@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import TimeseriesTile from "./TimeseriesTile";
 import StatisticsTile from "./StatisticsTile";
 import ExternalTile from "./ExternalTile";
+import PlotlyTile from "./PlotlyTile";
 import last from "lodash/last";
 import map from "lodash/map";
 import Map from "./Map";
@@ -356,6 +357,23 @@ class GridLayout extends Component {
                   isFull={false}
                   tile={tile}
                   source={"GridLayout"}
+                />
+              </Tile>
+            );
+          case "plotlytile":
+            return (
+              <Tile
+                {...this.props}
+                title={shortTitle}
+                onClick={() => history.push(`/full/${tile.id}`)}
+              >
+                <PlotlyTile
+                  isFull={false}
+                  timeseries={tile.timeseries}
+                  tile={tile}
+                  showAxis={true}
+                  marginLeft={0}
+                  marginTop={30}
                 />
               </Tile>
             );

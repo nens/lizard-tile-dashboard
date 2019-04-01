@@ -19,7 +19,7 @@ import {
   combineEventSeries
 } from "./TimeseriesChartUtils.js";
 
-class TimeseriesChartComponent extends Component {
+class PlotlyChartComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -488,6 +488,7 @@ class TimeseriesChartComponent extends Component {
   }
 
   render() {
+    console.log("render plotly chart .js");
     const { tile } = this.props;
 
     const timeseriesEvents = (tile.timeseries || [])
@@ -533,15 +534,47 @@ class TimeseriesChartComponent extends Component {
       tile.legendStrings
     );
 
+    console.log("this.props.isFull", this.props.isFull);
+
     return this.props.isFull
       ? this.renderFull(axes, combinedEvents, tile.thresholds)
       : this.renderTile(axes, combinedEvents);
   }
 
   renderFull(axes, combinedEvents, thresholds) {
+    const modeBarButtonsToRemove = this.state.modeBarButtonsToRemove;
+
     const Plot = plotComponentFactory(window.Plotly);
-    const layout = this.getLayout(axes, thresholds);
-    const { modeBarButtonsToRemove } = this.state;
+
+    const timeseriesEvents = (this.props.tile.data || [])
+      .filter(
+        data =>
+          data.xy &&
+          data.xy.uuid &&
+          this.props.timeseries[data.xy.uuid] &&
+          this.props.timeseriesEvents[data.xy.uuid] &&
+          this.props.timeseriesEvents[data.xy.uuid].events
+      )
+      .map(data => {
+        const uuid = data.xy.uuid;
+        return {
+          uuid: uuid,
+          observation_type: this.props.timeseries[uuid].observation_type,
+          events: this.props.timeseriesEvents[uuid].events
+        };
+      });
+
+    const preppedTimeseriesEvents = timeseriesEvents.map((serie, idx) => {
+      const events = {
+        x: serie.events.map(event => new Date(event.timestamp)),
+        y: serie.events
+          .map(event => (event.hasOwnProperty("max") ? event.max : event.sum))
+          .map(value => value && value.toFixed(2))
+      };
+      return events;
+    });
+
+    console.log("timeseriesEvents", timeseriesEvents);
 
     return (
       <div
@@ -554,9 +587,32 @@ class TimeseriesChartComponent extends Component {
           height: this.props.height
         }}
       >
-        <Plot
+        {/* <Plot
           data={combinedEvents}
-          layout={layout}
+          layout={this.getLayout(axes)}
+          config={{ displayModeBar: false }}
+        /> */}
+        <Plot
+          // data={[
+          //   {
+          //     "x": [1, 2, 3],
+          //     "y": [2, 6, 3],
+          //     "xy": {
+          //       "type": "timeseries",
+          //       "uuid": "86cefeba-6a03-4998-b8b0-aae61083dc5b"
+          //     },
+          //     "type": "scatter",
+          //     "mode": "lines+points",
+          //     "marker": {"color": "red"}
+          //   },
+          //   {
+          //     "type": "bar",
+          //     "x": [1, 2, 3],
+          //     "y": [2, 5, 3]
+          //   }
+          // ]}
+          data={preppedTimeseriesEvents}
+          // layout={{"width": 320, "height": 240, "title": "A Fancy Plot"}}
           config={{
             displayModeBar: true,
             modeBarButtonsToRemove
@@ -564,15 +620,98 @@ class TimeseriesChartComponent extends Component {
         />
       </div>
     );
+    /////////////////////////////////////////////
+    // const Plot = plotComponentFactory(window.Plotly);
+    // const layout = this.getLayout(axes, thresholds);
+    // const { modeBarButtonsToRemove } = this.state;
+
+    // return (
+    //   <div
+    //     id={this.state.componentRef}
+    //     ref={this.state.componentRef}
+    //     style={{
+    //       marginTop: this.props.marginTop,
+    //       marginLeft: this.props.marginLeft,
+    //       width: this.props.width,
+    //       height: this.props.height
+    //     }}
+    //   >
+    //     {/* <Plot
+    //       // data={[
+    //       //   {
+    //       //     "x": [1, 2, 3],
+    //       //     "y": [2, 6, 3],
+    //       //     // "xy": {
+    //       //     //   "type": "timeseries",
+    //       //     //   "uuid": "86cefeba-6a03-4998-b8b0-aae61083dc5b"
+    //       //     // },
+    //       //     "type": "scatter",
+    //       //     "mode": "lines+points",
+    //       //     "marker": {"color": "red"}
+    //       //   },
+    //       //   {
+    //       //     "type": "bar",
+    //       //     "x": [1, 2, 3],
+    //       //     "y": [2, 5, 3]
+    //       //   }
+    //       // ]}
+    //       data={combinedEvents}
+    //       // layout={{"width": 320, "height": 240, "title": "A Fancy Plot"}}
+    //       layout={layout}
+    //       config={{
+    //         displayModeBar: true,
+    //         modeBarButtonsToRemove
+    //       }}
+    //     /> */}
+    //     <Plot
+    //       data={combinedEvents}
+    //       layout={layout}
+    //       config={{
+    //         displayModeBar: true,
+    //         modeBarButtonsToRemove
+    //       }}
+    //     />
+    //   </div>
+    // );
   }
 
   renderTile(axes, combinedEvents) {
-    if (!this.props.height || !this.props.width || !window.Plotly) {
-      return null;
-    }
+    // if (!this.props.height || !this.props.width || !window.Plotly) {
+    //   return null;
+    // }
     const modeBarButtonsToRemove = this.state.modeBarButtonsToRemove;
 
     const Plot = plotComponentFactory(window.Plotly);
+
+    const timeseriesEvents = (this.props.tile.data || [])
+      .filter(
+        data =>
+          data.xy &&
+          data.xy.uuid &&
+          this.props.timeseries[data.xy.uuid] &&
+          this.props.timeseriesEvents[data.xy.uuid] &&
+          this.props.timeseriesEvents[data.xy.uuid].events
+      )
+      .map(data => {
+        const uuid = data.xy.uuid;
+        return {
+          uuid: uuid,
+          observation_type: this.props.timeseries[uuid].observation_type,
+          events: this.props.timeseriesEvents[uuid].events
+        };
+      });
+
+    const preppedTimeseriesEvents = timeseriesEvents.map((serie, idx) => {
+      const events = {
+        x: serie.events.map(event => new Date(event.timestamp)),
+        y: serie.events
+          .map(event => (event.hasOwnProperty("max") ? event.max : event.sum))
+          .map(value => value && value.toFixed(2))
+      };
+      return events;
+    });
+
+    console.log("timeseriesEvents", timeseriesEvents);
 
     return (
       <div
@@ -585,10 +724,36 @@ class TimeseriesChartComponent extends Component {
           height: this.props.height
         }}
       >
-        <Plot
+        {/* <Plot
           data={combinedEvents}
           layout={this.getLayout(axes)}
           config={{ displayModeBar: false }}
+        /> */}
+        <Plot
+          // data={[
+          //   {
+          //     "x": [1, 2, 3],
+          //     "y": [2, 6, 3],
+          //     "xy": {
+          //       "type": "timeseries",
+          //       "uuid": "86cefeba-6a03-4998-b8b0-aae61083dc5b"
+          //     },
+          //     "type": "scatter",
+          //     "mode": "lines+points",
+          //     "marker": {"color": "red"}
+          //   },
+          //   {
+          //     "type": "bar",
+          //     "x": [1, 2, 3],
+          //     "y": [2, 5, 3]
+          //   }
+          // ]}
+          data={preppedTimeseriesEvents}
+          layout={{ width: 320, height: 240, title: "A Fancy Plot" }}
+          config={{
+            displayModeBar: true,
+            modeBarButtonsToRemove
+          }}
         />
       </div>
     );
@@ -624,8 +789,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const TimeseriesChart = connect(mapStateToProps, mapDispatchToProps)(
-  TimeseriesChartComponent
+const PlotlyChart = connect(mapStateToProps, mapDispatchToProps)(
+  PlotlyChartComponent
 );
 
-export default TimeseriesChart;
+export default PlotlyChart;

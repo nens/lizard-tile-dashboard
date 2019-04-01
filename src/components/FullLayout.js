@@ -5,6 +5,7 @@ import Map from "./Map";
 import FullStatistics from "./FullStatistics";
 import ExternalTile from "./ExternalTile";
 import TimeseriesTile from "./TimeseriesTile";
+import PlotlyTile from "./PlotlyTile";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
@@ -123,6 +124,18 @@ class FullLayout extends Component {
             height={height}
             showingBar={!isMobile}
             source={"FullLayout"}
+          />
+        );
+        break;
+      case "plotlytile":
+        element = (
+          <PlotlyTile
+            isFull={true}
+            timeseries={selectedTile.timeseries}
+            tile={selectedTile}
+            showAxis={true}
+            marginLeft={isMobile ? 0 : FULL_LAYOUT_SIDEBAR_WIDTH}
+            marginTop={50}
           />
         );
         break;

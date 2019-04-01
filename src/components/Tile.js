@@ -3,6 +3,7 @@ import styles from "./Tile.css";
 
 class Tile extends Component {
   render() {
+    console.log("render Tile.js");
     const {
       onClick,
       title,
