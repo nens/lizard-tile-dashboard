@@ -612,7 +612,12 @@ class PlotlyChartComponent extends Component {
           //   }
           // ]}
           data={preppedTimeseriesEvents}
-          // layout={{"width": 320, "height": 240, "title": "A Fancy Plot"}}
+          layout={{
+            autosize: true,
+            title: "A Fancy Plot"
+          }}
+          useResizeHandler={true}
+          style={{ width: "100%", height: "100%" }}
           config={{
             displayModeBar: true,
             modeBarButtonsToRemove
@@ -749,7 +754,13 @@ class PlotlyChartComponent extends Component {
           //   }
           // ]}
           data={preppedTimeseriesEvents}
-          layout={{ width: 320, height: 240, title: "A Fancy Plot" }}
+          // layout={{ width: 320, height: 240, title: "A Fancy Plot" }}
+          layout={{
+            autosize: true,
+            title: "A Fancy Plot"
+          }}
+          useResizeHandler={true}
+          style={{ width: "100%", height: "100%" }}
           config={{
             displayModeBar: true,
             modeBarButtonsToRemove
