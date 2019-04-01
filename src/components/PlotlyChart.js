@@ -19,6 +19,8 @@ import {
   combineEventSeries
 } from "./TimeseriesChartUtils.js";
 
+const Plot = plotComponentFactory(window.Plotly);
+
 class PlotlyChartComponent extends Component {
   constructor(props) {
     super(props);
@@ -26,96 +28,13 @@ class PlotlyChartComponent extends Component {
     this.state = {
       componentHasMountedOnce: false,
       componentRef: "comp-" + parseInt(Math.random(), 10),
-      combinedEvents: null,
-      modeBarButtonsToRemove: [
-        // Nice to have, always work as expected:
-        ///////////////////////////////////////////////////////////////////////
-        // 'toImage'               /* Download plot as png */,
-        "sendDataToCloud" /* Edit in chart studio */,
-
-        // Mutual exclusive; comment 0 or all 4:
-        ///////////////////////////////////////////////////////////////////////
-        "zoom2d",
-        "pan2d",
-        "select2d",
-        "lasso2d",
-
-        // Mutual exclusive; Comment 0 or both:
-        ///////////////////////////////////////////////////////////////////////
-        "zoomIn2d",
-        "zoomOut2d",
-
-        // Used to reset scaling (=achieved via zoomIn2d/zoomOut2d):
-        ///////////////////////////////////////////////////////////////////////
-        //'resetScale2d',
-
-        // Mutual exclusive; comment 0 or both:
-        ///////////////////////////////////////////////////////////////////////
-        "hoverClosestCartesian" /* Show closest data on hover */,
-        "hoverCompareCartesian" /* Compare data on hover */,
-
-        "toggleSpikelines"
-      ]
+      combinedEvents: null
     };
   }
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Component - lifecycle functions //////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////
-
   componentWillMount() {
     this.updateTimeseries();
-
-    const axes = this.getAxesData();
-
-    const timeseriesEvents = (this.props.tile.timeseries || [])
-      .filter(
-        uuid =>
-          this.props.timeseries[uuid] &&
-          this.props.timeseriesEvents[uuid] &&
-          this.props.timeseriesEvents[uuid].events
-      )
-      .map(uuid => {
-        return {
-          uuid: uuid,
-          observation_type: this.props.timeseries[uuid].observation_type,
-          events: this.props.timeseriesEvents[uuid].events
-        };
-      });
-
-    const rasterEvents = (this.props.tile.rasterIntersections || [])
-      .map(intersection => {
-        const raster = this.props.getRaster(intersection.uuid).object;
-        if (!raster) {
-          return null;
-        }
-
-        const events = this.getRasterEvents(raster, intersection.geometry);
-        if (!events) return null;
-
-        return {
-          uuid: intersection.uuid,
-          observation_type: raster.observation_type,
-          events: events
-        };
-      })
-      .filter(e => e !== null); // Remove nulls
-
-    const combinedEvents = combineEventSeries(
-      timeseriesEvents.concat(rasterEvents),
-      axes,
-      this.props.tile.colors,
-      this.props.isFull
-    );
-
-    this.setState({
-      combinedEvents
-    });
   }
-
-  /////////////////////////////////////////////////////////////////////////////
-  // Component - custom functions /////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////////////////////
 
   updateTimeseries() {
     (this.props.tile.timeseries || []).map(uuid =>
@@ -161,34 +80,6 @@ class PlotlyChartComponent extends Component {
     }
   }
 
-  getAxesData() {
-    const axes = [];
-
-    this.allUuids().forEach(uuid => {
-      const observationType = this.observationType(uuid);
-      if (!observationType) {
-        return null;
-      }
-
-      const axis = indexForType(axes, observationType);
-
-      if (axis === -1) {
-        if (axes.length >= 2) {
-          console.error(
-            "Can't have a third Y axis for timeseries: ",
-            uuid,
-            " have:",
-            axes
-          );
-          return axes;
-        }
-        axes.push(observationType);
-      }
-    });
-
-    return axes;
-  }
-
   isRelevantTimeseriesAlarm(alarm) {
     const { tile } = this.props;
 
@@ -215,72 +106,6 @@ class PlotlyChartComponent extends Component {
     );
   }
 
-  alarmReferenceLines(axes) {
-    const { alarms, isFull } = this.props;
-
-    if (!alarms.data || !alarms.data.length) {
-      return null;
-    }
-
-    // Select those alarms that are related to one of the timeseries on
-    // this tile.
-    const relevantAlarms = alarms.data.filter(
-      alarm =>
-        this.isRelevantTimeseriesAlarm(alarm) ||
-        this.isRelevantRasterAlarm(alarm)
-    );
-
-    const shapes = [];
-    const annotations = [];
-
-    relevantAlarms.forEach(alarm => {
-      // A timeseriesAlarm can have multiple thresholds, make a reference line
-      // for each.
-      return alarm.thresholds.forEach(threshold => {
-        let color;
-
-        if (
-          alarm.warning_threshold &&
-          alarm.warning_threshold.value === threshold.value
-        ) {
-          color = "red";
-        } else {
-          color = "#888";
-        }
-
-        // Figure out which Y axis the value is on so we know where to plot it
-        // The TimeseriesAlarm also have an ObservationType itself, it should be exactly
-        // the same as that of the timeseries, but I think using the timeseries' observation
-        // type is more robust as we used those to construct the Y axes.
-        const observationType = alarm.isTimeseriesAlarm()
-          ? this.observationType(alarm.timeseries.uuid)
-          : alarm.observation_type;
-
-        const axisIndex = indexForType(axes, observationType);
-
-        if (axisIndex === 0 || axisIndex === 1) {
-          shapes.push({
-            type: "line",
-            layer: "above",
-            xref: "paper",
-            x0: 0,
-            x1: 1,
-            yref: axisIndex === 0 ? "y" : "y2",
-            y0: threshold.value,
-            y1: threshold.value,
-            line: {
-              color: color,
-              width: isFull ? 2 : 1,
-              dash: "dot"
-            }
-          });
-        }
-      });
-    });
-
-    return { shapes, annotations };
-  }
-
   getRasterEvents(raster, geometry) {
     const allEvents = this.props.rasterEvents;
     const geomKey = `${geometry.coordinates[0]}-${geometry.coordinates[1]}`;
@@ -294,258 +119,7 @@ class PlotlyChartComponent extends Component {
     return null;
   }
 
-  getThresholdLine(threshold, yref) {
-    return {
-      type: "line",
-      layer: "above",
-      x0: 0,
-      x1: 1,
-      xref: "paper",
-      yref: yref,
-      y0: parseFloat(threshold.value),
-      y1: parseFloat(threshold.value),
-      line: {
-        width: 2,
-        color: threshold.color
-      }
-    };
-  }
-
-  getThresholdAnnotation(threshold, yref) {
-    return {
-      text: " " + threshold.label + " ",
-      bordercolor: threshold.color,
-      xref: "paper",
-      x0: 0,
-      x1: 1,
-      yanchor: "bottom",
-      yref: yref,
-      y: parseFloat(threshold.value),
-      showarrow: false
-    };
-  }
-
-  getAnnotationsAndShapes(axes, thresholds) {
-    const { isFull } = this.props;
-
-    let annotations = [];
-    let shapes = [];
-    let thresholdLines, thresholdAnnotations;
-
-    // Return lines for alarms and for "now".
-    const now = new Date(this.props.now).getTime();
-    const alarmReferenceLines = this.alarmReferenceLines(axes);
-
-    if (thresholds) {
-      thresholdLines = thresholds.map(th => {
-        // Welke y as?
-        let yref;
-        if (axes.length === 2 && axes[1].unit === th.unitReference) {
-          yref = "y2";
-        } else {
-          yref = "y";
-        }
-
-        return this.getThresholdLine(th, yref);
-      });
-
-      thresholdAnnotations = thresholds.map(th => {
-        // Welke y as?
-        let yref;
-        if (axes.length === 2 && axes[1].unit === th.unitReference) {
-          yref = "y2";
-        } else {
-          yref = "y";
-        }
-        return this.getThresholdAnnotation(th, yref);
-      });
-    }
-
-    if (alarmReferenceLines) {
-      annotations = alarmReferenceLines.annotations;
-      shapes = alarmReferenceLines.shapes;
-    }
-
-    const nowLine = {
-      type: "line",
-      layer: "above",
-      x0: now,
-      x1: now,
-      yref: "paper",
-      y0: 0,
-      y1: 1,
-      line: {
-        color: "black",
-        width: isFull ? 2 : 1
-      }
-    };
-
-    const nowAnnotation = {
-      text: " NOW ",
-      bordercolor: "black",
-      x: now,
-      xanchor: "right",
-      yref: "paper",
-      y: 1,
-      yanchor: "top",
-      showarrow: false
-    };
-
-    if (thresholds) {
-      thresholdLines.forEach(thLine => {
-        shapes.push(thLine);
-      });
-      thresholdAnnotations.forEach(thAnnot => {
-        annotations.push(thAnnot);
-      });
-    }
-
-    annotations.push(nowAnnotation);
-    shapes.push(nowLine);
-
-    return { annotations, shapes };
-  }
-
-  getYAxis(axes, idx) {
-    if (idx >= axes.length) return null;
-
-    const observationType = axes[idx];
-
-    const isRatio = observationType.scale === "ratio";
-
-    const yaxis = {
-      title: axisLabel(observationType),
-      type: "linear",
-      rangemode: isRatio ? "tozero" : "normal",
-      side: idx === 0 ? "left" : "right",
-      overlaying: idx === 1 ? "y" : undefined,
-      //      showspikes: true,
-      //      spikemode: 'toaxis+across+marker',
-      ticks: "outside",
-      showgrid: idx === 0,
-      zeroline: isRatio
-    };
-
-    if (isRatio) {
-      yaxis.tick0 = 0;
-    }
-
-    return yaxis;
-  }
-
-  getLayout(axes, thresholds = null) {
-    const { width, height, isFull, showAxis } = this.props;
-
-    // We have a bunch of lines with labels, the labels are annotations and
-    // the lines are shapes, that's why we have one function to make them.
-    // Only full mode shows the labels.
-    const annotationsAndShapes = this.getAnnotationsAndShapes(axes, thresholds);
-
-    let margin = {};
-
-    if (isFull || showAxis) {
-      margin = {
-        t: 20,
-        l: 50,
-        r: 50,
-        b: 40
-      };
-    } else {
-      margin = {
-        t: 5,
-        l: 5,
-        r: 5,
-        b: 5
-      };
-    }
-
-    return {
-      width: width,
-      height: height,
-      yaxis: {
-        ...this.getYAxis(axes, 0),
-        visible: showAxis
-      },
-      yaxis2: {
-        ...this.getYAxis(axes, 1),
-        visible: showAxis
-      },
-      showlegend: isFull,
-      legend: {
-        x: 0.02,
-        borderwidth: 1
-      },
-      margin: margin,
-      xaxis: {
-        visible: showAxis,
-        type: "date",
-        showgrid: true,
-        range: [this.props.start, this.props.end]
-      },
-      shapes: annotationsAndShapes.shapes,
-      annotations: isFull ? annotationsAndShapes.annotations : []
-    };
-  }
-
   render() {
-    console.log("render plotly chart .js");
-    const { tile } = this.props;
-
-    const timeseriesEvents = (tile.timeseries || [])
-      .filter(
-        uuid =>
-          this.props.timeseries[uuid] &&
-          this.props.timeseriesEvents[uuid] &&
-          this.props.timeseriesEvents[uuid].events
-      )
-      .map(uuid => {
-        return {
-          uuid: uuid,
-          observation_type: this.props.timeseries[uuid].observation_type,
-          events: this.props.timeseriesEvents[uuid].events
-        };
-      });
-
-    const rasterEvents = (tile.rasterIntersections || [])
-      .map(intersection => {
-        const raster = this.props.getRaster(intersection.uuid).object;
-        if (!raster) {
-          return null;
-        }
-
-        const events = this.getRasterEvents(raster, intersection.geometry);
-        if (!events) return null;
-
-        return {
-          uuid: intersection.uuid,
-          observation_type: raster.observation_type,
-          events: events
-        };
-      })
-      .filter(e => e !== null); // Remove nulls
-
-    const axes = this.getAxesData();
-
-    const combinedEvents = combineEventSeries(
-      timeseriesEvents.concat(rasterEvents),
-      axes,
-      tile.colors,
-      this.props.isFull,
-      tile.legendStrings
-    );
-
-    console.log("this.props.isFull", this.props.isFull);
-
-    return this.props.isFull
-      ? this.renderFull(axes, combinedEvents, tile.thresholds)
-      : this.renderTile(axes, combinedEvents);
-  }
-
-  renderFull(axes, combinedEvents, thresholds) {
-    const modeBarButtonsToRemove = this.state.modeBarButtonsToRemove;
-
-    const Plot = plotComponentFactory(window.Plotly);
-
     const timeseriesEvents = (this.props.tile.data || [])
       .filter(
         data =>
@@ -574,8 +148,6 @@ class PlotlyChartComponent extends Component {
       return events;
     });
 
-    console.log("timeseriesEvents", timeseriesEvents);
-
     return (
       <div
         id={this.state.componentRef}
@@ -587,30 +159,7 @@ class PlotlyChartComponent extends Component {
           height: this.props.height
         }}
       >
-        {/* <Plot
-          data={combinedEvents}
-          layout={this.getLayout(axes)}
-          config={{ displayModeBar: false }}
-        /> */}
         <Plot
-          // data={[
-          //   {
-          //     "x": [1, 2, 3],
-          //     "y": [2, 6, 3],
-          //     "xy": {
-          //       "type": "timeseries",
-          //       "uuid": "86cefeba-6a03-4998-b8b0-aae61083dc5b"
-          //     },
-          //     "type": "scatter",
-          //     "mode": "lines+points",
-          //     "marker": {"color": "red"}
-          //   },
-          //   {
-          //     "type": "bar",
-          //     "x": [1, 2, 3],
-          //     "y": [2, 5, 3]
-          //   }
-          // ]}
           data={preppedTimeseriesEvents}
           layout={{
             autosize: true,
@@ -619,151 +168,7 @@ class PlotlyChartComponent extends Component {
           useResizeHandler={true}
           style={{ width: "100%", height: "100%" }}
           config={{
-            displayModeBar: true,
-            modeBarButtonsToRemove
-          }}
-        />
-      </div>
-    );
-    /////////////////////////////////////////////
-    // const Plot = plotComponentFactory(window.Plotly);
-    // const layout = this.getLayout(axes, thresholds);
-    // const { modeBarButtonsToRemove } = this.state;
-
-    // return (
-    //   <div
-    //     id={this.state.componentRef}
-    //     ref={this.state.componentRef}
-    //     style={{
-    //       marginTop: this.props.marginTop,
-    //       marginLeft: this.props.marginLeft,
-    //       width: this.props.width,
-    //       height: this.props.height
-    //     }}
-    //   >
-    //     {/* <Plot
-    //       // data={[
-    //       //   {
-    //       //     "x": [1, 2, 3],
-    //       //     "y": [2, 6, 3],
-    //       //     // "xy": {
-    //       //     //   "type": "timeseries",
-    //       //     //   "uuid": "86cefeba-6a03-4998-b8b0-aae61083dc5b"
-    //       //     // },
-    //       //     "type": "scatter",
-    //       //     "mode": "lines+points",
-    //       //     "marker": {"color": "red"}
-    //       //   },
-    //       //   {
-    //       //     "type": "bar",
-    //       //     "x": [1, 2, 3],
-    //       //     "y": [2, 5, 3]
-    //       //   }
-    //       // ]}
-    //       data={combinedEvents}
-    //       // layout={{"width": 320, "height": 240, "title": "A Fancy Plot"}}
-    //       layout={layout}
-    //       config={{
-    //         displayModeBar: true,
-    //         modeBarButtonsToRemove
-    //       }}
-    //     /> */}
-    //     <Plot
-    //       data={combinedEvents}
-    //       layout={layout}
-    //       config={{
-    //         displayModeBar: true,
-    //         modeBarButtonsToRemove
-    //       }}
-    //     />
-    //   </div>
-    // );
-  }
-
-  renderTile(axes, combinedEvents) {
-    // if (!this.props.height || !this.props.width || !window.Plotly) {
-    //   return null;
-    // }
-    const modeBarButtonsToRemove = this.state.modeBarButtonsToRemove;
-
-    const Plot = plotComponentFactory(window.Plotly);
-
-    const timeseriesEvents = (this.props.tile.data || [])
-      .filter(
-        data =>
-          data.xy &&
-          data.xy.uuid &&
-          this.props.timeseries[data.xy.uuid] &&
-          this.props.timeseriesEvents[data.xy.uuid] &&
-          this.props.timeseriesEvents[data.xy.uuid].events
-      )
-      .map(data => {
-        const uuid = data.xy.uuid;
-        return {
-          uuid: uuid,
-          observation_type: this.props.timeseries[uuid].observation_type,
-          events: this.props.timeseriesEvents[uuid].events
-        };
-      });
-
-    const preppedTimeseriesEvents = timeseriesEvents.map((serie, idx) => {
-      const events = {
-        x: serie.events.map(event => new Date(event.timestamp)),
-        y: serie.events
-          .map(event => (event.hasOwnProperty("max") ? event.max : event.sum))
-          .map(value => value && value.toFixed(2))
-      };
-      return events;
-    });
-
-    console.log("timeseriesEvents", timeseriesEvents);
-
-    return (
-      <div
-        id={this.state.componentRef}
-        ref={this.state.componentRef}
-        style={{
-          marginTop: this.props.marginTop,
-          marginLeft: this.props.marginLeft,
-          width: this.props.width,
-          height: this.props.height
-        }}
-      >
-        {/* <Plot
-          data={combinedEvents}
-          layout={this.getLayout(axes)}
-          config={{ displayModeBar: false }}
-        /> */}
-        <Plot
-          // data={[
-          //   {
-          //     "x": [1, 2, 3],
-          //     "y": [2, 6, 3],
-          //     "xy": {
-          //       "type": "timeseries",
-          //       "uuid": "86cefeba-6a03-4998-b8b0-aae61083dc5b"
-          //     },
-          //     "type": "scatter",
-          //     "mode": "lines+points",
-          //     "marker": {"color": "red"}
-          //   },
-          //   {
-          //     "type": "bar",
-          //     "x": [1, 2, 3],
-          //     "y": [2, 5, 3]
-          //   }
-          // ]}
-          data={preppedTimeseriesEvents}
-          // layout={{ width: 320, height: 240, title: "A Fancy Plot" }}
-          layout={{
-            autosize: true,
-            title: "A Fancy Plot"
-          }}
-          useResizeHandler={true}
-          style={{ width: "100%", height: "100%" }}
-          config={{
-            displayModeBar: true,
-            modeBarButtonsToRemove
+            displayModeBar: true
           }}
         />
       </div>
