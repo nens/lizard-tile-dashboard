@@ -131,9 +131,9 @@ class FullLayout extends Component {
         element = (
           <PlotlyTile
             isFull={true}
-            timeseries={selectedTile.timeseries}
+            // timeseries={selectedTile.timeseries}
             tile={selectedTile}
-            showAxis={true}
+            // showAxis={true}
             marginLeft={isMobile ? 0 : FULL_LAYOUT_SIDEBAR_WIDTH}
             marginTop={50}
           />

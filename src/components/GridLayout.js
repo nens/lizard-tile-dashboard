@@ -368,12 +368,12 @@ class GridLayout extends Component {
                 onClick={() => history.push(`/full/${tile.id}`)}
               >
                 <PlotlyTile
-                  isFull={false}
-                  timeseries={tile.timeseries}
+                  // isFull={false}
+                  // timeseries={tile.timeseries}
                   tile={tile}
-                  showAxis={true}
+                  // showAxis={true}
                   marginLeft={0}
-                  marginTop={30}
+                  marginTop={40}
                 />
               </Tile>
             );
