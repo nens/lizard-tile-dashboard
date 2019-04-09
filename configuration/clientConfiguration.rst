@@ -52,7 +52,7 @@ Below is an example.
 CAUTION ! Please be aware that comments are not valid JSON and should be removed before using below example in real life:  
 
 
-``` javascript
+``
   "tiles": [
     { 
       // Example of a map tile
@@ -117,7 +117,7 @@ CAUTION ! Please be aware that comments are not valid JSON and should be removed
       "id": 15
     },
   ],
-```
+``
 
 
 ---------------
@@ -207,7 +207,7 @@ To add timelines to a type: timeseries tile, you can add the following to this t
 All the properties (epochTimeInMilliSeconds, color, lineDash, text, isRelativeTimeFromNow) are mandatory to configure a timeline.
 The time must be set in milliseconds. The time can be set relative from now (by setting isRelativeTimeFromNow to true and epochTimeInMilliSeconds to the time you want it to be relatiive from now, either a positive or negative number). The time can also be set absolute. In this case, isRelativeTimeFromNow should be set to false and epochTimeInMilliSeconds should be set to the epoch time in milliseconds.
 
-```
+``
 "timelines": [
   {
     "epochTimeInMilliSeconds": 0,
@@ -238,13 +238,13 @@ The time must be set in milliseconds. The time can be set relative from now (by 
     "isRelativeTimeFromNow": false
   }
 ]
-```
+``
 
 To add backgroundColorShapes (that create a background color) to a type: timeseries tile, you can add the following to this tile:
 All the properties (x1EpochTimeInMilliSeconds, x2EpochTimeInMilliSeconds, color, opacity, isRelativeTimeFromNow) are mandatory to configure a backgroundColorShape.
 Like with the timelines, the time must be set in milliseconds. The time can be set relative from now (by setting isRelativeTimeFromNow to true and epochTimeInMilliSeconds to the time you want it to be relatiive from now, either a positive or negative number). The time can also be set absolute. In this case, isRelativeTimeFromNow should be set to false and epochTimeInMilliSeconds should be set to the epoch time in milliseconds.
 
-```
+``
 "backgroundColorShapes": [
   {
     "x1EpochTimeInMilliSeconds": 0,
@@ -268,7 +268,7 @@ Like with the timelines, the time must be set in milliseconds. The time can be s
     "isRelativeTimeFromNow": false
   }
 ]
-```
+``
 
 If you want a backgroundColorShape with a line to the right of it, you should create a timeline on that moment in time.
 
@@ -284,15 +284,15 @@ The legend for timeseries tiles can also be configured.
 
 Below shows an example of what to add to the configuration of a timeseries tile for a legend that is white with 0.25 opacity:
 
-```
+``
 "legend": {
   "bgcolor": "rgba(255, 255, 255, 0.25)"
 }
-```
+``
 
 But there are more possibilities. Below are the possibilities for legend configuration. Add them to a timeseries tile. All possibilities are optional.
 
-```
+``
 "legend": {
   "x": 5,
   "xanchor": "right",
@@ -312,13 +312,13 @@ But there are more possibilities. Below are the possibilities for legend configu
   "uirevision": "",
   "valign": "top"
 }
-```
+``
 
 **Legend (map)**
 
 The legend of the map can also be configured.
 To configure the opacity of this legend, add an opacity to the configuration of an tile with type map, like below:
 
-```
+``
 "opacity": 0.8
-```
+``
