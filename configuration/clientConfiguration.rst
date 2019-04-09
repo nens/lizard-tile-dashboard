@@ -49,7 +49,7 @@ Since there are multiple tiles per dashboards the tiles are defined in the JSON 
 Each element of this tile array is itself a [JSON object](https://www.w3schools.com/js/js_json_objects.asp) defining the content of the respective tile.  
 
 Below is an example.   
-CAUTION ! Please be aware that comments are not valid JSON and should be removed before using below example in real life::
+CAUTION ! Please be aware that comments are not valid JSON and should be removed before using below example in real life:::
 
   "tiles": [
     { 
