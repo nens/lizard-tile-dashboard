@@ -211,6 +211,8 @@ isPublic
 type: map
 =========
 
+The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
+
 assetTypes
 ----------
 - If set, all measurement stations in the map area are retrieved from the API and shown on the map.
@@ -298,11 +300,19 @@ wmsLayers
 type: timeseries
 ================
 
+The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
+
 type: statistics
 ================
 
+Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
+
+The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
+
 type: external
 ==============
+
+The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
 
 
 ---------------------------------
@@ -372,6 +382,8 @@ refreshEveryMiliseconds
 type: map
 =========
 
+The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
+
 assetTypes (also in Parramatta?)
 -------------------------------
 - If set, all measurement stations in the map area are retrieved from the API and shown on the map.
@@ -382,11 +394,22 @@ assetTypes (also in Parramatta?)
 type: timeseries
 ================
 
+The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
+
 type: statistics
 ================
 
+Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
+
+The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
+
 type: external
 ==============
+
+The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
+
+
+
 
 
 In this folder, some examples are shown for the client configuration in the admin.
