@@ -171,7 +171,7 @@ Meta-properties
 tiles
 -----
 - What the tiles of the dashboard should show. See the next paragraph Tiles for what properties you can set for the Tiles.
-- Object
+- array of tile objects.
 - Yes
 - on root level of JSON (?)
 
@@ -197,7 +197,7 @@ title
 -----
 - The full (long) title of the tile that will be shown on the fullscreen view of the tile.
 - string
-- Yes (?)
+- Yes
 - on root level of JSON
 
 shortTitle
@@ -335,7 +335,7 @@ timeseries
 ----------
 - Timeseries UUIDs.
 - Array of timeseries UUIDs.
-- Yes (?)
+- Yes
 - in timeseries of JSON (?)
 
 colors
