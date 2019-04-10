@@ -163,9 +163,16 @@ Example
 Meta-properties
 ===============
 
+periodHoursRelativeToNow
+------------------------
+- It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
+- 2-element array of integers.
+- No. If not set, the default is [-24, 12].
+- on root level of JSON (?)
 
-Properties for all tiles
-========================
+
+Properties per tile
+===================
 
 id
 --
@@ -216,8 +223,8 @@ isPublic
 - No, defaults to false
 - on root level of JSON
 
-type: map
-=========
+type: map tile
+==============
 
 The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
 
@@ -305,8 +312,8 @@ wmsLayers
 - in map of JSON (?)
 
 
-type: timeseries
-================
+type: timeseries tile
+=====================
 
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
 
@@ -346,15 +353,15 @@ rasterIntersections
 - ?
 - in timeseries of JSON (?)
 
-type: statistics
-================
+type: statistics tile
+=====================
 
 Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
 
 The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
 
-type: external
-==============
+type: external tile
+===================
 
 The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
 
@@ -393,8 +400,8 @@ Meta-properties
 ===============
 
 
-Properties for all tiles
-========================
+Properties per tile
+===================
 
 id
 --
@@ -450,22 +457,22 @@ type: map
 
 The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
 
-type: timeseries
-================
+type: timeseries tile
+=====================
 
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
 
 It’s not possible yet to set the color of charts of raster intersections, they are a few shades of blue at the moment.
 
-type: statistics
-================
+type: statistics tile
+=====================
 
 Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
 
 The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
 
-type: external
-==============
+type: external tile
+===================
 
 The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
 
