@@ -24,7 +24,7 @@ If the "slug" field has the value "dashboard" then the app can also be accessed 
 `<portal>/`dashboard`/`  
 
 The example in above screenshot would thus be accessable via the url:
-[https://china.lizard.net/dashboard/view1](https://china.lizard.net/dashboard/view1)
+`https://china.lizard.net/dashboard/view1 <https://china.lizard.net/dashboard/view1>`_
 
 
 -----------------------
