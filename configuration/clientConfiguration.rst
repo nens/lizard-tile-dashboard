@@ -5,6 +5,11 @@ Lizard-Tile-Dashboard Configuration and Parramatta-Configuration
 .. contents::
   :local:
 
+
+------------
+Introduction
+------------
+
 This is a fully configurable dashboard app.  
 Users can define themselves what each dashboard will show and are able to define multiple dashboards with each their own url.  
 Users will be able to do so in the "client_configuration" admin page of the lizard-nxt application: "/admin/lizard_nxt/clientconfiguration".  
