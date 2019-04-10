@@ -168,6 +168,13 @@ Example
 Meta-properties
 ===============
 
+tiles
+-----
+- What the tiles of the dashboard should show. See the next paragraph Tiles for what properties you can set for the Tiles.
+- Object
+- Yes
+- on root level of JSON (?)
+
 periodHoursRelativeToNow
 ------------------------
 - It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
@@ -176,8 +183,8 @@ periodHoursRelativeToNow
 - on root level of JSON (?)
 
 
-Properties per tile
-===================
+Tiles
+=====
 
 id
 --
@@ -404,9 +411,16 @@ Example
 Meta-properties
 ===============
 
+tiles
+-----
+- What the tiles of the dashboard should show. See the next paragraph Tiles for what properties you can set for the Tiles.
+- Object
+- Yes
+- on root level of JSON (?)
 
-Properties per tile
-===================
+
+Tiles
+=====
 
 id
 --
