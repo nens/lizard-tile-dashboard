@@ -227,7 +227,7 @@ bbox
 
 datetime
 --------
-- Objects for relative time that look like
+- Objects for relative time. Example:
   ::
 
     {
