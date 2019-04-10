@@ -147,10 +147,15 @@ Tile dashboards:
 
 Properties name Example
 -----------------------
-- What it does
-- Format
-- Required
-- Where it is defined
++-+-+
+|What it does|Explanation|
++-+-+
+|Format|String/ Integer/ ..|
++-+-+
+|Required|Yes/ No|
++-+-+
+|Where it is defined|on root level of JSON/ ..|
++-+-+
 
 **Actual properties:**
 
