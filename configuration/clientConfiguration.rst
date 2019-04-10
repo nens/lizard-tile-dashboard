@@ -185,7 +185,8 @@ Properties name Example
 refreshAutomatic
 ----------------
 - If true, then dashboard will be refreshed as defined in refreshEveryMiliseconds
-- true/false | No, defaults to false
+- true/false 
+- No, defaults to false
 - on root level op JSON
 
 refreshEveryMiliseconds
