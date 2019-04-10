@@ -1,6 +1,6 @@
-======================================================
-Lizard-Tile-Configuration and Parramatta-Configuration
-======================================================
+================================================================
+Lizard-Tile-Dashboard Configuration and Parramatta-Configuration
+================================================================
 
 .. contents::
   :local:
@@ -41,6 +41,7 @@ A dashboard typically contains of:
   - *timeseries*: a temporal graph, implemented in `Plotly <https://plot.ly/javascript/>`_
   - *external*: other media type (image, gif, etc)
 
+The JSON stored in the admin is hard to edit because all formatting is lost. It can be made neater with online tools like `https://jsoneditoronline.org/ <https://jsoneditoronline.org/>`_.
 
 -----
 Tiles
@@ -49,7 +50,7 @@ Tiles
 Each dashboard can contain one or more tiles.  
 Tiles are the little squares on the main page.  
 Within the dashboard app, each tile has unique content and can be made fullscreen by clicking on it.  
-Since there are multiple tiles per dashboards the tiles are defined in the JSON format with an `array <https://www.w3schools.com/js/js_json_arrays.asp>`_.  
+Since there are multiple tiles per dashboards the tiles are defined in the JSON format with an `array <https://www.w3schools.com/js/js_json_arrays.asp>`_ of objects.
 Each element of this tile array is itself a `JSON object <https://www.w3schools.com/js/js_json_objects.asp>`_ defining the content of the respective tile.  
 
 Below is an example.   
@@ -153,6 +154,41 @@ Properties name Example
 
 **Actual properties:**
 
+id
+--
+- Must be unique for each tile. To track which is currently selected.
+- integer
+- Yes
+- on root level of JSON
+
+title
+-----
+- The full (long) title of the tile that will be shown on the fullscreen view of the tile.
+- string
+- Yes (?)
+- on root level of JSON
+
+shortTitle
+----------
+- Will be used for the small versions of the tile if set, otherwise the normal title is used.
+- string
+- No
+- on root level of JSON
+
+type
+----
+- Type of the tile that decides the other fields below. Currently one of “map”, “timeseries”, “statistics” or “external”.
+- string
+- Yes
+- on root level of JSON
+
+viewInLizardLink
+----------------
+- If set then this is linked from the header above the fullscreen version of the tile.
+- string
+- No
+- on root level of JSON
+
 nowDateTimeUTC
 --------------
 - Defines the current time of the dashboard. If defined then gauge data will nog get updated
@@ -165,7 +201,7 @@ isPublic
 - If true then the user does not need to login to open the dashboard
 - true/false
 - No, defaults to false
-- on root level on JSON
+- on root level of JSON
 
 
 Parramatta Dashboards
@@ -182,19 +218,54 @@ Properties name Example
 
 **Actual properties:**
 
+id
+--
+- Must be unique for each tile. To track which is currently selected.
+- integer
+- Yes
+- on root level of JSON
+
+title
+-----
+- The full (long) title of the tile that will be shown on the fullscreen view of the tile.
+- string
+- Yes (?)
+- on root level of JSON
+
+shortTitle
+----------
+- Will be used for the small versions of the tile if set, otherwise the normal title is used.
+- string
+- No
+- on root level of JSON
+
+type
+----
+- Type of the tile that decides the other fields below. Currently one of “map”, “timeseries”, “statistics” or “external”.
+- string
+- Yes
+- on root level of JSON
+
+viewInLizardLink
+----------------
+- If set then this is linked from the header above the fullscreen version of the tile.
+- string
+- No
+- on root level of JSON
+
 refreshAutomatic
 ----------------
 - If true, then dashboard will be refreshed as defined in refreshEveryMiliseconds
 - true/false 
 - No, defaults to false
-- on root level op JSON
+- on root level of JSON
 
 refreshEveryMiliseconds
 -----------------------
 - Amount miliseconds that dashboard gets refreshed. Works only if refreshAutomatic=true
 - integer
 - No, defaults to 300000
-- on root level op JSON
+- on root level of JSON
 
 
 In this folder, some examples are shown for the client configuration in the admin.
