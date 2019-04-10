@@ -34,8 +34,6 @@ import {
   setMapBackgroundAction
 } from "../actions";
 
-console.log("GRIDLAYOUT STYLES = "+JSON.stringify(styles, null, 2));
-
 class GridLayout extends Component {
   constructor(props) {
     super(props);
