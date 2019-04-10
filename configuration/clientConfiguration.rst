@@ -350,6 +350,20 @@ type: external
 
 The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
 
+imageUrl
+--------
+- Url of image to show in the tile.
+- String.
+- No, an icon is shown as default.
+- in external of JSON (?)
+
+url
+---
+- Web page to show in an iframe in the fullscreen version.
+- String.
+- No, nothing is shown as default.
+- in external of JSON (?)
+
 
 ---------------------------------
 Properties Parramatta dashboards:
