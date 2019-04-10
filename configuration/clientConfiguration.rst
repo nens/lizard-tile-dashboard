@@ -492,11 +492,16 @@ The map type tiles can show measuring stations, points and WMS layers, possibly 
 
 legend
 ------
+- This configures the legend for map type tiles.
+  ::
 
-The legend of the map can also be configured.
-To configure the opacity of this legend, add an opacity to the configuration of an tile with type map, like below::
+    legend: {
+      "opacity": 0.8
+    }
 
-  "opacity": 0.8
+- Object with property "opacity". The opacity should be a float.
+- No, neither the legend property nor the opacity property of the legend is required. The default for the opacity is set to 0.8 if this is not set.
+- Within the map tile type.
 
 Tile type: timeseries (Parramatta Dashboard)
 ============================================
@@ -507,19 +512,8 @@ It’s not possible yet to set the color of charts of raster intersections, they
 
 legend
 ------
-
-* example-with-legend.json
-* example-with-legend-show-possibilities.json
-
-The legend for timeseries tiles can also be configured.
-
-Below shows an example of what to add to the configuration of a timeseries tile for a legend that is white with 0.25 opacity::
-
-  "legend": {
-    "bgcolor": "rgba(255, 255, 255, 0.25)"
-  }
-
-But there are more possibilities. Below are the possibilities for legend configuration. Add them to a timeseries tile. All possibilities are optional.::
+- This configures the legend for timeseries type tiles. You can make the colors transparant by using rgba colors, as has been done for bgcolor with rgba(22, 160, 133, *0.25*).
+  ::
 
   "legend": {
     "x": 5,
@@ -540,6 +534,14 @@ But there are more possibilities. Below are the possibilities for legend configu
     "uirevision": "",
     "valign": "top"
   }
+
+- Object with the properties shown above.
+- No, neither the legend property nor the properties of the legend are required.
+- Within the timeseries tile type.
+
+Example JSONs:
+* example-with-legend.json (transparent legend)
+* example-with-legend-show-possibilities.json (all of the above)
 
 timeLines
 ---------
