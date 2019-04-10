@@ -132,16 +132,12 @@ In the latter case properties on tile-level will always take precedence over pro
 Properties that only exist on tile level and not on meta-level also exist and are in fact the majority.  
 
 
-----------
-Properties
-----------
+---------------------------
+Properties Tile dashboards:
+---------------------------
 
 Below is a non-exhaustive list of properties.  
 Please help by extending this list.
-
-
-Tile dashboards:
-================
 
 **First an example:**
 
@@ -149,7 +145,7 @@ The table below is created with taking into account the reStructuredText way of 
 Due to time constrictions, this is not done for all properties.
 
 Properties name Example
------------------------
+=======================
 
 +-------------------+-------------------------+
 |What it does       |Explanation              |
@@ -164,62 +160,82 @@ Properties name Example
 **Actual properties:**
 
 id
---
+==
 - Must be unique for each tile. To track which is currently selected.
 - integer
 - Yes
 - on root level of JSON
 
 title
------
+=====
 - The full (long) title of the tile that will be shown on the fullscreen view of the tile.
 - string
 - Yes (?)
 - on root level of JSON
 
 shortTitle
-----------
+==========
 - Will be used for the small versions of the tile if set, otherwise the normal title is used.
 - string
 - No
 - on root level of JSON
 
 type
-----
+====
 - Type of the tile that decides the other fields below. Currently one of “map”, “timeseries”, “statistics” or “external”.
 - string
 - Yes
 - on root level of JSON
 
 viewInLizardLink
-----------------
+================
 - If set then this is linked from the header above the fullscreen version of the tile.
 - string
 - No
 - on root level of JSON
 
 nowDateTimeUTC
---------------
+==============
 - Defines the current time of the dashboard. If defined then gauge data will nog get updated
 - For example 2018-10-29T10:00:00Z
 - No, defaults to current date/time
 - on root level of JSON 
 
 isPublic
---------
+========
 - If true then the user does not need to login to open the dashboard
 - true/false
 - No, defaults to false
 - on root level of JSON
 
+type: map
+=========
 
-Parramatta Dashboards
-=====================
+assetTypes
+----------
+- If set, all measurement stations in the map area are retrieved from the API and shown on the map.
+- array of assets types, but currently only [“measuringstation”] actually works.
+- No
+- in map of JSON (?)
+
+type: timeseries
+================
+
+type: statistics
+================
+
+type: external
+==============
+
+
+---------------------------------
+Properties Parramatta dashboards:
+---------------------------------
 
 **First an example:**
 
 Properties name Example
------------------------
+=======================
 - What it does
 - Format
 - Required
@@ -228,60 +244,79 @@ Properties name Example
 **Actual properties:**
 
 id
---
+==
 - Must be unique for each tile. To track which is currently selected.
 - integer
 - Yes
 - on root level of JSON
 
 title
------
+=====
 - The full (long) title of the tile that will be shown on the fullscreen view of the tile.
 - string
 - Yes (?)
 - on root level of JSON
 
 shortTitle
-----------
+==========
 - Will be used for the small versions of the tile if set, otherwise the normal title is used.
 - string
 - No
 - on root level of JSON
 
 type
-----
+====
 - Type of the tile that decides the other fields below. Currently one of “map”, “timeseries”, “statistics” or “external”.
 - string
 - Yes
 - on root level of JSON
 
 viewInLizardLink
-----------------
+================
 - If set then this is linked from the header above the fullscreen version of the tile.
 - string
 - No
 - on root level of JSON
 
 refreshAutomatic
-----------------
+================
 - If true, then dashboard will be refreshed as defined in refreshEveryMiliseconds
 - true/false 
 - No, defaults to false
 - on root level of JSON
 
 refreshEveryMiliseconds
------------------------
+=======================
 - Amount miliseconds that dashboard gets refreshed. Works only if refreshAutomatic=true
 - integer
 - No, defaults to 300000
 - on root level of JSON
+
+type: map
+=========
+
+assetTypes (ook in Parramatta?)
+-------------------------------
+- If set, all measurement stations in the map area are retrieved from the API and shown on the map.
+- array of assets types, but currently only [“measuringstation”] actually works.
+- No
+- in map of JSON (?)
+
+type: timeseries
+================
+
+type: statistics
+================
+
+type: external
+==============
 
 
 In this folder, some examples are shown for the client configuration in the admin.
 The jsons in this folder contain the code per example mentioned below.
 
 Timelines and backgroundColorShapes
------------------------------------
+===================================
 
 - example-with-timelines-and-backgroundcolorshapes.json
 
@@ -351,7 +386,7 @@ Like with the timelines, the time must be set in milliseconds. The time can be s
 If you want a backgroundColorShape with a line to the right of it, you should create a timeline on that moment in time.
 
 Legend
-------
+======
 
 **Legend (timeseries)**
 
