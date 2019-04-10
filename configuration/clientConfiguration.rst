@@ -132,9 +132,9 @@ In the latter case properties on tile-level will always take precedence over pro
 Properties that only exist on tile level and not on meta-level also exist and are in fact the majority.  
 
 
----------------------------
-Properties Tile dashboards:
----------------------------
+----------------
+Tile dashboards:
+----------------
 
 Below is a non-exhaustive list of properties.  
 Please help by extending this list.
@@ -144,8 +144,8 @@ Please help by extending this list.
 The table below is created with taking into account the reStructuredText way of creating tables.
 Due to time constrictions, this is not done for all properties.
 
-Properties name Example
-=======================
+Example
+=======
 
 +-------------------+-------------------------+
 |What it does       |Explanation              |
@@ -159,50 +159,58 @@ Properties name Example
 
 **Actual properties:**
 
+
+Meta-properties
+===============
+
+
+Properties for all tiles
+========================
+
 id
-==
+--
 - Must be unique for each tile. To track which is currently selected.
 - integer
 - Yes
 - on root level of JSON
 
 title
-=====
+-----
 - The full (long) title of the tile that will be shown on the fullscreen view of the tile.
 - string
 - Yes (?)
 - on root level of JSON
 
 shortTitle
-==========
+----------
 - Will be used for the small versions of the tile if set, otherwise the normal title is used.
 - string
 - No
 - on root level of JSON
 
 type
-====
+----
 - Type of the tile that decides the other fields below. Currently one of “map”, “timeseries”, “statistics” or “external”.
 - string
 - Yes
 - on root level of JSON
 
 viewInLizardLink
-================
+----------------
 - If set then this is linked from the header above the fullscreen version of the tile.
 - string
 - No
 - on root level of JSON
 
 nowDateTimeUTC
-==============
+--------------
 - Defines the current time of the dashboard. If defined then gauge data will nog get updated
 - For example 2018-10-29T10:00:00Z
 - No, defaults to current date/time
 - on root level of JSON 
 
 isPublic
-========
+--------
 - If true then the user does not need to login to open the dashboard
 - true/false
 - No, defaults to false
@@ -365,14 +373,14 @@ url
 - in external of JSON (?)
 
 
----------------------------------
-Properties Parramatta dashboards:
----------------------------------
+---------------------
+Parramatta dashboard:
+---------------------
 
 **First an example:**
 
-Properties name Example
-=======================
+Example
+=======
 - What it does
 - Format
 - Required
@@ -380,50 +388,58 @@ Properties name Example
 
 **Actual properties:**
 
+
+Meta-properties
+===============
+
+
+Properties for all tiles
+========================
+
 id
-==
+--
 - Must be unique for each tile. To track which is currently selected.
 - integer
 - Yes
 - on root level of JSON
 
 title
-=====
+-----
 - The full (long) title of the tile that will be shown on the fullscreen view of the tile.
 - string
 - Yes (?)
 - on root level of JSON
 
 shortTitle
-==========
+----------
 - Will be used for the small versions of the tile if set, otherwise the normal title is used.
 - string
 - No
 - on root level of JSON
 
 type
-====
+----
 - Type of the tile that decides the other fields below. Currently one of “map”, “timeseries”, “statistics” or “external”.
 - string
 - Yes
 - on root level of JSON
 
 viewInLizardLink
-================
+----------------
 - If set then this is linked from the header above the fullscreen version of the tile.
 - string
 - No
 - on root level of JSON
 
 refreshAutomatic
-================
+----------------
 - If true, then dashboard will be refreshed as defined in refreshEveryMiliseconds
 - true/false 
 - No, defaults to false
 - on root level of JSON
 
 refreshEveryMiliseconds
-=======================
+-----------------------
 - Amount miliseconds that dashboard gets refreshed. Works only if refreshAutomatic=true
 - integer
 - No, defaults to 300000
