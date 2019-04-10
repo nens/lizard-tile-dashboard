@@ -214,7 +214,7 @@ shortTitle
 type
 ----
 - Type of the tile that decides the other fields below.
-- string. Currently one of “map”, “timeseries”, “statistics” or “external”. See `type: map tile (Tile Dashboards)`_, `type: timeseries tile (Tile Dashboards)`_, `type: statistics tile (Tile Dashboards)`_ and `type: external tile (Tile Dashboards)`_.
+- string. Currently one of “map”, “timeseries”, “statistics” or “external”. See `Tile type: map (Tile Dashboards)`_, `Tile type: timeseries (Tile Dashboards)`_, `Tile type: statistics (Tile Dashboards)`_ and `Tile type: external (Tile Dashboards)`_.
 - Yes
 - on root level of JSON
 
@@ -239,7 +239,7 @@ isPublic
 - No, defaults to false
 - on root level of JSON
 
-type: map tile (Tile Dashboards)
+Tile type: map (Tile Dashboards)
 ================================
 
 The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
@@ -328,7 +328,7 @@ wmsLayers
 - in map of JSON (?)
 
 
-type: timeseries tile (Tile Dashboards)
+Tile type: timeseries (Tile Dashboards)
 =======================================
 
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
@@ -369,14 +369,14 @@ rasterIntersections
 - ?
 - in timeseries of JSON (?)
 
-type: statistics tile (Tile Dashboards)
+Tile type: statistics (Tile Dashboards)
 =======================================
 
 Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
 
 The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
 
-type: external tile (Tile Dashboards)
+Tile type: external (Tile Dashboards)
 =====================================
 
 The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
