@@ -145,8 +145,8 @@ Below is a non-exhaustive list of properties.
 Please help by extending this list.
 
 
-Example
-=======
+Example (Tile Dashboards)
+=========================
 
 **First an example:**
 Below the example are the properties of the tile dashboards.
@@ -167,8 +167,8 @@ Due to time constrictions, this is not done for all properties.
 **Actual properties:**
 
 
-Meta-properties
-===============
+Meta-properties (Tile Dashboards)
+=================================
 
 tiles
 -----
@@ -401,8 +401,8 @@ Parramatta dashboard configuration:
 -----------------------------------
 
 
-Example
-=======
+Example (Parramatta Dashboard)
+==============================
 
 **First an example:**
 Below the example are the properties of the tile dashboards.
@@ -415,8 +415,8 @@ Below the example are the properties of the tile dashboards.
 **Actual properties:**
 
 
-Meta-properties
-===============
+Meta-properties (Parramatta Dashboard)
+======================================
 
 tiles
 -----
