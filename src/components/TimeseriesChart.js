@@ -26,7 +26,6 @@ class TimeseriesChartComponent extends Component {
     this.state = {
       componentHasMountedOnce: false,
       componentRef: "comp-" + parseInt(Math.random(), 10),
-      wantedAxes: null,
       combinedEvents: null,
       modeBarButtonsToRemove: [
         // Nice to have, always work as expected:
@@ -110,8 +109,7 @@ class TimeseriesChartComponent extends Component {
     );
 
     this.setState({
-      combinedEvents,
-      wantedAxes: axes
+      combinedEvents
     });
   }
 
@@ -542,7 +540,7 @@ class TimeseriesChartComponent extends Component {
 
   renderFull(axes, combinedEvents, thresholds) {
     const Plot = plotComponentFactory(window.Plotly);
-    const layout = this.getLayout(this.state.wantedAxes, thresholds);
+    const layout = this.getLayout(axes, thresholds);
     const { modeBarButtonsToRemove } = this.state;
 
     return (
@@ -588,7 +586,7 @@ class TimeseriesChartComponent extends Component {
       >
         <Plot
           data={combinedEvents}
-          layout={this.getLayout(this.state.wantedAxes)}
+          layout={this.getLayout(axes)}
           config={{ displayModeBar: false }}
         />
       </div>
