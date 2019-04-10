@@ -177,7 +177,7 @@ tiles
 - Yes
 - on root level of JSON (?)
 
-Check the `Tile properties of Tile Dashboards`_.
+Check the `Tile properties (Tile Dashboards)`_.
 
 periodHoursRelativeToNow
 ------------------------
@@ -187,7 +187,7 @@ periodHoursRelativeToNow
 - on root level of JSON (?)
 
 
-Tile properties of Tile Dashboards
+Tile properties (Tile Dashboards)
 ==================================
 
 id
@@ -213,8 +213,8 @@ shortTitle
 
 type
 ----
-- Type of the tile that decides the other fields below. Currently one of “map”, “timeseries”, “statistics” or “external”.
-- string
+- Type of the tile that decides the other fields below.
+- string. Currently one of “map”, “timeseries”, “statistics” or “external”. See `type: map tile (Tile Dashboards)`_, `type: timeseries tile (Tile Dashboards)`_, `type: statistics tile (Tile Dashboards)`_ and `type: external tile (Tile Dashboards)`_.
 - Yes
 - on root level of JSON
 
@@ -239,8 +239,8 @@ isPublic
 - No, defaults to false
 - on root level of JSON
 
-type: map tile
-==============
+type: map tile (Tile Dashboards)
+================================
 
 The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
 
@@ -328,8 +328,8 @@ wmsLayers
 - in map of JSON (?)
 
 
-type: timeseries tile
-=====================
+type: timeseries tile (Tile Dashboards)
+=======================================
 
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
 
@@ -369,15 +369,15 @@ rasterIntersections
 - ?
 - in timeseries of JSON (?)
 
-type: statistics tile
-=====================
+type: statistics tile (Tile Dashboards)
+=======================================
 
 Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
 
 The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
 
-type: external tile
-===================
+type: external tile (Tile Dashboards)
+=====================================
 
 The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
 
