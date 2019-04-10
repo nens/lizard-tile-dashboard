@@ -294,13 +294,49 @@ wmsLayers
 
 - Array.
 - No
-- in map pf JSON (?)
+- in map of JSON (?)
 
 
 type: timeseries
 ================
 
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
+
+It’s not possible yet to set the color of charts of raster intersections, they are a few shades of blue at the moment.
+
+timeseries
+----------
+- Timeseries UUIDs.
+- Array of timeseries UUIDs.
+- Yes (?)
+- in timeseries of JSON (?)
+
+colors
+------
+- Color codes for each timeseries.
+- Array of color codes for each timeseries.
+- ?
+- in timeseries of JSON (?)
+
+rasterIntersections
+-------------------
+- Intersections with the keys *uuid* and *geometry*.
+  ::
+
+  {
+    “uuid”: UUID of the raster,
+    “geometry”: {
+      “type”: “Point”,
+      “coordinates”: [
+        5.9223175048828125,
+        52.15118665954508
+      ]
+    }
+  }
+
+- Array of objects with the keys shown above.
+- ?
+- in timeseries of JSON (?)
 
 type: statistics
 ================
@@ -384,17 +420,12 @@ type: map
 
 The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
 
-assetTypes (also in Parramatta?)
--------------------------------
-- If set, all measurement stations in the map area are retrieved from the API and shown on the map.
-- array of assets types, but currently only [“measuringstation”] actually works.
-- No
-- in map of JSON (?)
-
 type: timeseries
 ================
 
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
+
+It’s not possible yet to set the color of charts of raster intersections, they are a few shades of blue at the moment.
 
 type: statistics
 ================
