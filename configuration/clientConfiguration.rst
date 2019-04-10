@@ -150,7 +150,7 @@ Properties name Example
 
 +-+-+
 |What it does|Explanation|
-+-+-+
++=+=+
 |Format|String/ Integer/ ..|
 +-+-+
 |Required|Yes/ No|
