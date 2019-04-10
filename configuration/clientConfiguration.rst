@@ -32,9 +32,9 @@ The example in above screenshot would thus be accessable via the url:
 `https://china.lizard.net/dashboard/view1 <https://china.lizard.net/dashboard/view1>`_
 
 
------------------------
-The configuration field
------------------------
+---------------------------------
+The configuration field explained
+---------------------------------
 
 The "configuration" field defines the content of the dashboard in a `JSON format <https://www.json.org/>`_.  
 A dashboard typically contains of: 
@@ -48,9 +48,9 @@ A dashboard typically contains of:
 
 The JSON stored in the admin is hard to edit because all formatting is lost. It can be made neater with online tools like `https://jsoneditoronline.org/ <https://jsoneditoronline.org/>`_.
 
------
-Tiles
------
+---------------
+Tiles explained
+---------------
 
 Each dashboard can contain one or more tiles.  
 Tiles are the little squares on the main page.  
@@ -127,9 +127,9 @@ CAUTION ! Please be aware that comments are not valid JSON and should be removed
   ],
 
 
----------------
-Meta-properties
----------------
+-------------------------
+Meta-properties explained
+-------------------------
 
 Meta-properties define constants that are identical for all tiles on the dashboard.  
 Some of these properties can only be defined as meta-properties, but others may also be defined per tile.  
@@ -137,9 +137,9 @@ In the latter case properties on tile-level will always take precedence over pro
 Properties that only exist on tile level and not on meta-level also exist and are in fact the majority.  
 
 
-----------------
-Tile dashboards:
-----------------
+------------------------------
+Tile dashboards configuration:
+------------------------------
 
 Below is a non-exhaustive list of properties.  
 Please help by extending this list.
@@ -396,9 +396,9 @@ url
 - in external of JSON (?)
 
 
----------------------
-Parramatta dashboard:
----------------------
+-----------------------------------
+Parramatta dashboard configuration:
+-----------------------------------
 
 
 Example
