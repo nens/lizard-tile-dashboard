@@ -227,29 +227,34 @@ bbox
 
 datetime
 --------
-- Objects for relative time that look like::
-  {
-    “type”: “relative”,
-    “to”: “now”,  // or “start” or “end” (of a timeseries)
-    “offset”: 0, // Number of seconds before or after the “to” point
-    “modulo”: 300 // Optional number of seconds, only works for to: “now”;
-    // Current time is rounded down to a multiple of this many seconds.
-    // Use so that the time only changes e.g. every five minutes.
-  }
+- Objects for relative time that look like
+  ::
+
+    {
+      “type”: “relative”,
+      “to”: “now”,  // or “start” or “end” (of a timeseries)
+      “offset”: 0, // Number of seconds before or after the “to” point
+      “modulo”: 300 // Optional number of seconds, only works for to: “now”;
+      // Current time is rounded down to a multiple of this many seconds.
+      // Use so that the time only changes e.g. every five minutes.
+    }
+
 - Object
 - No, optional for temporal rasters.
 - in map of JSON (?)
 
 points
 ------
-- Points for point markers. Example::
-  {
-    “title”: “This is a point”,
-    “geometry”: {
-      “type”: “Point”,
-      “coordinates”: […] // GeoJSON
+- Points for point markers. Example:
+  ::
+
+    {
+      “title”: “This is a point”,
+      “geometry”: {
+        “type”: “Point”,
+        “coordinates”: […] // GeoJSON
+      }
     }
-  }
 
 - Array of objects.
 - No
@@ -257,12 +262,13 @@ points
 
 rasters
 -------
-- Raster objects to show as WMS layers.::
+- Raster objects to show as WMS layers. Example:
+  ::
 
-  {
-    “uuid”: string,  // UUID of the raster as in the API
-    “opacity”: “0.5” // string with the opacity as a number
-  }
+    {
+      “uuid”: string,  // UUID of the raster as in the API
+      “opacity”: “0.5” // string with the opacity as a number
+    }
 
 - Array of raster objects.
 - No
@@ -270,8 +276,20 @@ rasters
 
 wmsLayers
 ---------
-- Array of extra wms layers. Example::
-  { “layers”: “gauges”, “format”: “image/png”, “url”: “https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1”, “height”: 256, “zindex”: 1004, “width”: 256, “srs”: “EPSG:3857”, “transparent”: true }
+- Array of extra wms layers. Example:
+  ::
+
+    {
+      “layers”: “gauges”,
+      “format”: “image/png”,
+      “url”: “https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1”,
+      “height”: 256,
+      “zindex”: 1004,
+      “width”: 256,
+      “srs”: “EPSG:3857”,
+      “transparent”: true
+    }
+
 - Array.
 - No
 - in map pf JSON (?)
