@@ -218,6 +218,65 @@ assetTypes
 - No
 - in map of JSON (?)
 
+bbox
+----
+- The bounding box for the map.
+- a 4-number array [westmost, southmost, eastmost, northmost] with WGS84 coordinates.
+- No, default if not set, see config.js: [150.9476776123047, -33.87831497192377, 151.0842590332031, -33.76800155639643]
+- in map of JSON (?)
+
+datetime
+--------
+- Objects for relative time that look like::
+  {
+    “type”: “relative”,
+    “to”: “now”,  // or “start” or “end” (of a timeseries)
+    “offset”: 0, // Number of seconds before or after the “to” point
+    “modulo”: 300 // Optional number of seconds, only works for to: “now”;
+    // Current time is rounded down to a multiple of this many seconds.
+    // Use so that the time only changes e.g. every five minutes.
+  }
+- Object
+- No, optional for temporal rasters.
+- in map of JSON (?)
+
+points
+------
+- Points for point markers. Example::
+  {
+    “title”: “This is a point”,
+    “geometry”: {
+      “type”: “Point”,
+      “coordinates”: […] // GeoJSON
+    }
+  }
+
+- Array of objects.
+- No
+- in map of JSON (?)
+
+rasters
+-------
+- Raster objects to show as WMS layers.::
+
+  {
+    “uuid”: string,  // UUID of the raster as in the API
+    “opacity”: “0.5” // string with the opacity as a number
+  }
+
+- Array of raster objects.
+- No
+- in map of JSON (?)
+
+wmsLayers
+---------
+- Array of extra wms layers. Example::
+  { “layers”: “gauges”, “format”: “image/png”, “url”: “https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1”, “height”: 256, “zindex”: 1004, “width”: 256, “srs”: “EPSG:3857”, “transparent”: true }
+- Array.
+- No
+- in map pf JSON (?)
+
+
 type: timeseries
 ================
 
@@ -295,7 +354,7 @@ refreshEveryMiliseconds
 type: map
 =========
 
-assetTypes (ook in Parramatta?)
+assetTypes (also in Parramatta?)
 -------------------------------
 - If set, all measurement stations in the map area are retrieved from the API and shown on the map.
 - array of assets types, but currently only [“measuringstation”] actually works.
