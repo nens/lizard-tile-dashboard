@@ -144,13 +144,15 @@ Tile dashboards:
 Below is a non-exhaustive list of properties.  
 Please help by extending this list.
 
-**First an example:**
-
-The table below is created with taking into account the reStructuredText way of creating tables.
-Due to time constrictions, this is not done for all properties.
 
 Example
 =======
+
+**First an example:**
+Below the example are the properties of the tile dashboards.
+
+The table below is created with taking into account the reStructuredText way of creating tables.
+Due to time constrictions, this is not done for all properties.
 
 +-------------------+-------------------------+
 |What it does       |Explanation              |
@@ -396,10 +398,13 @@ url
 Parramatta dashboard:
 ---------------------
 
-**First an example:**
 
 Example
 =======
+
+**First an example:**
+Below the example are the properties of the tile dashboards.
+
 - What it does
 - Format
 - Required
