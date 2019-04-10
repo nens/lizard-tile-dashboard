@@ -515,25 +515,25 @@ legend
 - This configures the legend for timeseries type tiles. You can make the colors transparant by using rgba colors, as has been done for bgcolor with rgba(22, 160, 133, *0.25*).
   ::
 
-  "legend": {
-    "x": 5,
-    "xanchor": "right",
-    "y": "0.5",
-    "yanchor": "top",
-    "bgcolor": "rgba(22, 160, 133, 0.25)",
-    "bordercolor": "rgba(22, 160, 133, 1)",
-    "borderwidth": 3,
-    "font": {
-      "family": "Futura, monospace",
-      "size": 17,
-      "color": "purple"
-    },
-    "orientation": "h",
-    "traceorder": "reversed",
-    "tracegroupgap": 20,
-    "uirevision": "",
-    "valign": "top"
-  }
+    "legend": {
+      "x": 5,
+      "xanchor": "right",
+      "y": "0.5",
+      "yanchor": "top",
+      "bgcolor": "rgba(22, 160, 133, 0.25)",
+      "bordercolor": "rgba(22, 160, 133, 1)",
+      "borderwidth": 3,
+      "font": {
+        "family": "Futura, monospace",
+        "size": 17,
+        "color": "purple"
+      },
+      "orientation": "h",
+      "traceorder": "reversed",
+      "tracegroupgap": 20,
+      "uirevision": "",
+      "valign": "top"
+    }
 
 - Object with the properties shown above.
 - No, neither the legend property nor the properties of the legend are required.
