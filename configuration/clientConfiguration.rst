@@ -540,6 +540,7 @@ legend
 - Within the timeseries tile type.
 
 Example JSONs:
+
 * example-with-legend.json (transparent legend)
 * example-with-legend-show-possibilities.json (all of the above)
 
