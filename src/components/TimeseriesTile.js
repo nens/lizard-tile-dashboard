@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import TimeseriesChart from "./TimeseriesChart";
-import { makeGetter, getOrFetch } from "lizard-api-client";
+import { makeGetter, getOrFetch } from "../api_client/index";
 import { getTimeseriesMetadataAction, fetchRaster } from "../actions";
 
 // Wrapper for TimeseriesChart.

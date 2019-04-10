@@ -274,6 +274,7 @@ class FullLayout extends Component {
                 <a
                   href={selectedTile.viewInLizardLink}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className={styles.ViewInLizardLink}
                   style={{ color: fgColor }}
                 >

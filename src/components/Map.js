@@ -17,7 +17,7 @@ import {
   makeGetter,
   getOrFetch,
   DateTime
-} from "lizard-api-client";
+} from "../api_client/index";
 import { BoundingBox, isSamePoint } from "../util/bounds";
 
 import { Map, Marker, Popup, TileLayer, WMSTileLayer } from "react-leaflet";

@@ -5,7 +5,7 @@ import {
   getBootstrap,
   getRasterDetail,
   makeFetcher
-} from "lizard-api-client";
+} from "./api_client/index";
 
 // AlarmActions
 export const RECEIVE_ALARMS = "RECEIVE_ALARMS";

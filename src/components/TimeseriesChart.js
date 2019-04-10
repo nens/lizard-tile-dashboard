@@ -10,7 +10,7 @@ import {
 import { MAX_TIMESERIES_POINTS } from "../config";
 import { getBootstrap, getNow, getCurrentPeriod } from "../reducers";
 
-import { makeGetter } from "lizard-api-client";
+import { makeGetter } from "../api_client/index";
 import plotComponentFactory from "react-plotly.js/factory";
 
 import {
