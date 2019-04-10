@@ -1,3 +1,5 @@
+.. toctree::
+
 ======================================================
 Lizard-Tile-Configuration and Parramatta-Configuration
 ======================================================
