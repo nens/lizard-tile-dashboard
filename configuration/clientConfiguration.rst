@@ -9,8 +9,9 @@ The is a fully configurable dashboard app.
 Users can define themselves what each dashboard will show and are able to define multiple dashboards with each their own url.  
 Users will be able to do so in the "client_configuration" admin page of the lizard-nxt application: "/admin/lizard_nxt/clientconfiguration".  
 Below screenshot is an example of such a record.  
-  
-![alt text](./client_config_screenshot.png "Screenshot of client configuration record in DJANGO admin")  
+
+.. image:: client_config_screenshot.png
+  :alt: Screenshot of client configuration record in DJANGO admin
   
 - The "portal" field defines the base url of the dashboard  
 - The "slug" field defines the postfix of the url  
@@ -143,8 +144,8 @@ Tile dashboards:
 
 **First an example:**
 
-Properties name
----------------
+Properties name Example
+-----------------------
 - What it does
 - Format
 - Required
@@ -172,8 +173,8 @@ Parramatta Dashboards
 
 **First an example:**
 
-Properties name
----------------
+Properties name Example
+-----------------------
 - What it does
 - Format
 - Required
