@@ -145,6 +145,9 @@ Tile dashboards:
 
 **First an example:**
 
+The table below is created with taking into account the reStructuredText way of creating tables.
+Due to time constrictions, this is not done for all properties.
+
 Properties name Example
 -----------------------
 
