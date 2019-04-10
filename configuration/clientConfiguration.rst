@@ -3,8 +3,8 @@ Lizard-Tile-Dashboard Configuration and Parramatta-Configuration
 ================================================================
 
 .. contents::
-  :local:
-  :caption: Table of Contents
+   :caption: Table of Contents
+   :local:
 
 
 ------------
