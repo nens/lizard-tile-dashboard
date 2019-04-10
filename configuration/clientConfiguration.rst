@@ -147,6 +147,7 @@ Tile dashboards:
 
 Properties name Example
 -----------------------
+
 +-+-+
 |What it does|Explanation|
 +-+-+
