@@ -37,9 +37,9 @@ A dashboard typically contains of:
 - meta-properties
 - tiles, each tile is of one of the following types:
 
-  - a geographical map, implemented in `Leaflet <https://leafletjs.com/>`_
-  - a temporal graph, implemented in `Plotly <https://plot.ly/javascript/>`_
-  - other media type (image, gif, etc)
+  - *map*: a geographical map, implemented in `Leaflet <https://leafletjs.com/>`_
+  - *timeseries*: a temporal graph, implemented in `Plotly <https://plot.ly/javascript/>`_
+  - *external*: other media type (image, gif, etc)
 
 
 -----
