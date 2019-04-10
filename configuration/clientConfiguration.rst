@@ -177,6 +177,8 @@ tiles
 - Yes
 - on root level of JSON (?)
 
+Check the `Tile properties of Tile Dashboards`_.
+
 periodHoursRelativeToNow
 ------------------------
 - It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
@@ -185,8 +187,8 @@ periodHoursRelativeToNow
 - on root level of JSON (?)
 
 
-Tiles
-=====
+Tile properties of Tile Dashboards
+==================================
 
 id
 --
@@ -423,9 +425,11 @@ tiles
 - Yes
 - on root level of JSON (?)
 
+Check the `Tile properties of Parramatta Dashboard`_.
 
-Tiles
-=====
+
+Tile properties of Parramatta Dashboard
+=======================================
 
 id
 --
