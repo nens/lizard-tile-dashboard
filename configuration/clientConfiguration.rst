@@ -323,16 +323,16 @@ rasterIntersections
 - Intersections with the keys *uuid* and *geometry*.
   ::
 
-  {
-    “uuid”: UUID of the raster,
-    “geometry”: {
-      “type”: “Point”,
-      “coordinates”: [
-        5.9223175048828125,
-        52.15118665954508
-      ]
+    {
+      “uuid”: UUID of the raster,
+      “geometry”: {
+        “type”: “Point”,
+        “coordinates”: [
+          5.9223175048828125,
+          52.15118665954508
+        ]
+      }
     }
-  }
 
 - Array of objects with the keys shown above.
 - ?
