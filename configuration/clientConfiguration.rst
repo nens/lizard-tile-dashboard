@@ -30,12 +30,11 @@ The configuration field
 The "configuration" field defines the content of the dashboard in a [JSON format](https://www.json.org/).  
 A dashboard typically contains of: 
 
-  
-  - meta-properties
-  - tiles, each tile is of one of the follwoing types:   
-    - a geographical map, implemented in [Leaflet](https://leafletjs.com/)
-    - a temporal graph, implemented in [Plotly](https://plot.ly/javascript/)
-    - other media type (image, gif, etc)
+- meta-properties
+- tiles, each tile is of one of the following types:
+  - a geographical map, implemented in [Leaflet](https://leafletjs.com/)
+  - a temporal graph, implemented in [Plotly](https://plot.ly/javascript/)
+  - other media type (image, gif, etc)
 
 
 -----
@@ -306,8 +305,6 @@ But there are more possibilities. Below are the possibilities for legend configu
 **Legend (map)**
 
 The legend of the map can also be configured.
-To configure the opacity of this legend, add an opacity to the configuration of an tile with type map, like below:
+To configure the opacity of this legend, add an opacity to the configuration of an tile with type map, like below:::
 
-``
-"opacity": 0.8
-``
+  "opacity": 0.8
