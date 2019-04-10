@@ -31,14 +31,14 @@ The example in above screenshot would thus be accessable via the url:
 The configuration field
 -----------------------
 
-The "configuration" field defines the content of the dashboard in a [JSON format](https://www.json.org/).  
+The "configuration" field defines the content of the dashboard in a `JSON format <https://www.json.org/>`_.  
 A dashboard typically contains of: 
 
 - meta-properties
 - tiles, each tile is of one of the following types:
 
-  - a geographical map, implemented in [Leaflet](https://leafletjs.com/)
-  - a temporal graph, implemented in [Plotly](https://plot.ly/javascript/)
+  - a geographical map, implemented in `Leaflet <https://leafletjs.com/>`_
+  - a temporal graph, implemented in `Plotly <https://plot.ly/javascript/>`_
   - other media type (image, gif, etc)
 
 
@@ -49,8 +49,8 @@ Tiles
 Each dashboard can contain one or more tiles.  
 Tiles are the little squares on the main page.  
 Within the dashboard app, each tile has unique content and can be made fullscreen by clicking on it.  
-Since there are multiple tiles per dashboards the tiles are defined in the JSON format with an [array](https://www.w3schools.com/js/js_json_arrays.asp).  
-Each element of this tile array is itself a [JSON object](https://www.w3schools.com/js/js_json_objects.asp) defining the content of the respective tile.  
+Since there are multiple tiles per dashboards the tiles are defined in the JSON format with an `array <https://www.w3schools.com/js/js_json_arrays.asp>`_.  
+Each element of this tile array is itself a `JSON object <https://www.w3schools.com/js/js_json_objects.asp>`_ defining the content of the respective tile.  
 
 Below is an example.   
 CAUTION ! Please be aware that comments are not valid JSON and should be removed before using below example in real life.::
