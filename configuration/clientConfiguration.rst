@@ -420,17 +420,24 @@ Below the example are the properties of the tile dashboards.
 **Actual properties:**
 
 
-Meta-properties (Parramatta Dashboard)
-======================================
+Meta-properties (Tile Dashboards)
+=================================
 
 tiles
 -----
 - What the tiles of the dashboard should show. See the next paragraph Tiles for what properties you can set for the Tiles.
-- Object
+- array of tile objects.
 - Yes
 - on root level of JSON (?)
 
 Check the `Tile properties (Parramatta Dashboard)`_.
+
+periodHoursRelativeToNow
+------------------------
+- It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
+- 2-element array of integers.
+- No. If not set, the default is [-24, 12].
+- on root level of JSON (?)
 
 
 Tile properties (Parramatta Dashboard)
@@ -490,6 +497,91 @@ Tile type: map (Parramatta Dashboard)
 
 The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
 
+The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
+
+assetTypes
+----------
+- If set, all measurement stations in the map area are retrieved from the API and shown on the map.
+- array of assets types, but currently only [“measuringstation”] actually works.
+- No
+- in map of JSON (?)
+
+bbox
+----
+- The bounding box for the map.
+- a 4-number array [westmost, southmost, eastmost, northmost] with WGS84 coordinates.
+- No, default if not set, see config.js: [150.9476776123047, -33.87831497192377, 151.0842590332031, -33.76800155639643]
+- in map of JSON (?)
+
+datetime
+--------
+- Objects for relative time. Example:
+  ::
+
+    {
+      “type”: “relative”,
+      “to”: “now”,  // or “start” or “end” (of a timeseries)
+      “offset”: 0, // Number of seconds before or after the “to” point
+      “modulo”: 300 // Optional number of seconds, only works for to: “now”;
+      // Current time is rounded down to a multiple of this many seconds.
+      // Use so that the time only changes e.g. every five minutes.
+    }
+
+- Object
+- No, optional for temporal rasters.
+- in map of JSON (?)
+
+points
+------
+- Points for point markers. Example:
+  ::
+
+    {
+      “title”: “This is a point”,
+      “geometry”: {
+        “type”: “Point”,
+        “coordinates”: […] // GeoJSON
+      }
+    }
+
+- Array of objects.
+- No
+- in map of JSON (?)
+
+rasters
+-------
+- Raster objects to show as WMS layers. Example:
+  ::
+
+    {
+      “uuid”: string,  // UUID of the raster as in the API
+      “opacity”: “0.5” // string with the opacity as a number
+    }
+
+- Array of raster objects.
+- No
+- in map of JSON (?)
+
+wmsLayers
+---------
+- Array of extra wms layers. Example:
+  ::
+
+    {
+      “layers”: “gauges”,
+      “format”: “image/png”,
+      “url”: “https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1”,
+      “height”: 256,
+      “zindex”: 1004,
+      “width”: 256,
+      “srs”: “EPSG:3857”,
+      “transparent”: true
+    }
+
+- Array.
+- No
+- in map of JSON (?)
+
 legend
 ------
 - This configures the legend for map type tiles.
@@ -498,6 +590,32 @@ legend
     legend: {
       "opacity": 0.8
     }
+
+extreLegends
+------------
+- Shows extra legends (for WMS layers, for instance). Example:
+  ::
+
+    [
+      {
+        "title": "Zones",
+        "steps": [
+          {
+            "color": "red",
+            "text": "Danger zone"
+          },
+          {
+            "color": "blue",
+            "text": "Water zone"
+          }
+        ]
+      },
+      ...more extra legends...
+    ]
+
+- array of optional extra legends.
+- No
+- in map of JSON (?)
 
 - Object with property "opacity". The opacity should be a float.
 - No, neither the legend property nor the opacity property of the legend is required. The default for the opacity is set to 0.8 if this is not set.
@@ -509,6 +627,47 @@ Tile type: timeseries (Parramatta Dashboard)
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
 
 It’s not possible yet to set the color of charts of raster intersections, they are a few shades of blue at the moment.
+
+timeseries
+----------
+- Timeseries UUIDs.
+- Array of timeseries UUIDs.
+- Yes
+- in timeseries of JSON (?)
+
+colors
+------
+- Color codes for each timeseries.
+- Array of color codes for each timeseries.
+- ?
+- in timeseries of JSON (?)
+
+rasterIntersections
+-------------------
+- Intersections with the keys *uuid* and *geometry*.
+  ::
+
+    {
+      “uuid”: UUID of the raster,
+      “geometry”: {
+        “type”: “Point”,
+        “coordinates”: [
+          5.9223175048828125,
+          52.15118665954508
+        ]
+      }
+    }
+
+- Array of objects with the keys shown above.
+- ?
+- in timeseries of JSON (?)
+
+legendStrings
+-------------
+- Strings to use in the chart legend to describe the series. The unit from the observation type will be added, if present. If no legendString is set, the observation type parameter and unit are used (often leads to several series having the same legend, so in that case these strings must be set).
+- Strings
+- No, but a default is set (see 1st point of this legendStrings).
+- in timeseries of JSON (?)
 
 legend
 ------
