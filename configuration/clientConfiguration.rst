@@ -2,10 +2,11 @@
 Lizard-Tile-Dashboard Configuration and Parramatta-Configuration
 ================================================================
 
+For properties and configuration that are only used in the Parramatta Dashboard, see `Parramatta Dashboard Technical Documentation <https://github.com/nens/parramatta-dashboard/blob/master/clientConfiguration/clientConfiguration.rst>`_.
+Properties that are discussed here and can be used only in the Lizard Tile Dashboards have '(Lizard Tile Dashboard)' after the property name.
+
 .. contents:: Table of Contents
    :local:
-
-(Parramatta Dashboard) and (Tile Dashboards) can be removed from the headers when the Parramatta part is split and set into the Parramatta dashboard repository.
 
 In this folder, some examples are shown for the client configuration in the admin.
 The jsons in this folder contain the code per example mentioned below.
@@ -150,8 +151,8 @@ Below is a non-exhaustive list of properties.
 Please help by extending this list.
 
 
-Properties example (Tile Dashboards)
-====================================
+Properties example
+==================
 
 **First an example:**
 Below the example are the properties of the tile dashboards.
@@ -172,8 +173,8 @@ Due to time constrictions, this is not done for all properties.
 **Actual properties:**
 
 
-Meta-properties (Tile Dashboards)
-=================================
+Meta-properties
+===============
 
 tiles
 -----
@@ -192,8 +193,8 @@ periodHoursRelativeToNow
 - on root level of JSON (?)
 
 
-Tile properties (Tile Dashboards)
-==================================
+Tile properties
+===============
 
 id
 --
@@ -219,7 +220,7 @@ shortTitle
 type
 ----
 - Type of the tile that decides the other fields below.
-- string. Currently one of “map”, “timeseries”, “statistics” or “external”. See `Tile type: map (Tile Dashboards)`_, `Tile type: timeseries (Tile Dashboards)`_, `Tile type: statistics (Tile Dashboards)`_ and `Tile type: external (Tile Dashboards)`_.
+- string. Currently one of “map”, “timeseries”, “statistics” or “external”. See `Tile type: map`_, `Tile type: timeseries`_, `Tile type: statistics`_ and `Tile type: external`_.
 - Yes
 - on root level of JSON
 
@@ -230,22 +231,23 @@ viewInLizardLink
 - No
 - on root level of JSON
 
-nowDateTimeUTC
---------------
+nowDateTimeUTC (Lizard Tile Dashboard)
+--------------------------------------
 - Defines the current time of the dashboard. If defined then gauge data will nog get updated
 - For example 2018-10-29T10:00:00Z
 - No, defaults to current date/time
 - on root level of JSON 
 
-isPublic
---------
+isPublic (Lizard Tile Dashboard)
+--------------------------------
 - If true then the user does not need to login to open the dashboard
 - true/false
 - No, defaults to false
 - on root level of JSON
 
-Tile type: map (Tile Dashboards)
-================================
+
+Tile type: map
+==============
 
 The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
 
@@ -333,8 +335,8 @@ wmsLayers
 - in map of JSON (?)
 
 
-Tile type: timeseries (Tile Dashboards)
-=======================================
+Tile type: timeseries
+=====================
 
 The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
 
@@ -374,15 +376,17 @@ rasterIntersections
 - ?
 - in timeseries of JSON (?)
 
-Tile type: statistics (Tile Dashboards)
-=======================================
+
+Tile type: statistics
+=====================
 
 Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
 
 The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
 
-Tile type: external (Tile Dashboards)
-=====================================
+
+Tile type: external
+===================
 
 The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
 
@@ -399,395 +403,3 @@ url
 - String.
 - No, nothing is shown as default.
 - in external of JSON (?)
-
-
------------------------------------
-Parramatta dashboard configuration:
------------------------------------
-
-
-Properties example (Parramatta Dashboards)
-==========================================
-
-**First an example:**
-Below the example are the properties of the tile dashboards.
-
-- What it does
-- Format
-- Required
-- Where it is defined
-
-**Actual properties:**
-
-
-Meta-properties (Tile Dashboards)
-=================================
-
-tiles
------
-- What the tiles of the dashboard should show. See the next paragraph Tiles for what properties you can set for the Tiles.
-- array of tile objects.
-- Yes
-- on root level of JSON (?)
-
-Check the `Tile properties (Parramatta Dashboard)`_.
-
-periodHoursRelativeToNow
-------------------------
-- It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
-- 2-element array of integers.
-- No. If not set, the default is [-24, 12].
-- on root level of JSON (?)
-
-
-Tile properties (Parramatta Dashboard)
-======================================
-
-id
---
-- Must be unique for each tile. To track which is currently selected.
-- integer
-- Yes
-- on root level of JSON
-
-title
------
-- The full (long) title of the tile that will be shown on the fullscreen view of the tile.
-- string
-- Yes (?)
-- on root level of JSON
-
-shortTitle
-----------
-- Will be used for the small versions of the tile if set, otherwise the normal title is used.
-- string
-- No
-- on root level of JSON
-
-type
-----
-- Type of the tile that decides the other fields below.
-- string. Currently one of “map”, “timeseries”, “statistics” or “external”. See `Tile type: map (Parramatta Dashboard)`_, `Tile type: timeseries (Parramatta Dashboard)`_, `Tile type: statistics (Parramatta Dashboard)`_ and `Tile type: external (Parramatta Dashboard)`_.
-- Yes
-- on root level of JSON
-
-viewInLizardLink
-----------------
-- If set then this is linked from the header above the fullscreen version of the tile.
-- string
-- No
-- on root level of JSON
-
-refreshAutomatic
-----------------
-- If true, then dashboard will be refreshed as defined in refreshEveryMiliseconds
-- true/false 
-- No, defaults to false
-- on root level of JSON
-
-refreshEveryMiliseconds
------------------------
-- Amount miliseconds that dashboard gets refreshed. Works only if refreshAutomatic=true
-- integer
-- No, defaults to 300000
-- on root level of JSON
-
-Tile type: map (Parramatta Dashboard)
-=====================================
-
-The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
-
-The map type tiles can show measuring stations, points and WMS layers, possibly of temporal rasters.
-
-assetTypes
-----------
-- If set, all measurement stations in the map area are retrieved from the API and shown on the map.
-- array of assets types, but currently only [“measuringstation”] actually works.
-- No
-- in map of JSON (?)
-
-bbox
-----
-- The bounding box for the map.
-- a 4-number array [westmost, southmost, eastmost, northmost] with WGS84 coordinates.
-- No, default if not set, see config.js: [150.9476776123047, -33.87831497192377, 151.0842590332031, -33.76800155639643]
-- in map of JSON (?)
-
-datetime
---------
-- Objects for relative time. Example:
-  ::
-
-    {
-      “type”: “relative”,
-      “to”: “now”,  // or “start” or “end” (of a timeseries)
-      “offset”: 0, // Number of seconds before or after the “to” point
-      “modulo”: 300 // Optional number of seconds, only works for to: “now”;
-      // Current time is rounded down to a multiple of this many seconds.
-      // Use so that the time only changes e.g. every five minutes.
-    }
-
-- Object
-- No, optional for temporal rasters.
-- in map of JSON (?)
-
-points
-------
-- Points for point markers. Example:
-  ::
-
-    {
-      “title”: “This is a point”,
-      “geometry”: {
-        “type”: “Point”,
-        “coordinates”: […] // GeoJSON
-      }
-    }
-
-- Array of objects.
-- No
-- in map of JSON (?)
-
-rasters
--------
-- Raster objects to show as WMS layers. Example:
-  ::
-
-    {
-      “uuid”: string,  // UUID of the raster as in the API
-      “opacity”: “0.5” // string with the opacity as a number
-    }
-
-- Array of raster objects.
-- No
-- in map of JSON (?)
-
-wmsLayers
----------
-- Array of extra wms layers. Example:
-  ::
-
-    {
-      “layers”: “gauges”,
-      “format”: “image/png”,
-      “url”: “https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1”,
-      “height”: 256,
-      “zindex”: 1004,
-      “width”: 256,
-      “srs”: “EPSG:3857”,
-      “transparent”: true
-    }
-
-- Array.
-- No
-- in map of JSON (?)
-
-legend
-------
-- This configures the legend for map type tiles.
-  ::
-
-    legend: {
-      "opacity": 0.8
-    }
-
-extreLegends
-------------
-- Shows extra legends (for WMS layers, for instance). Example:
-  ::
-
-    [
-      {
-        "title": "Zones",
-        "steps": [
-          {
-            "color": "red",
-            "text": "Danger zone"
-          },
-          {
-            "color": "blue",
-            "text": "Water zone"
-          }
-        ]
-      },
-      ...more extra legends...
-    ]
-
-- array of optional extra legends.
-- No
-- in map of JSON (?)
-
-- Object with property "opacity". The opacity should be a float.
-- No, neither the legend property nor the opacity property of the legend is required. The default for the opacity is set to 0.8 if this is not set.
-- Within the map tile type.
-
-Tile type: timeseries (Parramatta Dashboard)
-============================================
-
-The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
-
-It’s not possible yet to set the color of charts of raster intersections, they are a few shades of blue at the moment.
-
-timeseries
-----------
-- Timeseries UUIDs.
-- Array of timeseries UUIDs.
-- Yes
-- in timeseries of JSON (?)
-
-colors
-------
-- Color codes for each timeseries.
-- Array of color codes for each timeseries.
-- ?
-- in timeseries of JSON (?)
-
-rasterIntersections
--------------------
-- Intersections with the keys *uuid* and *geometry*.
-  ::
-
-    {
-      “uuid”: UUID of the raster,
-      “geometry”: {
-        “type”: “Point”,
-        “coordinates”: [
-          5.9223175048828125,
-          52.15118665954508
-        ]
-      }
-    }
-
-- Array of objects with the keys shown above.
-- ?
-- in timeseries of JSON (?)
-
-legendStrings
--------------
-- Strings to use in the chart legend to describe the series. The unit from the observation type will be added, if present. If no legendString is set, the observation type parameter and unit are used (often leads to several series having the same legend, so in that case these strings must be set).
-- Strings
-- No, but a default is set (see 1st point of this legendStrings).
-- in timeseries of JSON (?)
-
-legend
-------
-- This configures the legend for timeseries type tiles. You can make the colors transparant by using rgba colors, as has been done for bgcolor with rgba(22, 160, 133, *0.25*).
-  ::
-
-    "legend": {
-      "x": 5,
-      "xanchor": "right",
-      "y": "0.5",
-      "yanchor": "top",
-      "bgcolor": "rgba(22, 160, 133, 0.25)",
-      "bordercolor": "rgba(22, 160, 133, 1)",
-      "borderwidth": 3,
-      "font": {
-        "family": "Futura, monospace",
-        "size": 17,
-        "color": "purple"
-      },
-      "orientation": "h",
-      "traceorder": "reversed",
-      "tracegroupgap": 20,
-      "uirevision": "",
-      "valign": "top"
-    }
-
-- Object with the properties shown above.
-- No, neither the legend property nor the properties of the legend are required.
-- Within the timeseries tile type.
-
-Example JSONs:
-
-* example-with-legend.json (transparent legend)
-* example-with-legend-show-possibilities.json (all of the above)
-
-timeLines
----------
-- With timeLines, you can set one or multiple timelines which are horizontal lines in timeseries tiles.
-- An array of objects (with the mandatory properties epochTimeInMilliSeconds, color, lineDash, text, and isRelativeTimeFromNow). The time must be set in milliseconds. The time can be set relative from now (by setting isRelativeTimeFromNow to true and epochTimeInMilliSeconds to the time you want it to be relatiive from now, either a positive or negative number). The time can also be set absolute. In this case, isRelativeTimeFromNow should be set to false and epochTimeInMilliSeconds should be set to the epoch time in milliseconds. Example:
-  ::
-
-    "timelines": [
-      {
-        "epochTimeInMilliSeconds": 0,
-        "color": "#C0392B",
-        "lineDash": "dot",
-        "text": "NOW",
-        "isRelativeTimeFromNow": true
-      },
-      {
-        "epochTimeInMilliSeconds": 7200000,
-        "color": "#FFC850",
-        "lineDash": "dot",
-        "text": "NOW+2 hour",
-        "isRelativeTimeFromNow": true
-      },
-      {
-        "epochTimeInMilliSeconds": 43200000,
-        "color": "#16A085",
-        "lineDash": "dot",
-        "text": "NOW+12 hour",
-        "isRelativeTimeFromNow": true
-      },
-      {
-        "epochTimeInMilliSeconds": 1550270003000,
-        "color": "#BABABA",
-        "lineDash": "dot",
-        "text": "Absolute timeline",
-        "isRelativeTimeFromNow": false
-      }
-    ]
-
-- No. The timeLines property is not mandatory for a timeseries tile. But if you use the timeLines property, it is mandatory to fill in the epochTimeInMilliSeconds, color, lineDash, text and isRelativeTimeFromNow for each timeLine you configure.
-- Within the timeseries tile type.
-
-backgroundColorShapes
----------------------
-- Background color shapes create a background color for a specific moment in time.
-- An array of objects (with the mandatory properties x1EpochTimeInMilliSeconds, x2EpochTimeInMilliSeconds, color, opacity and isRelativeTimeFromNow). Like with the timelines, the time must be set in milliseconds. The time can be set relative from now (by setting isRelativeTimeFromNow to true and epochTimeInMilliSeconds to the time you want it to be relatiive from now, either a positive or negative number). The time can also be set absolute. In this case, isRelativeTimeFromNow should be set to false and epochTimeInMilliSeconds should be set to the epoch time in milliseconds.
-  ::
-
-    "backgroundColorShapes": [
-      {
-        "x1EpochTimeInMilliSeconds": 0,
-        "x2EpochTimeInMilliSeconds": 7200000,
-        "color": "#FFC850",
-        "opacity": "0.5",
-        "isRelativeTimeFromNow": true
-      },
-      {
-        "x1EpochTimeInMilliSeconds": 7200000,
-        "x2EpochTimeInMilliSeconds": 43200000,
-        "color": "#FFF082",
-        "opacity": "0.5",
-        "isRelativeTimeFromNow": true
-      },
-      {
-        "x1EpochTimeInMilliSeconds": 1550237003000,
-        "x2EpochTimeInMilliSeconds": 1550270003000,
-        "color": "#BABABA",
-        "opacity": "0.5",
-        "isRelativeTimeFromNow": false
-      }
-    ]
-
-- No. The backgroundColorShapes property is not mandatory for a timeseries tile. But if you use the backgroundColorShapes property, it is mandatory to fill in the x1EpochTimeInMilliSeconds, x2EpochTimeInMilliSeconds, color, opacity and isRelativeTimeFromNow for each backgroundColorShapes you configure.
-- Within the timeseries tile type.
-
-If you want a backgroundColorShape with a line to the right of it, you should create a timeline on that moment in time. See:
-
-- example-with-timelines-and-backgroundcolorshapes.json
-
-Tile type: statistics (Parramatta Dashboard)
-============================================
-
-Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
-
-The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
-
-Tile type: external (Parramatta Dashboard)
-==========================================
-
-The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
