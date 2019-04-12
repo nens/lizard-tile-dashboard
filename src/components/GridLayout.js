@@ -15,6 +15,7 @@ import logo_Lizard from "../graphics/logo-Lizard.png";
 import { Image } from "react-bootstrap";
 
 import styles from "./GridLayout.css";
+
 import {
   getAllTiles,
   getConfiguredDate,
@@ -86,7 +87,7 @@ class GridLayout extends Component {
     window.addEventListener("resize", this.handleUpdateDimensions, false);
     document.addEventListener("keydown", this.handleKeyPress, false);
   }
-  componentWillUnMount() {
+  componentWillUnmount() {
     window.removeEventListener("resize", this.handleUpdateDimensions, false);
     document.removeEventListener("keydown", this.handleKeyPress, false);
   }

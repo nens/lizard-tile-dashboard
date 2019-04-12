@@ -21,7 +21,7 @@ import {
 
 import { BoundingBox } from "./util/bounds";
 
-import { makeReducer } from "lizard-api-client";
+import { makeReducer } from "./api_client/index";
 
 function assets(
   state = {
