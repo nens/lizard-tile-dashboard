@@ -99,7 +99,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "release": "buck-trap -a",
-    "i18n:extract": "NODE_ENV=production npx extract-messages --locales=nl -d --output src/translations/locales 'src/**/*.js*' 'src/**/*.ts*'",
+    "i18n:extract": "NODE_ENV=production npx extract-messages --locales=nl -d --output src/translations/locales 'src/**/*.js*' 'src/**/*.ts*'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -107,7 +107,7 @@
   "browserslist": [
     ">0.2%",
     "not dead",
-    "not ie <= 11",
+    "not ie <= 10",
     "not op_mini all"
   ],
   "jest": {

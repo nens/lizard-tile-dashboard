@@ -204,7 +204,7 @@
 
 .DateTimePicker {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .DateTimePicker div {
   padding: 0 20px 0 0;
