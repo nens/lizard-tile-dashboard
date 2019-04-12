@@ -8,7 +8,8 @@ const paths = require('./paths');
 const fs = require('fs');
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
-const host = process.env.HOST || '0.0.0.0';
+// const host = process.env.HOST || '0.0.0.0';
+const host = 'localhost'; // Om toegang andere computers tegen te gaan
 
 const PROXY_SERVER = "https://nxt3.staging.lizard.net/"
 const PROXY_SETTING = {
@@ -65,7 +66,7 @@ module.exports = function(allowedHost) {
     // So we will disable the host check normally, but enable it if you have
     // specified the `proxy` setting. Finally, we let you override it if you
     // really know what you're doing with a special environment variable.
-    disableHostCheck: process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true',
+    disableHostCheck: true, // Not needed if we only listen on localhost
     // Enable gzip compression of generated files.
     compress: true,
     // Silence WebpackDevServer's own logs since they're generally not useful.
