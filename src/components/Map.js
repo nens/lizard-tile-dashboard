@@ -19,7 +19,7 @@ import {
   DateTime
 } from "../api_client/index";
 import { BoundingBox, isSamePoint } from "../util/bounds";
-
+import L from "leaflet";
 import { Map, Marker, Popup, TileLayer, WMSTileLayer } from "react-leaflet";
 import Legend from "./Legend";
 import styles from "./Map.css";
@@ -29,6 +29,11 @@ class MapComponent extends Component {
   componentDidMount() {
     const { tile } = this.props;
     const inBboxFilter = this.getBBox().toLizardBbox();
+
+    // reference to get acces to leaflet Map API
+    // Is there another option to do this?
+    // Also we need to ad the ref only on render-full -> will this impose problem?
+    this.leafletMapRef = React.createRef();
 
     if (tile.assetTypes) {
       tile.assetTypes.forEach(assetType => {
@@ -49,6 +54,146 @@ class MapComponent extends Component {
         }
       });
     }
+  }
+
+  constructGetFeatureInfoUrl(mapLayer, mapRef, latlng) {
+    const layerUrl = mapLayer.url;
+    const layerName = mapLayer.name;
+    const srs = mapLayer.srs;
+    const size = mapRef.getSize();
+    const bbox = mapRef.getBounds().toBBoxString();
+    const point = mapRef.latLngToContainerPoint(latlng, mapRef.getZoom());
+
+    /*
+    http://localhost:3002/proxy/https://maps1.project.lizard.net/geoserver/parkstad/wms?REQUEST=GetFeatureInfo&SERVICE=WMS&SRS=EPSG%3A4326&VERSION=1.1.1&INFO_FORMAT=application%2Fjson&BBOX=5.861206054687501%2C50.8984858728154%2C6.099128723144532%2C51.028224127981915&HEIGHT=600&WIDTH=693&LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&QUERY_LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&FEATURE_COUNT=100
+    
+    https://maps1.project.lizard.net/
+    geoserver/s0175_ijgenzon/wms?
+    REQUEST=GetFeatureInfo&
+    SERVICE=WMS&
+    SRS=EPSG%3A4326&
+    VERSION=1.1.1&
+    INFO_FORMAT=application%2Fjson&
+    BBOX=5.84026336669922%2C50.89870240470785%2C6.110801696777345%2C51.02844005602989&
+    HEIGHT=600&
+    WIDTH=788&
+    LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&
+    QUERY_LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&
+    FEATURE_COUNT=100
+    &X=315
+    &Y=422
+    //*/
+
+    return (
+      layerUrl +
+      L.Util.getParamString(
+        {
+          request: "GetFeatureInfo",
+          service: "WMS",
+          // // Why does this only seem to yield results with EPSG:4326 ?
+          // // srs of layer specifies it otherwise..
+          // srs: srs,
+          srs: "EPSG:4326",
+          version: "1.1.1", // I don't get results with 1.3.0 for some reason
+          info_format: "application/json",
+          bbox: bbox,
+          height: size.y,
+          width: size.x,
+          layers: layerName,
+          query_layers: layerName,
+          // Return multiple features of a layer if the layer has multiple
+          // features on the same location.
+          // http://docs.geoserver.org/latest/en/user/services/wms/reference.html
+          feature_count: 100,
+          x: point.x,
+          y: point.y
+        },
+        layerUrl,
+        true
+      )
+    );
+  }
+
+  clickHandler (event) {
+    const latlng = event.latlng;
+    const mapRef = this.leafletMapRef.current.leafletElement;
+    const urls = {
+      background: this.props.mapBackground,//.url,
+      rasters: (this.props.tile.rasters || []),//? this.props.tile.rasters.map(e=>e.url): [],
+      wmsLayers: (this.props.tile.wmsLayers || []),//.map(e=>e.url),
+    };
+
+    // on background no getFeatureInfoPossible ? because it is not wms
+    // const backgroundUrl = this.constructGetFeatureInfoUrl(
+    //   {
+    //     url: this.props.mapBackground.url,
+    //     name: this.props.mapBackground.description,
+    //     srs: "EPSG:4326",
+    //   },
+    //   mapRef,
+    //   latlng
+    // );
+    const rasterUrls = (this.props.tile.rasters || []).map(raster =>
+      this.constructGetFeatureInfoUrl(
+        {
+          url: raster.url,
+          name: raster.layers,
+          srs: raster.srs,
+        },
+        mapRef,
+        latlng
+      )
+    );
+    const wmsUrls = (this.props.tile.wmsLayers || []).map(wmsLayer =>
+      this.constructGetFeatureInfoUrl(
+        {
+          url: wmsLayer.url,
+          name: wmsLayer.layers,
+          srs: wmsLayer.srs,
+        },
+        mapRef,
+        latlng
+      )
+    );
+    console.log('urls',  rasterUrls, wmsUrls)
+    
+
+    ////////////////
+    // const url0 = this.constructGetFeatureInfoUrl(
+    //   {
+    //     url: this.props.tile.wmsLayers[0].url,
+    //     name: this.props.tile.wmsLayers[0].layers,
+    //     srs: this.props.tile.wmsLayers[0].srs,
+    //   },
+    //   mapRef,
+    //   latlng
+    // );
+    // const url1 = this.constructGetFeatureInfoUrl(
+    //   {
+    //     url: this.props.tile.wmsLayers[1].url,
+    //     name: this.props.tile.wmsLayers[1].layers,
+    //     srs: this.props.tile.wmsLayers[1].srs,
+    //   },
+    //   mapRef,
+    //   latlng
+    // );
+    // console.log('url1', url0, url1, urls)
+    //////////////
+
+    // this.setState({
+    //   promiseResolved: false,
+    // });
+    // const mapLayers = this.getAllActiveGetFeatureLayers();
+
+    // this.setState({
+    //   activeGetFeatureLayers: mapLayers,
+    // });
+
+    // if (mapLayers.length === 0) return;
+
+    // const latlng = event.latlng;
+    // const map = this.refs.map.leafletElement;
+    // const promises = [];
   }
 
   getBBox() {
@@ -418,6 +563,8 @@ class MapComponent extends Component {
           zoomControl={false}
           attribution={false}
           className={styles.MapStyleFull}
+          onClick={e=> this.clickHandler(e)}
+          ref={this.leafletMapRef}
         >
           <TileLayer url={this.props.mapBackground.url} />
           {tile.rasters
