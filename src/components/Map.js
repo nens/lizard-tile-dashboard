@@ -26,6 +26,16 @@ import styles from "./Map.css";
 import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
 
 class MapComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      featureInfo: {
+        show: false,
+        latlng: null,
+        data: null
+      },
+    }
+  }
   componentDidMount() {
     const { tile } = this.props;
     const inBboxFilter = this.getBBox().toLizardBbox();
@@ -54,6 +64,41 @@ class MapComponent extends Component {
         }
       });
     }
+  }
+
+  getFromUrl (url) {
+    return new Promise(function (resolve, reject) {
+      let request = new XMLHttpRequest();
+  
+      request.onreadystatechange = function () {
+        if (this.readyState !== 4) return;
+  
+        if (this.status >= 200 && this.status < 300) {
+          let json = null;
+  
+          try {
+            json = JSON.parse(this.response);
+          } catch (e) {
+            console.error(
+              'Lizard-api-client could not parse expected JSON result;',
+              'request=', url, 'response=', this.response, 'error=', e);
+          }
+  
+          resolve(json);
+        } else {
+          reject(`Status ${this.status}, '${this.statusText}' for URL ${url}.`);
+        }
+      };
+      
+      request.withCredentials = true; // Send cookie.
+      request.open('GET', url);
+      // request.setRequestHeader('Access-Control-Allow-Origin', 'demo.lizard.net');
+      // request.setRequestHeader('Access-Control-Allow-Headers', 'demo.lizard.net');
+      request.send();
+      // problem with cors: Do the incoming wms servers allow this ?
+      // maybe not for now continue dev by disabling it in chrome
+      // google-chrome --disable-web-security --user-data-dir="[/home/tomdeboer/dev/lizard-tile-dashboard]"
+    });
   }
 
   constructGetFeatureInfoUrl(mapLayer, mapRef, latlng) {
@@ -114,14 +159,26 @@ class MapComponent extends Component {
     );
   }
 
+  redrawPopup(event) {
+    // this.setState({
+    //   cLayerIndex: 0,
+    //   cFeatureIndex: 0,
+    // });
+    event.target.openPopup();
+    event.target.update();
+    // this.updatePopupImages();
+  }
+
   clickHandler (event) {
     const latlng = event.latlng;
+    this.setState({
+      featureInfo: {
+        show: true,
+        latlng: latlng,
+        data: null,
+      }
+    });
     const mapRef = this.leafletMapRef.current.leafletElement;
-    const urls = {
-      background: this.props.mapBackground,//.url,
-      rasters: (this.props.tile.rasters || []),//? this.props.tile.rasters.map(e=>e.url): [],
-      wmsLayers: (this.props.tile.wmsLayers || []),//.map(e=>e.url),
-    };
 
     // on background no getFeatureInfoPossible ? because it is not wms
     // const backgroundUrl = this.constructGetFeatureInfoUrl(
@@ -133,17 +190,18 @@ class MapComponent extends Component {
     //   mapRef,
     //   latlng
     // );
-    const rasterUrls = (this.props.tile.rasters || []).map(raster =>
-      this.constructGetFeatureInfoUrl(
-        {
-          url: raster.url,
-          name: raster.layers,
-          srs: raster.srs,
-        },
-        mapRef,
-        latlng
-      )
-    );
+    // do raster have getFeatureInfo ? -> didnot find tile with raster yet to test
+    // const rasterUrls = (this.props.tile.rasters || []).map(raster =>
+    //   this.constructGetFeatureInfoUrl(
+    //     {
+    //       url: raster.url,
+    //       name: raster.layers,
+    //       srs: raster.srs,
+    //     },
+    //     mapRef,
+    //     latlng
+    //   )
+    // );
     const wmsUrls = (this.props.tile.wmsLayers || []).map(wmsLayer =>
       this.constructGetFeatureInfoUrl(
         {
@@ -155,45 +213,28 @@ class MapComponent extends Component {
         latlng
       )
     );
-    console.log('urls',  rasterUrls, wmsUrls)
     
+    // const wmsUrlsPromises = wmsUrls.map(url => request(url));
+    const wmsUrlsPromises = wmsUrls.map(url => this.getFromUrl(url)); 
+    Promise.all(wmsUrlsPromises).then(promiseResults => {
 
-    ////////////////
-    // const url0 = this.constructGetFeatureInfoUrl(
-    //   {
-    //     url: this.props.tile.wmsLayers[0].url,
-    //     name: this.props.tile.wmsLayers[0].layers,
-    //     srs: this.props.tile.wmsLayers[0].srs,
-    //   },
-    //   mapRef,
-    //   latlng
-    // );
-    // const url1 = this.constructGetFeatureInfoUrl(
-    //   {
-    //     url: this.props.tile.wmsLayers[1].url,
-    //     name: this.props.tile.wmsLayers[1].layers,
-    //     srs: this.props.tile.wmsLayers[1].srs,
-    //   },
-    //   mapRef,
-    //   latlng
-    // );
-    // console.log('url1', url0, url1, urls)
-    //////////////
+      console.log('promiseResults',  promiseResults, latlng);
+      if (
+        this.state.featureInfo.latlng.lat === latlng.lat &&
+        this.state.featureInfo.latlng.lng === latlng.lng
+        ) {
+          this.setState({
+            featureInfo: {
+              show: true,
+              latlng: latlng,
+              data: promiseResults,
+            }
+          });
+      }
+      
 
-    // this.setState({
-    //   promiseResolved: false,
-    // });
-    // const mapLayers = this.getAllActiveGetFeatureLayers();
-
-    // this.setState({
-    //   activeGetFeatureLayers: mapLayers,
-    // });
-
-    // if (mapLayers.length === 0) return;
-
-    // const latlng = event.latlng;
-    // const map = this.refs.map.leafletElement;
-    // const promises = [];
+      
+    });
   }
 
   getBBox() {
@@ -571,6 +612,44 @@ class MapComponent extends Component {
             ? tile.rasters.map(raster => this.tileLayerForRaster(raster))
             : null}
           {this.markers()}
+          {
+            this.state.featureInfo.show === true ?
+            <Marker
+              key={"get_feature_info"}
+              // icon={alarmIcon}
+              // position={[coordinates[1], coordinates[0]]}
+              position={[this.state.featureInfo.latlng.lat, this.state.featureInfo.latlng.lng]}
+              // onclick={() =>
+              //   this.props.isFull && this.clickMarker(assetType, asset.id)
+              // }
+              onAdd={event => {
+                this.redrawPopup(event);
+              }}
+              onMove={event => {
+                this.redrawPopup(event);
+              }}
+            >
+              <Popup 
+                minWidth={250} keepInView={true}
+                // position={[this.state.featureInfo.latlng.lat, this.state.featureInfo.latlng.lng]}
+                position={this.state.featureInfo.latlng}
+                onAdd={event => {
+                  this.redrawPopup(event);
+                }}
+                onMove={event => {
+                  this.redrawPopup(event);
+                }}
+                autoPanPaddingBottomRight={L.point(65, 5)}
+                autoPanPaddingTopLeft={L.point(50, 5)}
+              >
+                <div className={styles.Popup}>
+                  <span>Hello</span>
+                </div>
+              </Popup>
+            </Marker>
+            :
+            null
+          }
           {legend}
           {wmsLayers}
         </Map>
