@@ -171,11 +171,16 @@ class MapComponent extends Component {
 
   clickHandler (event) {
     const latlng = event.latlng;
+    const wmsLayers = (this.props.tile.wmsLayers || []);
+    console.log('wmsLayers', wmsLayers)
     this.setState({
       featureInfo: {
         show: true,
         latlng: latlng,
         data: null,
+        layerNames: wmsLayers.map(layer=>layer.name),
+        getfeatureinfo_properties: wmsLayers.map(layer=>layer.getfeatureinfo_properties),
+        feature_title_property: wmsLayers.map(layer=>layer.feature_title_property),
       }
     });
     const mapRef = this.leafletMapRef.current.leafletElement;
@@ -202,7 +207,8 @@ class MapComponent extends Component {
     //     latlng
     //   )
     // );
-    const wmsUrls = (this.props.tile.wmsLayers || []).map(wmsLayer =>
+    
+    const wmsUrls = wmsLayers.map(wmsLayer =>
       this.constructGetFeatureInfoUrl(
         {
           url: wmsLayer.url,
@@ -228,6 +234,9 @@ class MapComponent extends Component {
               show: true,
               latlng: latlng,
               data: promiseResults,
+              layerNames: wmsLayers.map(layer=>layer.name),
+              getfeatureinfo_properties: wmsLayers.map(layer=>layer.getfeatureinfo_properties),
+              feature_title_property: wmsLayers.map(layer=>layer.feature_title_property),
             }
           });
       }
@@ -522,6 +531,61 @@ class MapComponent extends Component {
     return tile.type === "map" && tile.assetTypes && tile.assetTypes.length > 0;
   }
 
+  renderPopupLayer (layer, layerNames, getfeatureinfoProperties, featureTitleProperty, index) {
+      const features = layer.features;
+      const layerName = layerNames[index];
+      const layerProperties = getfeatureinfoProperties[index];
+      return (
+        <li>
+          <div> 
+            <div>
+              {/* <div><h2>Layer:</h2></div> */}
+              <div><h2>{layerName}</h2></div>
+            </div>
+            
+            <ol>
+              {features.map(feature=>{
+                return (
+                  <li>
+                    <div>
+                      <hr></hr>
+                      <div><span>{feature.properties[featureTitleProperty]}</span></div>
+                      {/* <div><span>id:</span><span>{feature.id}</span></div>
+                      <div><span>type:</span><span>{feature.type}</span></div>
+                      <div><span>geometry_name:</span><span>{feature.geometry_name}</span></div> */}
+                      <div>
+                        <ol>
+                          {/* {Object.keys(feature.properties).map(key=>{
+                            return (
+                              <li>
+                                <span>{key}</span>
+                                <span>{feature.properties[key] + ''}</span>
+                              </li>
+                            )
+                          })} */}
+                          {layerProperties.map(propertyName=>{
+                            return (
+                              <li>
+                                <span>{propertyName.name}</span>
+                                <span>{feature.properties[propertyName.key] + ''}</span>
+                              </li>
+                            )
+                          })}
+                          <div></div>
+                          <div></div>
+                        </ol>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+        </div>
+        <hr></hr>
+      </li>
+      );
+  }
+
   render() {
     return this.props.isFull ? this.renderFull() : this.renderSmall();
   }
@@ -642,8 +706,33 @@ class MapComponent extends Component {
                 autoPanPaddingBottomRight={L.point(65, 5)}
                 autoPanPaddingTopLeft={L.point(50, 5)}
               >
-                <div className={styles.Popup}>
-                  <span>Hello</span>
+                <div 
+                  className={styles.Popup}
+                  style={{
+                    maxHeight:"100%",
+                    overflowY: "auto",
+                  }}
+                >
+                  <h1>Layers</h1>
+                  <hr></hr>
+                  <div >
+                    <ol>
+                      {
+                        this.state.featureInfo.data ? 
+                        this.state.featureInfo.data.map((layer, index)=>
+                          this.renderPopupLayer(
+                            layer, 
+                            this.state.featureInfo.layerNames, 
+                            this.state.featureInfo.getfeatureinfo_properties,
+                            this.state.featureInfo.feature_title_property, 
+                            index
+                          )
+                        )
+                        : 
+                        null
+                      }
+                    </ol>
+                  </div>
                 </div>
               </Popup>
             </Marker>
