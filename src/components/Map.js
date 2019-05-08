@@ -19,6 +19,7 @@ import {
   DateTime
 } from "../api_client/index";
 import { BoundingBox, isSamePoint } from "../util/bounds";
+import logo_lizard from "../graphics/logo-Lizard.png";
 import L from "leaflet";
 import { Map, Marker, Popup, TileLayer, WMSTileLayer } from "react-leaflet";
 import Legend from "./Legend";
@@ -26,6 +27,7 @@ import styles from "./Map.css";
 import dataStyles from "../style/Data.css";
 import popupStyles from "./Popup.css";
 import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
+
 
 class MapComponent extends Component {
   constructor(props) {
@@ -538,6 +540,15 @@ class MapComponent extends Component {
     <Marker
       key={"get_feature_info"}
       position={[featureInfo.latlng.lat, featureInfo.latlng.lng]}
+      icon={L.icon({
+        iconUrl: logo_lizard,
+        shadowUrl: logo_lizard,
+        iconSize: [1, 1], // size of the icon
+        shadowSize: [1, 1], // size of the shadow
+        iconAnchor: [1, 1], // point of the icon which will correspond to marker's location
+        shadowAnchor: [1, 1], // the same for the shadow
+        popupAnchor: [1, 1] // point from which the popup should open relative to the iconAnchor
+      })}
       onAdd={event => {
         this.redrawPopup(event);
       }}
