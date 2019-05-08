@@ -106,7 +106,7 @@ class MapComponent extends Component {
   }
 
   constructGetFeatureInfoUrl(mapLayer, mapRef, latlng) {
-    const layerUrl = mapLayer.url;
+    const layerUrl = '/proxy/'+ mapLayer.url;
     const layerName = mapLayer.name;
     const srs = mapLayer.srs;
     const size = mapRef.getSize();

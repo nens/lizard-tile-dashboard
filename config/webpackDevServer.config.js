@@ -32,7 +32,17 @@ const PROXY_SETTING = {
       "username": "",
       "password": ""
     }
-  }
+  },
+  "/proxy": {
+    "target": PROXY_SERVER,
+    "changeOrigin": true,
+    "ssl": false,
+    "secure": false,
+    "headers": {
+      "username": "",
+      "password": ""
+    }
+  },
 };
 
 const password = process.env.PROXY_PASSWORD;
