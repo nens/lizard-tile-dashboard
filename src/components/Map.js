@@ -23,6 +23,8 @@ import L from "leaflet";
 import { Map, Marker, Popup, TileLayer, WMSTileLayer } from "react-leaflet";
 import Legend from "./Legend";
 import styles from "./Map.css";
+import dataStyles from "../style/Data.css";
+import popupStyles from "./Popup.css";
 import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
 
 class MapComponent extends Component {
@@ -531,59 +533,109 @@ class MapComponent extends Component {
     return tile.type === "map" && tile.assetTypes && tile.assetTypes.length > 0;
   }
 
-  renderPopupLayer (layer, layerNames, getfeatureinfoProperties, featureTitleProperty, index) {
-      const features = layer.features;
-      const layerName = layerNames[index];
-      const layerProperties = getfeatureinfoProperties[index];
-      return (
-        <li>
-          <div> 
-            <div>
-              {/* <div><h2>Layer:</h2></div> */}
-              <div><h2>{layerName}</h2></div>
-            </div>
-            
-            <ol>
-              {features.map(feature=>{
-                return (
-                  <li>
-                    <div>
-                      <hr></hr>
-                      <div><span>{feature.properties[featureTitleProperty]}</span></div>
-                      {/* <div><span>id:</span><span>{feature.id}</span></div>
-                      <div><span>type:</span><span>{feature.type}</span></div>
-                      <div><span>geometry_name:</span><span>{feature.geometry_name}</span></div> */}
-                      <div>
-                        <ol>
-                          {/* {Object.keys(feature.properties).map(key=>{
-                            return (
-                              <li>
-                                <span>{key}</span>
-                                <span>{feature.properties[key] + ''}</span>
-                              </li>
-                            )
-                          })} */}
-                          {layerProperties.map(propertyName=>{
-                            return (
-                              <li>
-                                <span>{propertyName.name}</span>
-                                <span>{feature.properties[propertyName.key] + ''}</span>
-                              </li>
-                            )
-                          })}
-                          <div></div>
-                          <div></div>
-                        </ol>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
+  renderPopup ( featureInfo ) {
+    return (
+    <Marker
+      key={"get_feature_info"}
+      position={[featureInfo.latlng.lat, featureInfo.latlng.lng]}
+      onAdd={event => {
+        this.redrawPopup(event);
+      }}
+      onMove={event => {
+        this.redrawPopup(event);
+      }}
+    >
+      <Popup 
+        minWidth={250} keepInView={true}
+        // position={featureInfo.latlng}
+        // position={[featureInfo.latlng.lat, featureInfo.latlng.lng]}
+        onAdd={event => {
+          this.redrawPopup(event);
+        }}
+        onMove={event => {
+          this.redrawPopup(event);
+        }}
+        autoPanPaddingBottomRight={L.point(65, 65)}
+        autoPanPaddingTopLeft={L.point(50, 65)}
+      >
+        <div 
+          className={styles.Popup}
+          style={{
+            maxHeight:"100%",
+            overflowY: "auto",
+          }}
+        >
+          <span>Layers: </span>
+          <div >
+            <ol
+              className={`${dataStyles.HideListDesign} ${popupStyles.List} ${popupStyles.LayerList}`}
+            >
+              {
+                featureInfo.data ? 
+                featureInfo.data.map((layer, index)=>
+                  this.renderPopupLayer(
+                    layer, 
+                    featureInfo, 
+                    index
+                  )
+                )
+                : 
+                null
+              }
             </ol>
+          </div>
         </div>
-        <hr></hr>
-      </li>
-      );
+      </Popup>
+    </Marker>
+    )
+  }
+
+  renderPopupLayer (layer, featureInfo, index) {
+    const features = layer.features;
+    const layerName = featureInfo.layerNames[index];
+    const layerProperties = featureInfo.getfeatureinfo_properties[index];
+    return (
+      <li>
+        <div> 
+          <div>
+            <h2>{layerName}</h2>
+            <span>Features: </span>
+          </div>
+          
+          <ol
+            className={`${dataStyles.HideListDesign} ${popupStyles.List} ${popupStyles.FeatureList}`}
+          >
+            {features.map(feature=>{
+              return (
+                <li>
+                  <h4>
+                    {feature.properties[featureInfo.feature_title_property]}
+                  </h4>
+                  <ol
+                    className={`${dataStyles.HideListDesign} ${popupStyles.List} ${popupStyles.PropertyList}`}
+                  >
+                    {layerProperties.map(propertyName=>{
+                      return (
+                        <li
+                          className={dataStyles.KeyValueWrap}
+                        >
+                          <label
+                            title={propertyName.name}
+                          >
+                            {propertyName.name}
+                          </label>
+                          <span>{feature.properties[propertyName.key] + ''}</span>
+                        </li>
+                      )
+                    })}
+                  </ol>
+                </li>
+              );
+            })}
+          </ol>
+      </div>
+    </li>
+    );
   }
 
   render() {
@@ -678,64 +730,7 @@ class MapComponent extends Component {
           {this.markers()}
           {
             this.state.featureInfo.show === true ?
-            <Marker
-              key={"get_feature_info"}
-              // icon={alarmIcon}
-              // position={[coordinates[1], coordinates[0]]}
-              position={[this.state.featureInfo.latlng.lat, this.state.featureInfo.latlng.lng]}
-              // onclick={() =>
-              //   this.props.isFull && this.clickMarker(assetType, asset.id)
-              // }
-              onAdd={event => {
-                this.redrawPopup(event);
-              }}
-              onMove={event => {
-                this.redrawPopup(event);
-              }}
-            >
-              <Popup 
-                minWidth={250} keepInView={true}
-                // position={[this.state.featureInfo.latlng.lat, this.state.featureInfo.latlng.lng]}
-                position={this.state.featureInfo.latlng}
-                onAdd={event => {
-                  this.redrawPopup(event);
-                }}
-                onMove={event => {
-                  this.redrawPopup(event);
-                }}
-                autoPanPaddingBottomRight={L.point(65, 5)}
-                autoPanPaddingTopLeft={L.point(50, 5)}
-              >
-                <div 
-                  className={styles.Popup}
-                  style={{
-                    maxHeight:"100%",
-                    overflowY: "auto",
-                  }}
-                >
-                  <h1>Layers</h1>
-                  <hr></hr>
-                  <div >
-                    <ol>
-                      {
-                        this.state.featureInfo.data ? 
-                        this.state.featureInfo.data.map((layer, index)=>
-                          this.renderPopupLayer(
-                            layer, 
-                            this.state.featureInfo.layerNames, 
-                            this.state.featureInfo.getfeatureinfo_properties,
-                            this.state.featureInfo.feature_title_property, 
-                            index
-                          )
-                        )
-                        : 
-                        null
-                      }
-                    </ol>
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
+            this.renderPopup(this.state.featureInfo)
             :
             null
           }

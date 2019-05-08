@@ -1,0 +1,22 @@
+.List li {
+  border-width: 0;
+  border-style: solid;
+  border-color: #ccc;
+}
+
+.LayerList li {
+  border-top-width: 3px;
+}
+
+.FeatureList li {
+  border-top-width: 2px;
+}
+
+.PropertyList li {
+  border-top-width: 1px;
+  
+}
+
+.PropertyList li label {
+  font-weight: bold;
+}
