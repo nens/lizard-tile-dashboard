@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import { BOUNDS } from "../config";
 import { connect } from "react-redux";
+import MDSpinner from "react-md-spinner";
 import { find } from "lodash";
 import { updateTimeseriesMetadata, fetchRaster, addAsset } from "../actions";
 import {
@@ -70,185 +71,7 @@ class MapComponent extends Component {
     }
   }
 
-  getFromUrl (url) {
-    return new Promise(function (resolve, reject) {
-      let request = new XMLHttpRequest();
   
-      request.onreadystatechange = function () {
-        if (this.readyState !== 4) return;
-  
-        if (this.status >= 200 && this.status < 300) {
-          let json = null;
-  
-          try {
-            json = JSON.parse(this.response);
-          } catch (e) {
-            console.error(
-              'Lizard-api-client could not parse expected JSON result;',
-              'request=', url, 'response=', this.response, 'error=', e);
-          }
-  
-          resolve(json);
-        } else {
-          reject(`Status ${this.status}, '${this.statusText}' for URL ${url}.`);
-        }
-      };
-      
-      request.withCredentials = true; // Send cookie.
-      request.open('GET', url);
-      // request.setRequestHeader('Access-Control-Allow-Origin', 'demo.lizard.net');
-      // request.setRequestHeader('Access-Control-Allow-Headers', 'demo.lizard.net');
-      request.send();
-      // problem with cors: Do the incoming wms servers allow this ?
-      // maybe not for now continue dev by disabling it in chrome
-      // google-chrome --disable-web-security --user-data-dir="[/home/tomdeboer/dev/lizard-tile-dashboard]"
-    });
-  }
-
-  constructGetFeatureInfoUrl(mapLayer, mapRef, latlng) {
-    const layerUrl = '/proxy/'+ mapLayer.url;
-    const layerName = mapLayer.name;
-    const srs = mapLayer.srs;
-    const size = mapRef.getSize();
-    const bbox = mapRef.getBounds().toBBoxString();
-    const point = mapRef.latLngToContainerPoint(latlng, mapRef.getZoom());
-
-    /*
-    http://localhost:3002/proxy/https://maps1.project.lizard.net/geoserver/parkstad/wms?REQUEST=GetFeatureInfo&SERVICE=WMS&SRS=EPSG%3A4326&VERSION=1.1.1&INFO_FORMAT=application%2Fjson&BBOX=5.861206054687501%2C50.8984858728154%2C6.099128723144532%2C51.028224127981915&HEIGHT=600&WIDTH=693&LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&QUERY_LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&FEATURE_COUNT=100
-    
-    https://maps1.project.lizard.net/
-    geoserver/s0175_ijgenzon/wms?
-    REQUEST=GetFeatureInfo&
-    SERVICE=WMS&
-    SRS=EPSG%3A4326&
-    VERSION=1.1.1&
-    INFO_FORMAT=application%2Fjson&
-    BBOX=5.84026336669922%2C50.89870240470785%2C6.110801696777345%2C51.02844005602989&
-    HEIGHT=600&
-    WIDTH=788&
-    LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&
-    QUERY_LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&
-    FEATURE_COUNT=100
-    &X=315
-    &Y=422
-    //*/
-
-    return (
-      layerUrl +
-      L.Util.getParamString(
-        {
-          request: "GetFeatureInfo",
-          service: "WMS",
-          // // Why does this only seem to yield results with EPSG:4326 ?
-          // // srs of layer specifies it otherwise..
-          // srs: srs,
-          srs: "EPSG:4326",
-          version: "1.1.1", // I don't get results with 1.3.0 for some reason
-          info_format: "application/json",
-          bbox: bbox,
-          height: size.y,
-          width: size.x,
-          layers: layerName,
-          query_layers: layerName,
-          // Return multiple features of a layer if the layer has multiple
-          // features on the same location.
-          // http://docs.geoserver.org/latest/en/user/services/wms/reference.html
-          feature_count: 100,
-          x: point.x,
-          y: point.y
-        },
-        layerUrl,
-        true
-      )
-    );
-  }
-
-  redrawPopup(event) {
-    // this.setState({
-    //   cLayerIndex: 0,
-    //   cFeatureIndex: 0,
-    // });
-    event.target.openPopup();
-    event.target.update();
-    // this.updatePopupImages();
-  }
-
-  clickHandler (event) {
-    const latlng = event.latlng;
-    const wmsLayers = (this.props.tile.wmsLayers || []);
-    console.log('wmsLayers', wmsLayers)
-    this.setState({
-      featureInfo: {
-        show: true,
-        latlng: latlng,
-        data: null,
-        layerNames: wmsLayers.map(layer=>layer.name),
-        getfeatureinfo_properties: wmsLayers.map(layer=>layer.getfeatureinfo_properties),
-        feature_title_property: wmsLayers.map(layer=>layer.feature_title_property),
-      }
-    });
-    const mapRef = this.leafletMapRef.current.leafletElement;
-
-    // on background no getFeatureInfoPossible ? because it is not wms
-    // const backgroundUrl = this.constructGetFeatureInfoUrl(
-    //   {
-    //     url: this.props.mapBackground.url,
-    //     name: this.props.mapBackground.description,
-    //     srs: "EPSG:4326",
-    //   },
-    //   mapRef,
-    //   latlng
-    // );
-    // do raster have getFeatureInfo ? -> didnot find tile with raster yet to test
-    // const rasterUrls = (this.props.tile.rasters || []).map(raster =>
-    //   this.constructGetFeatureInfoUrl(
-    //     {
-    //       url: raster.url,
-    //       name: raster.layers,
-    //       srs: raster.srs,
-    //     },
-    //     mapRef,
-    //     latlng
-    //   )
-    // );
-    
-    const wmsUrls = wmsLayers.map(wmsLayer =>
-      this.constructGetFeatureInfoUrl(
-        {
-          url: wmsLayer.url,
-          name: wmsLayer.layers,
-          srs: wmsLayer.srs,
-        },
-        mapRef,
-        latlng
-      )
-    );
-    
-    // const wmsUrlsPromises = wmsUrls.map(url => request(url));
-    const wmsUrlsPromises = wmsUrls.map(url => this.getFromUrl(url)); 
-    Promise.all(wmsUrlsPromises).then(promiseResults => {
-
-      console.log('promiseResults',  promiseResults, latlng);
-      if (
-        this.state.featureInfo.latlng.lat === latlng.lat &&
-        this.state.featureInfo.latlng.lng === latlng.lng
-        ) {
-          this.setState({
-            featureInfo: {
-              show: true,
-              latlng: latlng,
-              data: promiseResults,
-              layerNames: wmsLayers.map(layer=>layer.name),
-              getfeatureinfo_properties: wmsLayers.map(layer=>layer.getfeatureinfo_properties),
-              feature_title_property: wmsLayers.map(layer=>layer.feature_title_property),
-            }
-          });
-      }
-      
-
-      
-    });
-  }
 
   getBBox() {
     // Either get it from the tile or return the JSON configured constant.
@@ -535,11 +358,193 @@ class MapComponent extends Component {
     return tile.type === "map" && tile.assetTypes && tile.assetTypes.length > 0;
   }
 
+  getFromUrl (url) {
+    return new Promise(function (resolve, reject) {
+      let request = new XMLHttpRequest();
+  
+      request.onreadystatechange = function () {
+        if (this.readyState !== 4) return;
+  
+        if (this.status >= 200 && this.status < 300) {
+          let json = null;
+  
+          try {
+            json = JSON.parse(this.response);
+          } catch (e) {
+            console.error(
+              'Lizard-api-client could not parse expected JSON result;',
+              'request=', url, 'response=', this.response, 'error=', e);
+          }
+  
+          resolve(json);
+        } else {
+          reject(`Status ${this.status}, '${this.statusText}' for URL ${url}.`);
+        }
+      };
+      
+      request.withCredentials = true; // Send cookie.
+      request.open('GET', url);
+      // request.setRequestHeader('Access-Control-Allow-Origin', 'demo.lizard.net');
+      // request.setRequestHeader('Access-Control-Allow-Headers', 'demo.lizard.net');
+      request.send();
+      // problem with cors: Do the incoming wms servers allow this ?
+      // maybe not for now continue dev by disabling it in chrome
+      // google-chrome --disable-web-security --user-data-dir="[/home/tomdeboer/dev/lizard-tile-dashboard]"
+    });
+  }
+
+  constructGetFeatureInfoUrl(mapLayer, mapRef, latlng) {
+    const layerUrl = '/proxy/'+ mapLayer.url;
+    const layerName = mapLayer.name;
+    const srs = mapLayer.srs;
+    const size = mapRef.getSize();
+    const bbox = mapRef.getBounds().toBBoxString();
+    const point = mapRef.latLngToContainerPoint(latlng, mapRef.getZoom());
+
+    /*
+    http://localhost:3002/proxy/https://maps1.project.lizard.net/geoserver/parkstad/wms?REQUEST=GetFeatureInfo&SERVICE=WMS&SRS=EPSG%3A4326&VERSION=1.1.1&INFO_FORMAT=application%2Fjson&BBOX=5.861206054687501%2C50.8984858728154%2C6.099128723144532%2C51.028224127981915&HEIGHT=600&WIDTH=693&LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&QUERY_LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&FEATURE_COUNT=100
+    
+    https://maps1.project.lizard.net/
+    geoserver/s0175_ijgenzon/wms?
+    REQUEST=GetFeatureInfo&
+    SERVICE=WMS&
+    SRS=EPSG%3A4326&
+    VERSION=1.1.1&
+    INFO_FORMAT=application%2Fjson&
+    BBOX=5.84026336669922%2C50.89870240470785%2C6.110801696777345%2C51.02844005602989&
+    HEIGHT=600&
+    WIDTH=788&
+    LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&
+    QUERY_LAYERS=r0262_resultaten_workshopronde2_oplossingsrichtingen_20180228&
+    FEATURE_COUNT=100
+    &X=315
+    &Y=422
+    //*/
+
+    return (
+      layerUrl +
+      L.Util.getParamString(
+        {
+          request: "GetFeatureInfo",
+          service: "WMS",
+          // // Why does this only seem to yield results with EPSG:4326 ?
+          // // srs of layer specifies it otherwise..
+          // srs: srs,
+          srs: "EPSG:4326",
+          version: "1.1.1", // I don't get results with 1.3.0 for some reason
+          info_format: "application/json",
+          bbox: bbox,
+          height: size.y,
+          width: size.x,
+          layers: layerName,
+          query_layers: layerName,
+          // Return multiple features of a layer if the layer has multiple
+          // features on the same location.
+          // http://docs.geoserver.org/latest/en/user/services/wms/reference.html
+          feature_count: 100,
+          x: point.x,
+          y: point.y
+        },
+        layerUrl,
+        true
+      )
+    );
+  }
+
+  redrawPopup(event) {
+    event.target.openPopup();
+    event.target.update();
+  }
+
+  getFeatureInfomarker (event) {
+    const latlng = event.latlng;
+    const wmsLayers = (this.props.tile.wmsLayers || []);
+    
+    // With long loading times it may be desirable to already show the popup with a spinner
+    this.setState({
+      featureInfo: {
+        show: true,
+        latlng: latlng,
+        data: null,
+      }
+    });
+    const mapRef = this.leafletMapRef.current.leafletElement;
+
+    // on background no getFeatureInfoPossible ? because it is not wms
+    // const backgroundUrl = this.constructGetFeatureInfoUrl(
+    //   {
+    //     url: this.props.mapBackground.url,
+    //     name: this.props.mapBackground.description,
+    //     srs: "EPSG:4326",
+    //   },
+    //   mapRef,
+    //   latlng
+    // );
+    // do raster have getFeatureInfo ? -> didnot find tile with raster yet to test
+    // const rasterUrls = (this.props.tile.rasters || []).map(raster =>
+    //   this.constructGetFeatureInfoUrl(
+    //     {
+    //       url: raster.url,
+    //       name: raster.layers,
+    //       srs: raster.srs,
+    //     },
+    //     mapRef,
+    //     latlng
+    //   )
+    // );
+    
+    const wmsUrls = wmsLayers.map(wmsLayer =>
+      this.constructGetFeatureInfoUrl(
+        {
+          url: wmsLayer.url,
+          name: wmsLayer.layers,
+          srs: wmsLayer.srs,
+        },
+        mapRef,
+        latlng
+      )
+    );
+    
+    const wmsUrlsPromises = wmsUrls.map(url => this.getFromUrl(url)); 
+    Promise.all(wmsUrlsPromises).then(promiseResults => {
+      if (
+        this.state.featureInfo.latlng.lat === latlng.lat &&
+        this.state.featureInfo.latlng.lng === latlng.lng
+        ) {
+          this.setState({
+            featureInfo: {
+              show: true,
+              latlng: latlng,
+              data: promiseResults,
+            }
+          });
+      }
+    });
+  }
+
   renderPopup ( featureInfo ) {
+    const wmsLayers = (this.props.tile.wmsLayers || []);
+    // layerPropertiesArray = array of array of properties per layer [[layer1property1,layer1property2],[layer2property1,layer2property2]] 
+    const layerPropertiesArray = wmsLayers.map(layer=>(layer.getfeatureinfo_properties || [] ));
+    const layerNameArray = wmsLayers.map(layer=>layer.feature_title_property);
+
+    // if getfeatureinfo_properties && feature_title_property are both not configured 
+    // then do not draw popup
+    if (
+      layerPropertiesArray.flat().length === 0 && 
+      layerNameArray.filter(name => name !== undefined).length === 0
+    ) {
+      return null;
+    }
+
     return (
     <Marker
       key={"get_feature_info"}
       position={[featureInfo.latlng.lat, featureInfo.latlng.lng]}
+      // this icon is somehow needed in order not to show the marker default icon
+      // , but instead show the popup right away
+      // we use this to set an "empty" icon by setting al the sizes to 1 (pixel?)
+      // leaflet however requires a image url so we pass it the lizard logo, but in practice we could use any image
       icon={L.icon({
         iconUrl: logo_lizard,
         shadowUrl: logo_lizard,
@@ -557,9 +562,18 @@ class MapComponent extends Component {
       }}
     >
       <Popup 
-        minWidth={250} keepInView={true}
-        // position={featureInfo.latlng}
-        // position={[featureInfo.latlng.lat, featureInfo.latlng.lng]}
+        // set "keepinview=false" because it crashed when rescaling the screen and screen became so small that marker fell of screen
+        minWidth={250} keepInView={false}
+        // whithout this onclose event the popup will open again after a react rerender
+        onClose={()=>{
+          this.setState({
+            featureInfo: {
+              show: false,
+              latlng: null,
+              data: null,
+            },
+          })
+        }}
         onAdd={event => {
           this.redrawPopup(event);
         }}
@@ -584,14 +598,27 @@ class MapComponent extends Component {
               {
                 featureInfo.data ? 
                 featureInfo.data.map((layer, index)=>
-                  this.renderPopupLayer(
+                  // somehow sometimes layer == null -> is this a failed api call ?
+                  layer && this.renderPopupLayer(
                     layer, 
-                    featureInfo, 
-                    index
+                    layerPropertiesArray[index],
+                    layerNameArray[index]
                   )
                 )
                 : 
-                null
+                <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // hardcoded 320px because most of time the content is this high
+                      // is there a better solution? Maybe set height with scroll
+                      height: '320px',
+                    }}
+                >
+                  <MDSpinner size={48} />
+                </div>
+                
               }
             </ol>
           </div>
@@ -601,10 +628,8 @@ class MapComponent extends Component {
     )
   }
 
-  renderPopupLayer (layer, featureInfo, index) {
+  renderPopupLayer (layer, layerProperties, layerName) {
     const features = layer.features;
-    const layerName = featureInfo.layerNames[index];
-    const layerProperties = featureInfo.getfeatureinfo_properties[index];
     return (
       <li>
         <div> 
@@ -620,7 +645,7 @@ class MapComponent extends Component {
               return (
                 <li>
                   <h4>
-                    {feature.properties[featureInfo.feature_title_property]}
+                    {feature.properties[layerName]}
                   </h4>
                   <ol
                     className={`${dataStyles.HideListDesign} ${popupStyles.List} ${popupStyles.PropertyList}`}
@@ -731,7 +756,7 @@ class MapComponent extends Component {
           zoomControl={false}
           attribution={false}
           className={styles.MapStyleFull}
-          onClick={e=> this.clickHandler(e)}
+          onClick={e=> this.getFeatureInfomarker(e)}
           ref={this.leafletMapRef}
         >
           <TileLayer url={this.props.mapBackground.url} />
@@ -745,9 +770,15 @@ class MapComponent extends Component {
             :
             null
           }
-          {legend}
+          
           {wmsLayers}
         </Map>
+        {/* 
+        Placed legend outside map, because this prevents click event on legend to trigger click event on map 
+        This may be conceptually wrong
+        Other solution would be to prevent bubbling
+        */}
+        {legend}
       </div>
     );
   }
