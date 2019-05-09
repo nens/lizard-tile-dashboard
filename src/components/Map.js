@@ -454,7 +454,7 @@ class MapComponent extends Component {
     event.target.update();
   }
 
-  getFeatureInfomarker (event) {
+  showFeatureInfoMarkerAndFetchData (event) {
     const latlng = event.latlng;
     const wmsLayers = (this.props.tile.wmsLayers || []);
     
@@ -468,6 +468,8 @@ class MapComponent extends Component {
     });
     const mapRef = this.leafletMapRef.current.leafletElement;
 
+    // TODO make the showFeatureInfoMarkerAndFetchData also query raster and possibly background layer
+    // see commented out example code below
     // on background no getFeatureInfoPossible ? because it is not wms
     // const backgroundUrl = this.constructGetFeatureInfoUrl(
     //   {
@@ -754,7 +756,7 @@ class MapComponent extends Component {
           zoomControl={false}
           attribution={false}
           className={styles.MapStyleFull}
-          onClick={e=> this.getFeatureInfomarker(e)}
+          onClick={e=> this.showFeatureInfoMarkerAndFetchData(e)}
           ref={this.leafletMapRef}
         >
           <TileLayer url={this.props.mapBackground.url} />
