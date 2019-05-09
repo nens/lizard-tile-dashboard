@@ -522,8 +522,7 @@ class MapComponent extends Component {
     });
   }
 
-  renderPopup ( featureInfo ) {
-    const wmsLayers = (this.props.tile.wmsLayers || []);
+  renderPopup ( wmsLayers, featureInfo ) {
     // layerPropertiesArray = array of array of properties per layer [[layer1property1,layer1property2],[layer2property1,layer2property2]] 
     const layerPropertiesArray = wmsLayers.map(layer=>(layer.getfeatureinfo_properties || [] ));
     const layerNameArray = wmsLayers.map(layer=>layer.feature_title_property);
@@ -554,10 +553,8 @@ class MapComponent extends Component {
         shadowAnchor: [1, 1], // the same for the shadow
         popupAnchor: [1, 1] // point from which the popup should open relative to the iconAnchor
       })}
+      // Without this event appearently leaflet does not render the popup
       onAdd={event => {
-        this.redrawPopup(event);
-      }}
-      onMove={event => {
         this.redrawPopup(event);
       }}
     >
@@ -573,12 +570,6 @@ class MapComponent extends Component {
               data: null,
             },
           })
-        }}
-        onAdd={event => {
-          this.redrawPopup(event);
-        }}
-        onMove={event => {
-          this.redrawPopup(event);
         }}
         autoPanPaddingBottomRight={L.point(65, 65)}
         autoPanPaddingTopLeft={L.point(50, 65)}
@@ -766,7 +757,7 @@ class MapComponent extends Component {
           {this.markers()}
           {
             this.state.featureInfo.show === true ?
-            this.renderPopup(this.state.featureInfo)
+            this.renderPopup((this.props.tile.wmsLayers || []), this.state.featureInfo)
             :
             null
           }
