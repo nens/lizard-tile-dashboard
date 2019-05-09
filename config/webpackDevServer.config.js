@@ -33,6 +33,9 @@ const PROXY_SETTING = {
       "password": ""
     }
   },
+  // add /proxy in order to send api request to lizard that should be proxied to different domain:
+  // http://localhost:3000/proxy/https://maps1.project.lizard.net/geoserver/t0269_headashboards/wms?REQUEST=GetFeatureInfo&SERVICE=WMS&SRS=EPSG:4326&VERSION=1.1.1&INFO_FORMAT=application/json&BBOX=6.072692871093751,52.832639706103215,7.332000732421876,53.48967969477546&HEIGHT=798&WIDTH=917&LAYERS=t0269_headashboards:t0269_hea_rrgebieden_voorspelling&QUERY_LAYERS=t0269_headashboards:t0269_hea_rrgebieden_voorspelling&FEATURE_COUNT=100&X=580&Y=532
+  // needed for getfeatureinfo to wms servers
   "/proxy": {
     "target": PROXY_SERVER,
     "changeOrigin": true,

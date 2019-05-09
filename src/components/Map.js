@@ -384,16 +384,14 @@ class MapComponent extends Component {
       
       request.withCredentials = true; // Send cookie.
       request.open('GET', url);
-      // request.setRequestHeader('Access-Control-Allow-Origin', 'demo.lizard.net');
-      // request.setRequestHeader('Access-Control-Allow-Headers', 'demo.lizard.net');
       request.send();
-      // problem with cors: Do the incoming wms servers allow this ?
-      // maybe not for now continue dev by disabling it in chrome
-      // google-chrome --disable-web-security --user-data-dir="[/home/tomdeboer/dev/lizard-tile-dashboard]"
     });
   }
 
   constructGetFeatureInfoUrl(mapLayer, mapRef, latlng) {
+    // the url to the wms layer is originally absolute, but it is to a different domain
+    // browser does not allow this due to CORS
+    // therefore we prepend /proxy/ to the url so it will be send to lizard and lizard will know that it should proxy it
     const layerUrl = '/proxy/'+ mapLayer.url;
     const layerName = mapLayer.name;
     const srs = mapLayer.srs;
