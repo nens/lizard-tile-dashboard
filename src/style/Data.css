@@ -35,6 +35,7 @@ ol.HideListDesign {
   max-width: 220px; /* maximal size*/
   flex-grow: 1; /* grow untill max width */
   flex-shrink: 0; /* never shrink smaller then flex-basis */
+  text-align: left;
   
 }
 
@@ -42,4 +43,5 @@ ol.HideListDesign {
   flex-basis: 80px; /* minimal size*/
   flex-grow: 1; /* grow forever, since no max-width is specified */
   flex-shrink: 0; /* never shrink smaller then flex-basis */
+  text-align: left;
 }

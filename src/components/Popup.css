@@ -3,6 +3,7 @@
   border-width: 0;
   border-style: solid;
   border-color: #666;
+  text-align: center;
 }
 
 ol.LayerList {
@@ -42,4 +43,17 @@ ol.FeatureList {
 
 .Popup {
   min-width: 300px;
+  /* // percentage doesn't work, is this leaflet? */
+  /* // maxHeight:"70%", */
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.SpinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* // hardcoded 320px because most of time the content is this high */
+  /* // is there a better solution? Maybe set height with scroll */
+  height: 320px;
 }

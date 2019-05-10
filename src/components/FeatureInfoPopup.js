@@ -68,12 +68,6 @@ class FeatureInfoPopup extends Component {
       >
         <div 
           className={popupStyles.Popup}
-          style={{
-            // percentage doesn't work, is this leaflet?
-            // maxHeight:"70%",
-            maxHeight: "400px",
-            overflowY: "auto",
-          }}
         >
           <div className={dataStyles.ListHeader}>
             <h2>Layers</h2>
@@ -99,15 +93,8 @@ class FeatureInfoPopup extends Component {
             </ol>
             { !featureInfo.data ? 
               <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  // hardcoded 320px because most of time the content is this high
-                  // is there a better solution? Maybe set height with scroll
-                  height: '320px',
-                }}
-            >
+                className={popupStyles.SpinnerContainer}
+              >
               <MDSpinner size={48} />
             </div>
             :
