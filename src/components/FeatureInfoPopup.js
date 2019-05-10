@@ -16,6 +16,10 @@ class FeatureInfoPopup extends Component {
     event.target.update();
   }
 
+  flattenOneLayer (arr) {
+    return [].concat(...arr)
+  }
+
   render () {
 
     const {wmsLayers, featureInfo} = this.props;
@@ -26,7 +30,7 @@ class FeatureInfoPopup extends Component {
     // if getfeatureinfo_properties && feature_title_property are both not configured 
     // then do not draw popup
     if (
-      layerPropertiesArray.flat().length === 0 && 
+      this.flattenOneLayer(layerPropertiesArray).length === 0 && 
       layerNameArray.filter(name => name !== undefined).length === 0
     ) {
       return null;
@@ -65,11 +69,15 @@ class FeatureInfoPopup extends Component {
         <div 
           className={popupStyles.Popup}
           style={{
-            maxHeight:"100%",
+            // percentage doesn't work, is this leaflet?
+            // maxHeight:"70%",
+            maxHeight: "400px",
             overflowY: "auto",
           }}
         >
-          <span>Layers: </span>
+          <div className={dataStyles.ListHeader}>
+            <h2>Layers</h2>
+          </div>
           <div >
             <ol
               className={`${dataStyles.HideListDesign} ${popupStyles.List} ${popupStyles.LayerList}`}
@@ -85,21 +93,26 @@ class FeatureInfoPopup extends Component {
                   )
                 )
                 : 
-                <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      // hardcoded 320px because most of time the content is this high
-                      // is there a better solution? Maybe set height with scroll
-                      height: '320px',
-                    }}
-                >
-                  <MDSpinner size={48} />
-                </div>
+                null
                 
               }
             </ol>
+            { !featureInfo.data ? 
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // hardcoded 320px because most of time the content is this high
+                  // is there a better solution? Maybe set height with scroll
+                  height: '320px',
+                }}
+            >
+              <MDSpinner size={48} />
+            </div>
+            :
+            null
+            }
           </div>
         </div>
       </Popup>
@@ -114,7 +127,9 @@ class FeatureInfoPopup extends Component {
         <div> 
           <div>
             <h2>{layerName}</h2>
-            <span>Features: </span>
+            <div className={dataStyles.ListHeader}>
+              <h3>Features</h3>
+            </div>
           </div>
           
           <ol

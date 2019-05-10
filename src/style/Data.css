@@ -1,7 +1,22 @@
+.ListHeader {
+  background-color: #666;
+  color: #fff;
+  text-align: center;
+}
+.ListHeader H1,
+.ListHeader H2,
+.ListHeader H3,
+.ListHeader H4,
+.ListHeader H5 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 ul.HideListDesign,
 ol.HideListDesign {
   list-style-type: none;
-  padding: 8px;
+  padding: 0;
+  margin: 0;
 }
 
 /* make each key value pair a flexbox container */
