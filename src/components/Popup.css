@@ -1,0 +1,59 @@
+.List li,
+.List {
+  border-width: 0;
+  border-style: solid;
+  border-color: #666;
+  text-align: center;
+}
+
+ol.LayerList {
+  /* make the margin of a child not cause margin for this element. Removing next line will leak margin of H2 element */
+  overflow-y: auto;
+  border-left-width: 3px;
+}
+.LayerList li {
+  border-bottom-width: 3px;
+  padding-left: 8px;
+}
+
+ol.FeatureList {
+  /* make the margin of a child not cause margin for this element. Removing next line will leak margin of H2 element */
+  overflow-y: auto;
+  border-left-width: 1px;
+}
+.FeatureList li {
+  border-bottom-width: 1px;
+}
+.FeatureList li:last-child {
+  border-bottom-width: 0;
+}
+
+.PropertyList li {
+  border-color: #ccc;
+  border-bottom-width: 0px;
+  border-top-width: 1px;
+}
+.PropertyList li:last-child {
+  border-bottom-width: 0;
+}
+
+.PropertyList li label {
+  font-weight: bold;
+}
+
+.Popup {
+  min-width: 300px;
+  /* // percentage doesn't work, is this leaflet? */
+  /* // maxHeight:"70%", */
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.SpinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* // hardcoded 320px because most of time the content is this high */
+  /* // is there a better solution? Maybe set height with scroll */
+  height: 320px;
+}

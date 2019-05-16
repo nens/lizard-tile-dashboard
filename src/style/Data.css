@@ -1,0 +1,47 @@
+.ListHeader {
+  background-color: #666;
+  color: #fff;
+  text-align: center;
+}
+.ListHeader H1,
+.ListHeader H2,
+.ListHeader H3,
+.ListHeader H4,
+.ListHeader H5 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ul.HideListDesign,
+ol.HideListDesign {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* make each key value pair a flexbox container */
+.KeyValueWrap {
+  display: flex;
+  flex-direction: row; /* this is the default, but I like explicit */
+  /* wrap so items can go to next line if horizontal space becomes to narrow */
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.KeyValueWrap > :nth-child(1) {
+  /* flex: 1 0 120px; */
+  /* I rather write all flex details out */
+  flex-basis: 120px; /* minimal size*/
+  max-width: 220px; /* maximal size*/
+  flex-grow: 1; /* grow untill max width */
+  flex-shrink: 0; /* never shrink smaller then flex-basis */
+  text-align: left;
+  
+}
+
+.KeyValueWrap > :nth-child(2) {
+  flex-basis: 80px; /* minimal size*/
+  flex-grow: 1; /* grow forever, since no max-width is specified */
+  flex-shrink: 0; /* never shrink smaller then flex-basis */
+  text-align: left;
+}

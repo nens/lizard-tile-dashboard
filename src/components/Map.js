@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { BOUNDS } from "../config";
 import { connect } from "react-redux";
 import { find } from "lodash";
 import { updateTimeseriesMetadata, fetchRaster, addAsset } from "../actions";
@@ -19,16 +18,34 @@ import {
   DateTime
 } from "../api_client/index";
 import { BoundingBox, isSamePoint } from "../util/bounds";
-
 import { Map, Marker, Popup, TileLayer, WMSTileLayer } from "react-leaflet";
 import Legend from "./Legend";
+import FeatureInfoPopup from "./FeatureInfoPopup";
+import constructGetFeatureInfoUrl from "../util/constructGetFeatureInfoUrl.js";
+import getFromUrl from "../util/getFromUrl.js";
 import styles from "./Map.css";
 import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
 
+
 class MapComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      featureInfo: {
+        show: false,
+        latlng: null,
+        data: null
+      },
+    }
+  }
   componentDidMount() {
     const { tile } = this.props;
     const inBboxFilter = this.getBBox().toLizardBbox();
+
+    // reference to get acces to leaflet Map API
+    // Is there another option to do this?
+    // Also we need to ad the ref only on render-full -> will this impose problem?
+    this.leafletMapRef = React.createRef();
 
     if (tile.assetTypes) {
       tile.assetTypes.forEach(assetType => {
@@ -50,6 +67,8 @@ class MapComponent extends Component {
       });
     }
   }
+
+  
 
   getBBox() {
     // Either get it from the tile or return the JSON configured constant.
@@ -336,6 +355,78 @@ class MapComponent extends Component {
     return tile.type === "map" && tile.assetTypes && tile.assetTypes.length > 0;
   }
 
+  
+
+  showFeatureInfoMarkerAndFetchData (event) {
+    const latlng = event.latlng;
+    const wmsLayers = (this.props.tile.wmsLayers || []);
+    
+    // With long loading times it may be desirable to already show the popup with a spinner
+    this.setState({
+      featureInfo: {
+        show: true,
+        latlng: latlng,
+        data: null,
+      }
+    });
+    const mapRef = this.leafletMapRef.current.leafletElement;
+
+    // TODO make the showFeatureInfoMarkerAndFetchData also query raster and possibly background layer
+    // see commented out example code below
+    // on background no getFeatureInfoPossible ? because it is not wms
+    // const backgroundUrl = this.constructGetFeatureInfoUrl(
+    //   {
+    //     url: this.props.mapBackground.url,
+    //     name: this.props.mapBackground.description,
+    //     srs: "EPSG:4326",
+    //   },
+    //   mapRef,
+    //   latlng
+    // );
+    // do raster have getFeatureInfo ? -> didnot find tile with raster yet to test
+    // const rasterUrls = (this.props.tile.rasters || []).map(raster =>
+    //   this.constructGetFeatureInfoUrl(
+    //     {
+    //       url: raster.url,
+    //       name: raster.layers,
+    //       srs: raster.srs,
+    //     },
+    //     mapRef,
+    //     latlng
+    //   )
+    // );
+    
+    const wmsUrls = wmsLayers.map(wmsLayer =>
+      constructGetFeatureInfoUrl(
+        {
+          url: wmsLayer.url,
+          name: wmsLayer.layers,
+          srs: wmsLayer.srs,
+        },
+        mapRef,
+        latlng
+      )
+    );
+    
+    const wmsUrlsPromises = wmsUrls.map(url => getFromUrl(url)); 
+    Promise.all(wmsUrlsPromises).then(promiseResults => {
+      if (
+        this.state.featureInfo.latlng.lat === latlng.lat &&
+        this.state.featureInfo.latlng.lng === latlng.lng
+        ) {
+          this.setState({
+            featureInfo: {
+              show: true,
+              latlng: latlng,
+              data: promiseResults,
+            }
+          });
+      }
+    });
+  }
+
+  
+
   render() {
     return this.props.isFull ? this.renderFull() : this.renderSmall();
   }
@@ -418,15 +509,41 @@ class MapComponent extends Component {
           zoomControl={false}
           attribution={false}
           className={styles.MapStyleFull}
+          onClick={e=> this.showFeatureInfoMarkerAndFetchData(e)}
+          ref={this.leafletMapRef}
         >
           <TileLayer url={this.props.mapBackground.url} />
           {tile.rasters
             ? tile.rasters.map(raster => this.tileLayerForRaster(raster))
             : null}
           {this.markers()}
-          {legend}
+          {
+            this.state.featureInfo.show === true ?
+            <FeatureInfoPopup
+              wmsLayers={(this.props.tile.wmsLayers || [])}
+              featureInfo={this.state.featureInfo}
+              onClose={e=>{
+                this.setState({
+                  featureInfo: {
+                    show: false,
+                    latlng: null,
+                    data: null,
+                  },
+                })
+              }}
+            />
+            :
+            null
+          }
+          
           {wmsLayers}
         </Map>
+        {/* 
+        Placed legend outside map, because this prevents click event on legend to trigger click event on map 
+        This may be conceptually wrong
+        Other solution would be to prevent bubbling
+        */}
+        {legend}
       </div>
     );
   }
