@@ -415,7 +415,7 @@ periodHoursRelativeToNow
 - It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
 - 2-element array of integers.
 - No. If not set, the default is [-24, 12].
-- on root level of JSON (?)
+-
 
 referenceLevels
 ---------------
