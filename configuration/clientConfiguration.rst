@@ -419,42 +419,18 @@ periodHoursRelativeToNow
 
 referenceLevels
 ---------------
--
--
--
--
 
 title
 -----
--
--
--
--
 
 headerColors
 ------------
--
--
--
--
 
 logo
 ----
--
--
--
--
 
 gridView
 --------
--
--
--
--
 
 mapBackgrounds
 --------------
--
--
--
--
