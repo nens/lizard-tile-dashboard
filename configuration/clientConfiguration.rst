@@ -138,7 +138,6 @@ CAUTION ! Please be aware that comments are not valid JSON and should be removed
     },
   ],
 
-===========================
 Common fields for all tiles
 ===========================
 
@@ -146,119 +145,37 @@ The most important property of a tile is its `type`; it decides what
 other fields are used. But besides that, there are other fields that
 are common to all tile types.
 
------------------------
-Meta property explained
------------------------
-
-Meta properties define constants that are identical for all tiles on the dashboard.
-Some of these properties can only be defined as a meta property, but others may also be defined per tile.
-In the latter case properties on tile-level will always take precedence over properties on meta level.
-Properties that only exist on tile level and not on meta level also exist and are in fact the majority.
-
-
-------------------------------
-Tile dashboards configuration:
-------------------------------
-
-Below is a non-exhaustive list of properties.
-Please help by extending this list.
-
-
-Properties example
-==================
-
-**First an example:**
-Below the example are the properties of the tile dashboards.
-
-The table below is created with taking into account the reStructuredText way of creating tables.
-Due to time constrictions, this is not done for all properties.
-
-+-------------------+-------------------------+
-|What it does       |Explanation              |
-+-------------------+-------------------------+
-|Format             |String/ Integer/ ..      |
-+-------------------+-------------------------+
-|Required           |Yes/ No                  |
-+-------------------+-------------------------+
-|Where it is defined|on root level of JSON/ ..|
-+-------------------+-------------------------+
-
-**Actual properties:**
-
-
-Root properties
-===============
-
-tiles
------
-- What the tiles of the dashboard should show. See the next paragraph Tiles for what properties you can set for the Tiles.
-- array of tile objects.
-- Yes
-- on root level of JSON
-
-Check the `Tile properties`_.
-
-meta
+type
 ----
-- General information about the entire dashboard, not just the specific tiles
-- array of objects.
-- No
-- on root level of JSON
-
-Check the `Meta properties`_.
-
-
-Tile properties
-===============
+- Type of the tile that decides the other fields below.
+- string. Currently one of "map", "timeseries", "statistics" or "external". See `Tile type: map`_, `Tile type: timeseries`_, `Tile type: statistics`_ and `Tile type: external`_.
+- Mandatory
 
 id
 --
 - Must be unique for each tile. To track which is currently selected.
 - integer
-- Yes
-- on root level of JSON
+- Mandatory
+- Deprecated: this just leads to problems, we could use the index of
+  the tile in the array instead.
 
 title
 -----
 - The full (long) title of the tile that will be shown on the fullscreen view of the tile.
 - string
-- Yes
-- on root level of JSON
+- Mandatory
 
 shortTitle
 ----------
 - Will be used for the small versions of the tile if set, otherwise the normal title is used.
 - string
-- No
-- on root level of JSON
-
-type
-----
-- Type of the tile that decides the other fields below.
-- string. Currently one of “map”, “timeseries”, “statistics” or “external”. See `Tile type: map`_, `Tile type: timeseries`_, `Tile type: statistics`_ and `Tile type: external`_.
-- Yes
-- on root level of JSON
+- Optional
 
 viewInLizardLink
 ----------------
 - If set then this is linked from the header above the fullscreen version of the tile.
 - string
-- No
-- on root level of JSON
-
-nowDateTimeUTC (Lizard Tile Dashboard)
---------------------------------------
-- Defines the current time of the dashboard. If defined then gauge data will nog get updated
-- For example 2018-10-29T10:00:00Z
-- No, defaults to current date/time
-- on root level of JSON
-
-isPublic (Lizard Tile Dashboard)
---------------------------------
-- If true then the user does not need to login to open the dashboard
-- true/false
-- No, defaults to false
-- on root level of JSON
+- Optional
 
 
 Tile type: map
@@ -268,35 +185,32 @@ The map type tiles can show measuring stations, points and WMS layers, possibly 
 
 assetTypes
 ----------
-- If set, all measurement stations in the map area are retrieved from the API and shown on the map.
-- array of assets types, but currently only [“measuringstation”] actually works.
-- No
-- in map of JSON (?)
+- If set, all measurement stations in the map area are retrieved from the API and shown on the map as circle icons.
+- array of assets type, but currently only `["measuringstation"]` actually works.
+- Optional
 
 bbox
 ----
 - The bounding box for the map.
 - a 4-number array [westmost, southmost, eastmost, northmost] with WGS84 coordinates.
-- No, default if not set, see config.js: [150.9476776123047, -33.87831497192377, 151.0842590332031, -33.76800155639643]
-- in map of JSON (?)
+- No, defaults to Parramatta, Sydney if not set: [150.9476776123047, -33.87831497192377, 151.0842590332031, -33.76800155639643]
 
 datetime
 --------
-- Objects for relative time. Example:
+- Objects for relative time. Used to decide which timestep of a raster to show. Example:
   ::
 
     {
-      “type”: “relative”,
-      “to”: “now”,  // or “start” or “end” (of a timeseries)
-      “offset”: 0, // Number of seconds before or after the “to” point
-      “modulo”: 300 // Optional number of seconds, only works for to: “now”;
+      "type": "relative",
+      "to": "now",  // or "start" or "end" (of the raster timeseries)
+      "offset": 0, // Number of seconds before or after the "to" point
+      "modulo": 300 // Optional number of seconds, only works for to: "now";
       // Current time is rounded down to a multiple of this many seconds.
       // Use so that the time only changes e.g. every five minutes.
     }
 
 - Object
-- No, optional for temporal rasters.
-- in map of JSON (?)
+- No, optional for temporal rasters. Default is to use the server default (closest to now?)
 
 points
 ------
@@ -304,16 +218,16 @@ points
   ::
 
     {
-      “title”: “This is a point”,
-      “geometry”: {
-        “type”: “Point”,
-        “coordinates”: […] // GeoJSON
+      "title": "This is a point",
+      "geometry": {
+        "type": "Point",
+        "coordinates": […] // GeoJSON
       }
     }
 
 - Array of objects.
-- No
-- in map of JSON (?)
+- Optional
+
 
 rasters
 -------
@@ -321,13 +235,12 @@ rasters
   ::
 
     {
-      “uuid”: string,  // UUID of the raster as in the API
-      “opacity”: “0.5” // string with the opacity as a number
+      "uuid": string,  // UUID of the raster as in the API
+      "opacity": "0.5" // string with the opacity as a number
     }
 
 - Array of raster objects.
-- No
-- in map of JSON (?)
+- Optional
 
 wmsLayers
 ---------
@@ -335,41 +248,53 @@ wmsLayers
   ::
 
     {
-      “layers”: “gauges”,
-      “format”: “image/png”,
-      “url”: “https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1”,
-      “height”: 256,
-      “zindex”: 1004,
-      “width”: 256,
-      “srs”: “EPSG:3857”,
-      “transparent”: true
+      "layers": "gauges",
+      "format": "image/png",
+      "url": "https://geoserver9.lizard.net/geoserver/parramatta/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1",
+      "height": 256,
+      "zindex": 1004,
+      "width": 256,
+      "srs": "EPSG:3857",
+      "transparent": true
     }
 
 - Array.
-- No
-- in map of JSON (?)
+- Optional
 
 
 Tile type: timeseries
 =====================
 
-The timeseries type tiles are charts of timeseries, they can have two sources: intersections of a point geometry with a raster or timeseries objects from the API.
+The timeseries type tiles are charts of timeseries, they can have two
+sources: intersections of a point geometry with a raster or timeseries
+objects from the API.
 
-It’s not possible yet to set the color of charts of raster intersections, they are a few shades of blue at the moment.
+The number of things to chart is not limited, but there can be at most
+two different observation types; one will be on the left Y-axis and one
+will be on the right Y-axis.
+
+Observation types with scale 'ratio' will be shown as bar charts, types with
+scale 'interval' will be line charts.
+
+The time period shown is defined by the 'periodHoursRelativeToNow' property,
+if it is not set then the default for the whole dashboard set in the Meta
+properties is used. If neither is set then the default is [-24, 12], one day
+before now and half a day after.
 
 timeseries
 ----------
 - Timeseries UUIDs.
 - Array of timeseries UUIDs.
-- Yes
-- in timeseries of JSON (?)
+- Mandatory
+
 
 colors
 ------
 - Color codes for each timeseries.
-- Array of color codes for each timeseries.
-- ?
-- in timeseries of JSON (?)
+- Array of color codes for each timeseries, must be equal in length to the timeseries
+  array plus the length of the rasterIntersections array.
+- Optional. If not set, the colors cycle through three shades of blue.
+
 
 rasterIntersections
 -------------------
@@ -377,10 +302,10 @@ rasterIntersections
   ::
 
     {
-      “uuid”: UUID of the raster,
-      “geometry”: {
-        “type”: “Point”,
-        “coordinates”: [
+      "uuid": UUID of the raster,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           5.9223175048828125,
           52.15118665954508
         ]
@@ -388,8 +313,27 @@ rasterIntersections
     }
 
 - Array of objects with the keys shown above.
-- ?
-- in timeseries of JSON (?)
+- Optional
+
+
+Tile type: external
+===================
+
+The external type tile is for external web pages (must be https, and
+may have headers that prevent us from using iframes, so not all pages
+work!).
+
+imageUrl
+--------
+- Url of image to show in the tile.
+- String.
+- Optional, an icon is shown as default.
+
+url
+---
+- Web page to show in an iframe in the fullscreen version.
+- String.
+- Optional, nothing is shown as default.
 
 
 Tile type: statistics
@@ -398,26 +342,6 @@ Tile type: statistics
 Nothing can be configured in a statistics type tile, so there should be exactly 1 of this tile type in the list.
 
 The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
-
-
-Tile type: external
-===================
-
-The external type tile is for external web pages (must be https, and may have headers that prevent us from using iframes, so not all pages work!).
-
-imageUrl
---------
-- Url of image to show in the tile.
-- String.
-- No, an icon is shown as default.
-- in external of JSON (?)
-
-url
----
-- Web page to show in an iframe in the fullscreen version.
-- String.
-- No, nothing is shown as default.
-- in external of JSON (?)
 
 
 Meta properties
