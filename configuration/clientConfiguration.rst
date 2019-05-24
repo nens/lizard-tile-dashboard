@@ -74,17 +74,44 @@ periodHoursRelativeToNow
 title
 -----
 
+- Title of the dashboard
+- string
+- Optional, default is (in production) the first part of the domain, e.g. ijgenzon for ijgenzon.lizard.net.
+
 headerColors
 ------------
+
+- Colors to use for the headers of the tiles
+- Object of the form {"bg": "#FFFFFF", "fg": "#777777" }
+- Optional, the example above is the default
 
 logo
 ----
 
+- Full URL to the logo to be shown at the top of the grid layout page. Funnily enough the alt text is always "Rijkswaterstaat logo".
+- String
+- Mandatory, it is possible to omit it but this leads to wrong HTML
+
 gridView
 --------
 
+- To configure the grid layout; currently only the number of columns.
+- Object of the form {"columnCount": 3}
+- Mandatory
+
 mapBackgrounds
 --------------
+
+- Map backgrounds that can be toggled between
+- Array, containing objects of the form
+
+  {
+    "url": "https://{s}.tiles.mapbox.com/v3/nelenschuurmans.l15e647c/{z}/{x}/{y}.png",
+    "description": "Neutral Map"
+  }
+
+- Mandatory to have at least 1 even if there are no Map tiles,
+  otherwise the settings screen has trouble
 
 ------------------------
 Tiles property explained
