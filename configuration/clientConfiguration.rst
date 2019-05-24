@@ -16,23 +16,23 @@ The jsons in this folder contain the code per example mentioned below.
 Introduction
 ------------
 
-This is a fully configurable dashboard app.  
-Users can define themselves what each dashboard will show and are able to define multiple dashboards with each their own url.  
-Users will be able to do so in the "client_configuration" admin page of the lizard-nxt application: "/admin/lizard_nxt/clientconfiguration".  
-Below screenshot is an example of such a record.  
+This is a fully configurable dashboard app.
+Users can define themselves what each dashboard will show and are able to define multiple dashboards with each their own url.
+Users will be able to do so in the "client_configuration" admin page of the lizard-nxt application: "/admin/lizard_nxt/clientconfiguration".
+Below screenshot is an example of such a record.
 
 .. image:: client_config_screenshot.png
   :alt: Screenshot of client configuration record in DJANGO admin
-  
-- The "portal" field defines the base url of the dashboard  
-- The "slug" field defines the postfix of the url  
-- The configuration field defines the content of the dashboard and will be explained further under "The configuration field"  
 
-The url to acces the configured dashboard always has the format:  
-`<portal>/`dashboard`/<slug>`  
-For legacy reasons there is an exception to this, namely:  
-If the "slug" field has the value "dashboard" then the app can also be accessed via the url:  
-`<portal>/`dashboard`/`  
+- The "portal" field defines the base url of the dashboard
+- The "slug" field defines the postfix of the url
+- The configuration field defines the content of the dashboard and will be explained further under "The configuration field"
+
+The url to acces the configured dashboard always has the format:
+`<portal>/`dashboard`/<slug>`
+For legacy reasons there is an exception to this, namely:
+If the "slug" field has the value "dashboard" then the app can also be accessed via the url:
+`<portal>/`dashboard`/`
 
 The example in above screenshot would thus be accessable via the url:
 `https://china.lizard.net/dashboard/view1 <https://china.lizard.net/dashboard/view1>`_
@@ -42,8 +42,8 @@ The example in above screenshot would thus be accessable via the url:
 The configuration field explained
 ---------------------------------
 
-The "configuration" field defines the content of the dashboard in a `JSON format <https://www.json.org/>`_.  
-A dashboard typically contains of a `meta` and a `tiles` property: 
+The "configuration" field defines the content of the dashboard in a `JSON format <https://www.json.org/>`_.
+A dashboard typically contains of a `meta` and a `tiles` property:
 
 - meta
 - tiles, each tile is of one of the following types:
@@ -52,27 +52,33 @@ A dashboard typically contains of a `meta` and a `tiles` property:
   - *timeseries*: a temporal graph, implemented in `Plotly <https://plot.ly/javascript/>`_
   - *external*: other media type (image, gif, etc)
 
+Optionally the following properties can also be present:
+
+- isPublic - Boolean, if this is `true` then login is not required.
+- referenceLevels - to show a reference level field for assets on a Map
+- fakeData - for training purposes, some API responses can be 'faked'
+
 The JSON stored in the admin is hard to edit because all formatting is lost. It can be made neater with online tools like `https://jsoneditoronline.org/ <https://jsoneditoronline.org/>`_.
 
 ------------------------
 Tiles property explained
 ------------------------
 
-Each dashboard can contain one or more tiles.  
-Tiles are the little squares on the main page.  
-Within the dashboard app, each tile has unique content and can be made fullscreen by clicking on it.  
+Each dashboard can contain one or more tiles.
+Tiles are the little squares on the main page.
+Within the dashboard app, each tile has unique content and can be made fullscreen by clicking on it.
 Since there are multiple tiles per dashboards the tiles are defined in the JSON format with an `array <https://www.w3schools.com/js/js_json_arrays.asp>`_ of objects.
-Each element of this tile array is itself a `JSON object <https://www.w3schools.com/js/js_json_objects.asp>`_ defining the content of the respective tile.  
+Each element of this tile array is itself a `JSON object <https://www.w3schools.com/js/js_json_objects.asp>`_ defining the content of the respective tile.
 
-Below is an example.   
+Below is an example.
 CAUTION ! Please be aware that comments are not valid JSON and should be removed before using below example in real life.::
 
   "tiles": [
-    { 
+    {
       // Example of a map tile
+      "type": "map",
       "shortTitle": "Example of map tile",
       "title": "Example of map tile",
-      "type": "map",
       "id": 1,
       "rasters": [
         {
@@ -132,22 +138,29 @@ CAUTION ! Please be aware that comments are not valid JSON and should be removed
     },
   ],
 
+===========================
+Common fields for all tiles
+===========================
+
+The most important property of a tile is its `type`; it decides what
+other fields are used. But besides that, there are other fields that
+are common to all tile types.
 
 -----------------------
 Meta property explained
 -----------------------
 
-Meta properties define constants that are identical for all tiles on the dashboard.  
-Some of these properties can only be defined as a meta property, but others may also be defined per tile.  
-In the latter case properties on tile-level will always take precedence over properties on meta level.  
-Properties that only exist on tile level and not on meta level also exist and are in fact the majority.  
+Meta properties define constants that are identical for all tiles on the dashboard.
+Some of these properties can only be defined as a meta property, but others may also be defined per tile.
+In the latter case properties on tile-level will always take precedence over properties on meta level.
+Properties that only exist on tile level and not on meta level also exist and are in fact the majority.
 
 
 ------------------------------
 Tile dashboards configuration:
 ------------------------------
 
-Below is a non-exhaustive list of properties.  
+Below is a non-exhaustive list of properties.
 Please help by extending this list.
 
 
@@ -238,7 +251,7 @@ nowDateTimeUTC (Lizard Tile Dashboard)
 - Defines the current time of the dashboard. If defined then gauge data will nog get updated
 - For example 2018-10-29T10:00:00Z
 - No, defaults to current date/time
-- on root level of JSON 
+- on root level of JSON
 
 isPublic (Lizard Tile Dashboard)
 --------------------------------
