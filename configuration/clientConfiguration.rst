@@ -54,11 +54,37 @@ A dashboard typically contains of a `meta` and a `tiles` property:
 
 Optionally the following properties can also be present:
 
-- isPublic - Boolean, if this is `true` then login is not required.
+- isPublic - Boolean, if this is `true` then login is not required. Could have been in meta.
 - referenceLevels - to show a reference level field for assets on a Map
-- fakeData - for training purposes, some API responses can be 'faked'
 
 The JSON stored in the admin is hard to edit because all formatting is lost. It can be made neater with online tools like `https://jsoneditoronline.org/ <https://jsoneditoronline.org/>`_.
+
+---------------
+Meta properties
+---------------
+
+periodHoursRelativeToNow
+========================
+
+- One place to configure a default period for all charts, see the chart tile.
+- 2-element array of integers.
+- Optional. If not set, the default is [-24, 12].
+
+
+title
+-----
+
+headerColors
+------------
+
+logo
+----
+
+gridView
+--------
+
+mapBackgrounds
+--------------
 
 ------------------------
 Tiles property explained
@@ -242,6 +268,7 @@ rasters
 - Array of raster objects.
 - Optional
 
+
 wmsLayers
 ---------
 - Array of extra wms layers. Example:
@@ -260,6 +287,17 @@ wmsLayers
 
 - Array.
 - Optional
+
+GetFeatureInfo configuration in wmsLayers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By adding two extra properties to wmsLayers, getFeatureInfo responses
+from WSM layers can be rendered inside popups:
+
+- feature_title_property the name of this layer, used as a header above the layer's properties
+- getfeatureinfo_properties is an array of objects like
+  [{ "key": "height", "name": "Height above sea level"}] that define which items from the features to show.
+  The key should be present in the GetFeatureInfo response.
 
 
 Tile type: timeseries
@@ -344,30 +382,23 @@ Nothing can be configured in a statistics type tile, so there should be exactly 
 The app just retrieves all the alarms that the user has access to, assumes they’re all relevant, and shows statistics on them.
 
 
-Meta properties
-===============
-
-periodHoursRelativeToNow
-------------------------
-- It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
-- 2-element array of integers.
-- No. If not set, the default is [-24, 12].
--
-
+---------------
 referenceLevels
 ---------------
 
-title
------
+This property should be in the Map tile or possible in the Meta
+element, but isn't.
 
-headerColors
-------------
+Each asset shown on a Map can have a Reference Level shown in its
+popup. As all assets are loaded at once when the app starts, this
+variable has also been made global.
 
-logo
-----
+It's an object of the form:
 
-gridView
---------
+  {
+    <asset-id 1>: <reference level 1>,
+    <asset-id 2>: <reference level 2>,
+    ...
+  }
 
-mapBackgrounds
---------------
+And completely optional.
