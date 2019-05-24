@@ -43,9 +43,9 @@ The configuration field explained
 ---------------------------------
 
 The "configuration" field defines the content of the dashboard in a `JSON format <https://www.json.org/>`_.  
-A dashboard typically contains of: 
+A dashboard typically contains of a `meta` and a `tiles` property: 
 
-- meta-properties
+- meta
 - tiles, each tile is of one of the following types:
 
   - *map*: a geographical map, implemented in `Leaflet <https://leafletjs.com/>`_
@@ -54,9 +54,9 @@ A dashboard typically contains of:
 
 The JSON stored in the admin is hard to edit because all formatting is lost. It can be made neater with online tools like `https://jsoneditoronline.org/ <https://jsoneditoronline.org/>`_.
 
----------------
-Tiles explained
----------------
+------------------------
+Tiles property explained
+------------------------
 
 Each dashboard can contain one or more tiles.  
 Tiles are the little squares on the main page.  
@@ -133,14 +133,14 @@ CAUTION ! Please be aware that comments are not valid JSON and should be removed
   ],
 
 
--------------------------
-Meta-properties explained
--------------------------
+-----------------------
+Meta property explained
+-----------------------
 
-Meta-properties define constants that are identical for all tiles on the dashboard.  
-Some of these properties can only be defined as meta-properties, but others may also be defined per tile.  
-In the latter case properties on tile-level will always take precedence over properties on meta-level.  
-Properties that only exist on tile level and not on meta-level also exist and are in fact the majority.  
+Meta properties define constants that are identical for all tiles on the dashboard.  
+Some of these properties can only be defined as a meta property, but others may also be defined per tile.  
+In the latter case properties on tile-level will always take precedence over properties on meta level.  
+Properties that only exist on tile level and not on meta level also exist and are in fact the majority.  
 
 
 ------------------------------
@@ -173,7 +173,7 @@ Due to time constrictions, this is not done for all properties.
 **Actual properties:**
 
 
-Meta-properties
+Root properties
 ===============
 
 tiles
@@ -181,16 +181,18 @@ tiles
 - What the tiles of the dashboard should show. See the next paragraph Tiles for what properties you can set for the Tiles.
 - array of tile objects.
 - Yes
-- on root level of JSON (?)
+- on root level of JSON
 
-Check the `Tile properties (Tile Dashboards)`_.
+Check the `Tile properties`_.
 
-periodHoursRelativeToNow
-------------------------
-- It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
-- 2-element array of integers.
-- No. If not set, the default is [-24, 12].
-- on root level of JSON (?)
+meta
+----
+- General information about the entire dashboard, not just the specific tiles
+- array of objects.
+- No
+- on root level of JSON
+
+Check the `Meta properties`_.
 
 
 Tile properties
@@ -403,3 +405,32 @@ url
 - String.
 - No, nothing is shown as default.
 - in external of JSON (?)
+
+
+Meta properties
+===============
+
+periodHoursRelativeToNow
+------------------------
+- It sets the hours from now, with the amount of hours you can look into the past and the amount of hours you can see into the future.
+- 2-element array of integers.
+- No. If not set, the default is [-24, 12].
+-
+
+referenceLevels
+---------------
+
+title
+-----
+
+headerColors
+------------
+
+logo
+----
+
+gridView
+--------
+
+mapBackgrounds
+--------------
