@@ -47,11 +47,11 @@ class LoginOrAppComponent extends Component {
 
     // split on /dashboard/
     // slashes are included in split so we do not also split on the second dashboard in /dashboard/dashboard
-    const urlPostDashboard = window.location.href.split("/dashboard/")[1];
+    const urlPreQueryParameters = window.location.href.split("?")[0];
+    const urlPostDashboard = urlPreQueryParameters.split("/dashboard/")[1];
     
     if (
-      !urlPostDashboard ||  // // if there was no /dashboard/ in the url, should only happen in dev or with a url of /dashboard (no tailing slash)
-      urlPostDashboard[0] === "?" // or if the rest of the url starts with a question mark (?), this happens when the url has ?iframe=true as parameter
+      !urlPostDashboard // if there was no /dashboard/ in the url, should only happen in dev or with a url of /dashboard (no tailing slash)
     ) {
       return undefined;
     }
