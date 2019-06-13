@@ -278,7 +278,7 @@ class FullLayout extends Component {
                   className={styles.ViewInLizardLink}
                   style={{ color: fgColor }}
                 >
-                  View in Lizard
+                  View in portal
                 </a>
               </div>
             ) : (
