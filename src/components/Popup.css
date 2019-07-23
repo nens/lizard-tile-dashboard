@@ -9,17 +9,23 @@
 ol.LayerList {
   /* make the margin of a child not cause margin for this element. Removing next line will leak margin of H2 element */
   overflow-y: auto;
-  border-left-width: 3px;
+  /* border-left-width: 3px; */
+}
+ol.LayerList h2 {
+  margin: 0 0 10px 0;
+}
+ol.LayerList h4 {
+  margin: 0 0 18px 0;
 }
 .LayerList li {
-  border-bottom-width: 3px;
-  padding-left: 8px;
+  /* border-bottom-width: 3px; */
+  /* padding-left: 8px; */
 }
 
 ol.FeatureList {
   /* make the margin of a child not cause margin for this element. Removing next line will leak margin of H2 element */
   overflow-y: auto;
-  border-left-width: 1px;
+  /* border-left-width: 1px; */
 }
 .FeatureList li {
   border-bottom-width: 1px;
