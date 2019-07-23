@@ -10,7 +10,7 @@ export const RasterStoreDetailDefinition = {
   // Fields from the API
   'url': null,
   'uuid': null,
-
+  'aggregation_type': null,
   'name': null,
   'description': null,
   'organisation': 'Organisation',
