@@ -69,6 +69,9 @@ class FeatureInfoPopup extends Component {
         <div 
           className={popupStyles.Popup}
         >
+          <div className={dataStyles.ListHeader}>
+            <h2>Layers</h2>
+          </div>
           <div >
             <ol
               className={`${dataStyles.HideListDesign} ${popupStyles.List} ${popupStyles.LayerList}`}
@@ -111,6 +114,9 @@ class FeatureInfoPopup extends Component {
         <div> 
           <div>
             <h2>{layerName}</h2>
+            <div className={dataStyles.ListHeader}>
+              <h3>Features</h3>
+            </div>
           </div>
           
           <ol
