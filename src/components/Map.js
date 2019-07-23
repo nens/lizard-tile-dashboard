@@ -411,7 +411,7 @@ class MapComponent extends Component {
             featureInfo: {
               show: true,
               latlng: latlng,
-              data: rasterUrls ? promiseResults[0].data : promiseResults,
+              data: promiseResults,
             }
           });
       }
