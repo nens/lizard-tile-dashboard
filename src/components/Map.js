@@ -25,6 +25,7 @@ import constructGetFeatureInfoUrl from "../util/constructGetFeatureInfoUrl.js";
 import getFromUrl from "../util/getFromUrl.js";
 import styles from "./Map.css";
 import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
+import constructRasterAggregatesUrl from "../util/constructRasterAggregatesUrl";
 
 
 class MapComponent extends Component {
@@ -383,19 +384,12 @@ class MapComponent extends Component {
     //   mapRef,
     //   latlng
     // );
-    // do raster have getFeatureInfo ? -> didnot find tile with raster yet to test
-    // const rasterUrls = (this.props.tile.rasters || []).map(raster =>
-    //   this.constructGetFeatureInfoUrl(
-    //     {
-    //       url: raster.url,
-    //       name: raster.layers,
-    //       srs: raster.srs,
-    //     },
-    //     mapRef,
-    //     latlng
-    //   )
-    // );
+
+    //In case of a raster layer
+    const raster = this.props.tile.rasters && this.props.rasters.data[`${this.props.tile.rasters[0].uuid}`]
+    const rasterUrls = raster && [constructRasterAggregatesUrl(raster, latlng)];
     
+    //In case of a normal wms layer
     const wmsUrls = wmsLayers.map(wmsLayer =>
       constructGetFeatureInfoUrl(
         {
@@ -407,9 +401,8 @@ class MapComponent extends Component {
         latlng
       )
     );
-    
-    const wmsUrlsPromises = wmsUrls.map(url => getFromUrl(url)); 
-    Promise.all(wmsUrlsPromises).then(promiseResults => {
+    const urlsPromises = rasterUrls ? rasterUrls.map(url => getFromUrl(url)) : wmsUrls.map(url => getFromUrl(url)); 
+    Promise.all(urlsPromises).then(promiseResults => {
       if (
         this.state.featureInfo.latlng.lat === latlng.lat &&
         this.state.featureInfo.latlng.lng === latlng.lng
@@ -418,14 +411,12 @@ class MapComponent extends Component {
             featureInfo: {
               show: true,
               latlng: latlng,
-              data: promiseResults,
+              data: rasterUrls ? promiseResults[0].data : promiseResults,
             }
           });
       }
     });
   }
-
-  
 
   render() {
     return this.props.isFull ? this.renderFull() : this.renderSmall();
