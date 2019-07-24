@@ -93,7 +93,7 @@ class RasterInfoPopup extends Component {
         const { featureInfo, raster } = this.props;
         
         return (
-            <li>
+            <li key={raster.uuid}>
                 <h2>{raster.name}</h2>
                 {raster.aggregation_type === "counts" ? 
                     //if aggregation type is counts then show the label of the layer clicked on
