@@ -91,7 +91,6 @@ class RasterInfoPopup extends Component {
 
     renderPopupLayer(layer) {
         const { featureInfo, raster } = this.props;
-        console.log(layer)
         
         return (
             <li>
