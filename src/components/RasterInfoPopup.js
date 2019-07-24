@@ -23,7 +23,7 @@ class RasterInfoPopup extends Component {
     render() {
 
         const { featureInfo } = this.props;
-        
+
         return (
             <Marker
                 key={"get_feature_info"}
@@ -58,19 +58,27 @@ class RasterInfoPopup extends Component {
                         className={popupStyles.Popup}
                     >
                         <div >
+                            <div className={rasterPopupStyles.PointLatLng}>
+                                <i className="fa fa-map-marker" />
+                                <div>
+                                    <span>({featureInfo.latlng.lat.toFixed(5)}, {featureInfo.latlng.lng.toFixed(5)})</span><br/>
+                                    <span>geometrie</span>
+                                </div>
+                            </div>
                             <ol
                                 className={`${dataStyles.HideListDesign} ${popupStyles.List} ${popupStyles.LayerList}`}
                             >
                                 {
                                     featureInfo.data ?
-                                        featureInfo.data[0].data.map(layer =>
-                                            layer && this.renderPopupLayer(
-                                                layer
+                                        featureInfo.data.map((rasterLayer, index) =>
+                                            //Keep the index to track of the raster
+                                            rasterLayer && this.renderPopupLayer(
+                                                rasterLayer.data,
+                                                index
                                             )
                                         )
                                         :
                                         null
-
                                 }
                             </ol>
                             {!featureInfo.data ?
@@ -89,26 +97,23 @@ class RasterInfoPopup extends Component {
         )
     }
 
-    renderPopupLayer(layer) {
-        const { featureInfo, raster } = this.props;
-        
+    renderPopupLayer(rasterLayer, index) {
+        const { rasters } = this.props;
+        //Get the raster from the rasters array by using its index number
+        let raster = rasters[index];
+
         return (
-            <li key={raster.uuid}>
-                <h2>{raster.name}</h2>
-                {raster.aggregation_type === "counts" ? 
+            <li key={raster.uuid} className={dataStyles.KeyValueWrap}>
+                <h3>{raster.name}</h3>
+                {raster.aggregation_type === "counts" ?
                     //if aggregation type is counts then show the label of the layer clicked on
-                    <h3>Label: {layer.label}</h3> :
+                    //rasterLayer is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
+                    <p title="label">{rasterLayer[0].label}</p> :
                     //if aggregation type is curve then show the value of the parameter of observation type at the selected point
-                    <h3>{raster.observation_type.parameter}: {layer} {raster.observation_type.unit}</h3>
+                    //in this case rasterLayer contains the value of the raster already
+                    <p title="value">{raster.observation_type.parameter}: {rasterLayer} {raster.observation_type.unit}</p>
                     //still missing the case of temporal raster
                 }
-                <div className={rasterPopupStyles.PointLatLng}>
-                    <i className="fa fa-map-marker" />
-                    <div>
-                        <p>({featureInfo.latlng.lat.toFixed(5)}, {featureInfo.latlng.lng.toFixed(5)})</p>
-                        <p>geometrie</p>
-                    </div>
-                </div>
             </li>
         );
     }

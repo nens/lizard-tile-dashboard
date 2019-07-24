@@ -387,8 +387,8 @@ class MapComponent extends Component {
     // );
 
     //In case of a raster layer
-    const raster = this.props.tile.rasters && this.props.rasters.data[`${this.props.tile.rasters[0].uuid}`]
-    const rasterUrls = raster && [constructRasterAggregatesUrl(raster, latlng)];
+    const rasters = this.props.tile.rasters && this.props.tile.rasters.map(raster => this.props.rasters.data[`${raster.uuid}`])
+    const rasterUrls = rasters && rasters.map(raster => constructRasterAggregatesUrl(raster, latlng));
 
     //In case of a normal wms layer
     const wmsUrls = wmsLayers.map(wmsLayer =>
@@ -421,11 +421,11 @@ class MapComponent extends Component {
 
   renderRasterInfoOrWmsInfo() {
     //Check if there is raster in the tile
-    const raster = this.props.tile.rasters && this.props.rasters.data[`${this.props.tile.rasters[0].uuid}`]
+    const rasters = this.props.tile.rasters && this.props.tile.rasters.map(raster => this.props.rasters.data[`${raster.uuid}`]);
 
-    return raster ?
+    return rasters ?
       <RasterInfoPopup
-        raster={raster}
+        rasters={rasters}
         featureInfo={this.state.featureInfo}
         onClose={e => {
           this.setState({
