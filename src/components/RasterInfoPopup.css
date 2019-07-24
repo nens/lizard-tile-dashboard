@@ -1,0 +1,16 @@
+.PointLatLng {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    width: 70%;
+}
+
+.PointLatLng i {
+    flex: 1;
+    font-size: 60px;
+}
+
+.PointLatLng div {
+    flex: 3;
+    font-size: 14px;
+}

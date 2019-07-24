@@ -26,6 +26,7 @@ import getFromUrl from "../util/getFromUrl.js";
 import styles from "./Map.css";
 import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
 import constructRasterAggregatesUrl from "../util/constructRasterAggregatesUrl";
+import RasterInfoPopup from "./RasterInfoPopup";
 
 
 class MapComponent extends Component {
@@ -69,7 +70,7 @@ class MapComponent extends Component {
     }
   }
 
-  
+
 
   getBBox() {
     // Either get it from the tile or return the JSON configured constant.
@@ -356,12 +357,12 @@ class MapComponent extends Component {
     return tile.type === "map" && tile.assetTypes && tile.assetTypes.length > 0;
   }
 
-  
 
-  showFeatureInfoMarkerAndFetchData (event) {
+
+  showFeatureInfoMarkerAndFetchData(event) {
     const latlng = event.latlng;
     const wmsLayers = (this.props.tile.wmsLayers || []);
-    
+
     // With long loading times it may be desirable to already show the popup with a spinner
     this.setState({
       featureInfo: {
@@ -388,7 +389,7 @@ class MapComponent extends Component {
     //In case of a raster layer
     const raster = this.props.tile.rasters && this.props.rasters.data[`${this.props.tile.rasters[0].uuid}`]
     const rasterUrls = raster && [constructRasterAggregatesUrl(raster, latlng)];
-    
+
     //In case of a normal wms layer
     const wmsUrls = wmsLayers.map(wmsLayer =>
       constructGetFeatureInfoUrl(
@@ -401,21 +402,54 @@ class MapComponent extends Component {
         latlng
       )
     );
-    const urlsPromises = rasterUrls ? rasterUrls.map(url => getFromUrl(url)) : wmsUrls.map(url => getFromUrl(url)); 
+    const urlsPromises = rasterUrls ? rasterUrls.map(url => getFromUrl(url)) : wmsUrls.map(url => getFromUrl(url));
     Promise.all(urlsPromises).then(promiseResults => {
       if (
         this.state.featureInfo.latlng.lat === latlng.lat &&
         this.state.featureInfo.latlng.lng === latlng.lng
-        ) {
-          this.setState({
-            featureInfo: {
-              show: true,
-              latlng: latlng,
-              data: promiseResults,
-            }
-          });
+      ) {
+        this.setState({
+          featureInfo: {
+            show: true,
+            latlng: latlng,
+            data: promiseResults,
+          }
+        });
       }
     });
+  }
+
+  renderRasterInfoOrWmsInfo() {
+    //Check if there is raster in the tile
+    const raster = this.props.tile.rasters && this.props.rasters.data[`${this.props.tile.rasters[0].uuid}`]
+
+    return raster ?
+      <RasterInfoPopup
+        raster={raster}
+        featureInfo={this.state.featureInfo}
+        onClose={e => {
+          this.setState({
+            featureInfo: {
+              show: false,
+              latlng: null,
+              data: null,
+            },
+          })
+        }}
+      /> :
+      <FeatureInfoPopup
+        wmsLayers={(this.props.tile.wmsLayers || [])}
+        featureInfo={this.state.featureInfo}
+        onClose={e => {
+          this.setState({
+            featureInfo: {
+              show: false,
+              latlng: null,
+              data: null,
+            },
+          })
+        }}
+      />
   }
 
   render() {
@@ -465,20 +499,20 @@ class MapComponent extends Component {
 
     const wmsLayers = tile.wmsLayers
       ? tile.wmsLayers.map((layer, i) => {
-          return (
-            <WMSTileLayer
-              key={i}
-              url={layer.url}
-              format={layer.format}
-              layers={layer.layers}
-              transparent={layer.transparent}
-              width={layer.width}
-              height={layer.height}
-              srs={layer.srs}
-              opacity={layer.opacity !== undefined ? layer.opacity : 1}
-            />
-          );
-        })
+        return (
+          <WMSTileLayer
+            key={i}
+            url={layer.url}
+            format={layer.format}
+            layers={layer.layers}
+            transparent={layer.transparent}
+            width={layer.width}
+            height={layer.height}
+            srs={layer.srs}
+            opacity={layer.opacity !== undefined ? layer.opacity : 1}
+          />
+        );
+      })
       : null;
 
     return (
@@ -500,7 +534,7 @@ class MapComponent extends Component {
           zoomControl={false}
           attribution={false}
           className={styles.MapStyleFull}
-          onClick={e=> this.showFeatureInfoMarkerAndFetchData(e)}
+          onClick={e => this.showFeatureInfoMarkerAndFetchData(e)}
           ref={this.leafletMapRef}
         >
           <TileLayer url={this.props.mapBackground.url} />
@@ -510,23 +544,11 @@ class MapComponent extends Component {
           {this.markers()}
           {
             this.state.featureInfo.show === true ?
-            <FeatureInfoPopup
-              wmsLayers={(this.props.tile.wmsLayers || [])}
-              featureInfo={this.state.featureInfo}
-              onClose={e=>{
-                this.setState({
-                  featureInfo: {
-                    show: false,
-                    latlng: null,
-                    data: null,
-                  },
-                })
-              }}
-            />
-            :
-            null
+              this.renderRasterInfoOrWmsInfo()
+              :
+              null
           }
-          
+
           {wmsLayers}
         </Map>
         {/* 
@@ -544,20 +566,20 @@ class MapComponent extends Component {
 
     const wmsLayers = tile.wmsLayers
       ? tile.wmsLayers.map((layer, i) => {
-          return (
-            <WMSTileLayer
-              key={i}
-              url={layer.url}
-              format={layer.format}
-              layers={layer.layers}
-              transparent={layer.transparent}
-              width={layer.width}
-              height={layer.height}
-              srs={layer.srs}
-              opacity={layer.opacity !== undefined ? layer.opacity : 1}
-            />
-          );
-        })
+        return (
+          <WMSTileLayer
+            key={i}
+            url={layer.url}
+            format={layer.format}
+            layers={layer.layers}
+            transparent={layer.transparent}
+            width={layer.width}
+            height={layer.height}
+            srs={layer.srs}
+            opacity={layer.opacity !== undefined ? layer.opacity : 1}
+          />
+        );
+      })
       : null;
 
     return (
