@@ -99,7 +99,7 @@ class RasterInfoPopup extends Component {
                     //if aggregation type is counts then show the label of the layer clicked on
                     <h3>Label: {layer.label}</h3> :
                     //if aggregation type is curve then show the value of the parameter of observation type at the selected point
-                    <h3>{raster.observation_type.parameter}: {layer.toFixed(3)} {raster.observation_type.unit}</h3>
+                    <h3>{raster.observation_type.parameter}: {layer} {raster.observation_type.unit}</h3>
                     //still missing the case of temporal raster
                 }
                 <div className={rasterPopupStyles.PointLatLng}>
