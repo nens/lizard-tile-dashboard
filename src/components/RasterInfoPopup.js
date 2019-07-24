@@ -97,31 +97,31 @@ class RasterInfoPopup extends Component {
         )
     }
 
-    renderPopupLayer(rasterLayer, index) {
+    renderPopupLayer(data, index) {
         const { rasters } = this.props;
         //Get the raster from the rasters array by using its index number
         let raster = rasters[index];
 
-        const renderRasterInfo = (rasterLayer) => {
+        const renderRasterInfo = (data) => {
             if (raster.aggregation_type === "counts") {
                 return (
                     //if aggregation type is counts then show the label of the layer clicked on
-                    //rasterLayer is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
-                    <p title="label">{rasterLayer[0].label}</p>
+                    //as data is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
+                    <p title="label">{data[0].label}</p>
                 )
             } else if (raster.aggregation_type === "curve") {
                 return (
                     //if aggregation type is curve then show the value of the parameter of observation type at the selected point
-                    //in this case rasterLayer contains the value of the raster already
-                    <p title="value">{raster.observation_type.parameter}: {rasterLayer[0].toFixed(3)} {raster.observation_type.unit}</p>
+                    //in this case data contains the value of the raster already
+                    <p title="value">{raster.observation_type.parameter}: {data[0].toFixed(3)} {raster.observation_type.unit}</p>
                 )
             } else if (raster.aggregation_type === "sum") {
                 return (
                     //if aggregation type is sum then the raster is temporal, we need to figure out how to display data in this case to make it useful
                     //for now just simply show the data value as it is
                     <div>
-                        <p title="value">{raster.observation_type.parameter}: {rasterLayer[0]} {raster.observation_type.unit}</p>
-                        <p title="value">{raster.observation_type.parameter}: {rasterLayer[1]} {raster.observation_type.unit}</p>
+                        <p title="value">{raster.observation_type.parameter}: {data[0]} {raster.observation_type.unit}</p>
+                        <p title="value">{raster.observation_type.parameter}: {data[1]} {raster.observation_type.unit}</p>
                     </div>
                 )
             }
@@ -130,7 +130,7 @@ class RasterInfoPopup extends Component {
         return (
             <li key={raster.uuid} className={dataStyles.KeyValueWrap}>
                 <h3>{raster.name}</h3>
-                {renderRasterInfo(rasterLayer)}
+                {renderRasterInfo(data)}
             </li>
         );
     }
