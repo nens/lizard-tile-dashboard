@@ -102,18 +102,35 @@ class RasterInfoPopup extends Component {
         //Get the raster from the rasters array by using its index number
         let raster = rasters[index];
 
+        const renderRasterInfo = (rasterLayer) => {
+            if (raster.aggregation_type === "counts") {
+                return (
+                    //if aggregation type is counts then show the label of the layer clicked on
+                    //rasterLayer is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
+                    <p title="label">{rasterLayer[0].label}</p>
+                )
+            } else if (raster.aggregation_type === "curve") {
+                return (
+                    //if aggregation type is curve then show the value of the parameter of observation type at the selected point
+                    //in this case rasterLayer contains the value of the raster already
+                    <p title="value">{raster.observation_type.parameter}: {rasterLayer[0].toFixed(3)} {raster.observation_type.unit}</p>
+                )
+            } else if (raster.aggregation_type === "sum") {
+                return (
+                    //if aggregation type is sum then the raster is temporal, we need to figure out how to display data in this case to make it useful
+                    //for now just simply show the data value as it is
+                    <div>
+                        <p title="value">{raster.observation_type.parameter}: {rasterLayer[0]} {raster.observation_type.unit}</p>
+                        <p title="value">{raster.observation_type.parameter}: {rasterLayer[1]} {raster.observation_type.unit}</p>
+                    </div>
+                )
+            }
+        }
+
         return (
             <li key={raster.uuid} className={dataStyles.KeyValueWrap}>
                 <h3>{raster.name}</h3>
-                {raster.aggregation_type === "counts" ?
-                    //if aggregation type is counts then show the label of the layer clicked on
-                    //rasterLayer is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
-                    <p title="label">{rasterLayer[0].label}</p> :
-                    //if aggregation type is curve then show the value of the parameter of observation type at the selected point
-                    //in this case rasterLayer contains the value of the raster already
-                    <p title="value">{raster.observation_type.parameter}: {rasterLayer} {raster.observation_type.unit}</p>
-                    //still missing the case of temporal raster
-                }
+                {renderRasterInfo(rasterLayer)}
             </li>
         );
     }
