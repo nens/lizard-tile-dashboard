@@ -24,7 +24,8 @@ export const RasterStoreDetailDefinition = {
   'last_modified': null,
   'observation_type': 'ObservationType',
   'wms_info': 'WmsInfo',
-  'options': null
+  'options': null,
+  'temporal': false,
 };
 
 const RasterStoreDetailRecord = definitionToRecord(
