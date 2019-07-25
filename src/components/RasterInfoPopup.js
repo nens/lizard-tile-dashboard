@@ -124,6 +124,9 @@ class RasterInfoPopup extends Component {
                         <p title="value">{raster.observation_type.parameter}: {data[1]} {raster.observation_type.unit}</p>
                     </div>
                 )
+            } else {
+                //if aggregation type is none then there is no recorded data for this raster
+                return null
             }
         }
 
