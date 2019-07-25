@@ -171,36 +171,35 @@ class FeatureInfoPopup extends Component {
       </li>
     );
   }
+
   renderPopupLayerForRaster(data, index) {
     const { rasters } = this.props;
     //Get the raster from the rasters array by using its index number
     let raster = rasters[index];
 
     const renderRasterInfo = (data) => {
-      if (raster.aggregation_type === "counts") {
-        return (
-          //if aggregation type is counts then show the label of the layer clicked on
-          //as data is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
-          <p title="label">{data[0].label}</p>
-        )
-      } else if (raster.aggregation_type === "curve") {
-        return (
-          //if aggregation type is curve then show the value of the parameter of observation type at the selected point
-          //in this case data contains the value of the raster already
-          <p title="value">{raster.observation_type.parameter}: {data[0].toFixed(3)} {raster.observation_type.unit}</p>
-        )
-      } else if (raster.aggregation_type === "sum") {
-        return (
-          //if aggregation type is sum then the raster is temporal, we need to figure out how to display data in this case to make it useful
-          //for now just simply show the data value as it is
-          <div>
-            <p title="value">{raster.observation_type.parameter}: {data[0]} {raster.observation_type.unit}</p>
-            <p title="value">{raster.observation_type.parameter}: {data[1]} {raster.observation_type.unit}</p>
-          </div>
-        )
+      if (raster.temporal === false) {
+        //This is a non-temporal raster
+        if (raster.aggregation_type === "counts") {
+          return (
+            //if aggregation type is counts then show the label of the layer clicked on
+            //as data is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
+            <p title="label">{data[0].label}</p>
+          )
+        } else {
+          return (
+            //in all other cases (aggregation === "curve" or "sum" or "none"), data contains the value of the raster already
+            //so we show the value of the raster at the selected point
+            <p title="value">{raster.observation_type.parameter}: {data[0] && data[0].toFixed(3)} {raster.observation_type.unit}</p>
+          )
+        }
       } else {
-        //if aggregation type is none then there is no recorded data for this raster
-        return null
+        //This is when the raster is temporal (raster.temporal === true)
+        return (
+          //when the raster is temporal, we need to figure out how to display data in this case to make it useful
+          //for now just simply show the data value of the most recent time
+          <p title="value">{raster.observation_type.parameter}: {data[1] && data[1][1] && data[1][1].toFixed(2)} {raster.observation_type.unit}</p>
+        )
       }
     }
 
