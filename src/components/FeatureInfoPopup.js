@@ -116,7 +116,7 @@ class FeatureInfoPopup extends Component {
 
                 }
               </ol>
-              {!wmsData && !rasterData ?
+              {(!wmsData || !rasterData) ?
                 <div
                   className={popupStyles.SpinnerContainer}
                 >
