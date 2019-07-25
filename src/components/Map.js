@@ -22,12 +22,10 @@ import { Map, Marker, Popup, TileLayer, WMSTileLayer } from "react-leaflet";
 import Legend from "./Legend";
 import FeatureInfoPopup from "./FeatureInfoPopup";
 import constructGetFeatureInfoUrl from "../util/constructGetFeatureInfoUrl.js";
+import constructRasterAggregatesUrl from "../util/constructRasterAggregatesUrl";
 import getFromUrl from "../util/getFromUrl.js";
 import styles from "./Map.css";
 import { IconActiveAlarm, IconInactiveAlarm, IconNoAlarm } from "./MapIcons";
-import constructRasterAggregatesUrl from "../util/constructRasterAggregatesUrl";
-import RasterInfoPopup from "./RasterInfoPopup";
-
 
 class MapComponent extends Component {
   constructor(props) {
@@ -36,7 +34,8 @@ class MapComponent extends Component {
       featureInfo: {
         show: false,
         latlng: null,
-        data: null
+        rasterData: null,
+        wmsData: null,
       },
     }
   }
@@ -368,7 +367,8 @@ class MapComponent extends Component {
       featureInfo: {
         show: true,
         latlng: latlng,
-        data: null,
+        rasterData: null,
+        wmsData: null,
       }
     });
     const mapRef = this.leafletMapRef.current.leafletElement;
@@ -388,7 +388,24 @@ class MapComponent extends Component {
 
     //In case of a raster layer
     const rasters = this.props.tile.rasters && this.props.tile.rasters.map(raster => this.props.rasters.data[`${raster.uuid}`])
-    const rasterUrls = rasters && rasters.map(raster => constructRasterAggregatesUrl(raster, latlng));
+    const rasterUrls = rasters && rasters.map(raster => raster && constructRasterAggregatesUrl(raster, latlng));
+
+    const rasterUrlsPromises = rasterUrls ? rasterUrls.map(url => getFromUrl(url)) : null;
+    rasterUrls && Promise.all(rasterUrlsPromises).then(promiseResults => {
+      if (
+        this.state.featureInfo.latlng.lat === latlng.lat &&
+        this.state.featureInfo.latlng.lng === latlng.lng
+      ) {
+        this.setState({
+          featureInfo: {
+            show: true,
+            latlng: latlng,
+            wmsData: this.state.featureInfo.wmsData,
+            rasterData: promiseResults,
+          }
+        });
+      }
+    });
 
     //In case of a normal wms layer
     const wmsUrls = wmsLayers.map(wmsLayer =>
@@ -402,8 +419,9 @@ class MapComponent extends Component {
         latlng
       )
     );
-    const urlsPromises = rasterUrls ? rasterUrls.map(url => getFromUrl(url)) : wmsUrls.map(url => getFromUrl(url));
-    Promise.all(urlsPromises).then(promiseResults => {
+
+    const wmsUrlsPromises = wmsUrls.map(url => getFromUrl(url));
+    Promise.all(wmsUrlsPromises).then(promiseResults => {
       if (
         this.state.featureInfo.latlng.lat === latlng.lat &&
         this.state.featureInfo.latlng.lng === latlng.lng
@@ -412,44 +430,12 @@ class MapComponent extends Component {
           featureInfo: {
             show: true,
             latlng: latlng,
-            data: promiseResults,
+            wmsData: promiseResults,
+            rasterData: this.state.rasterData,
           }
         });
       }
     });
-  }
-
-  renderRasterInfoOrWmsInfo() {
-    //Check if there is raster in the tile
-    const rasters = this.props.tile.rasters && this.props.tile.rasters.map(raster => this.props.rasters.data[`${raster.uuid}`]);
-
-    return rasters ?
-      <RasterInfoPopup
-        rasters={rasters}
-        featureInfo={this.state.featureInfo}
-        onClose={e => {
-          this.setState({
-            featureInfo: {
-              show: false,
-              latlng: null,
-              data: null,
-            },
-          })
-        }}
-      /> :
-      <FeatureInfoPopup
-        wmsLayers={(this.props.tile.wmsLayers || [])}
-        featureInfo={this.state.featureInfo}
-        onClose={e => {
-          this.setState({
-            featureInfo: {
-              show: false,
-              latlng: null,
-              data: null,
-            },
-          })
-        }}
-      />
   }
 
   render() {
@@ -458,6 +444,9 @@ class MapComponent extends Component {
 
   renderFull() {
     const { tile, width, height } = this.props;
+
+    //Get rasters from the tile if there is any raster
+    const rasters = tile.rasters && tile.rasters.map(raster => this.props.rasters.data[`${raster.uuid}`]);
 
     let legend = null;
 
@@ -544,7 +533,21 @@ class MapComponent extends Component {
           {this.markers()}
           {
             this.state.featureInfo.show === true ?
-              this.renderRasterInfoOrWmsInfo()
+              <FeatureInfoPopup
+                rasters={rasters}
+                wmsLayers={(this.props.tile.wmsLayers || [])}
+                featureInfo={this.state.featureInfo}
+                onClose={e => {
+                  this.setState({
+                    featureInfo: {
+                      show: false,
+                      latlng: null,
+                      wmsData: null,
+                      rasterData: null,
+                    },
+                  })
+                }}
+              />
               :
               null
           }
