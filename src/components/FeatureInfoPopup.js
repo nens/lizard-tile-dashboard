@@ -22,7 +22,7 @@ class FeatureInfoPopup extends Component {
 
   render() {
 
-    const { wmsLayers, featureInfo } = this.props;
+    const { wmsLayers, featureInfo, rastersInfo } = this.props;
 
     const { rasterData, wmsData } = featureInfo;
 
@@ -30,12 +30,16 @@ class FeatureInfoPopup extends Component {
     const layerPropertiesArray = wmsLayers.map(layer => (layer.getfeatureinfo_properties || []));
     const layerNameArray = wmsLayers.map(layer => layer.feature_title_property);
 
-    // if getfeatureinfo_properties && feature_title_property && rasters are all not configured 
+    // array of showRasterInfoPopup value of all the rasters configured in the Tile
+    const showRasterInfoPopupArray = rastersInfo.map(raster => raster.showRasterInfoPopup);
+
+    // if getfeatureinfo_properties && feature_title_property are both not configured
+    // and if there is no raster in the tile or no raster with showRasterInfoPopup configurations of true
     // then do not draw popup
     if (
       this.flattenOneLayer(layerPropertiesArray).length === 0 &&
       layerNameArray.filter(name => name !== undefined).length === 0 &&
-      !rasterData
+      !showRasterInfoPopupArray.includes(true)
     ) {
       return null;
     }
@@ -88,7 +92,8 @@ class FeatureInfoPopup extends Component {
                   rasterData ?
                     rasterData.map((rasterLayer, index) =>
                       //Keep the index to track of the raster
-                      rasterLayer && this.renderPopupLayerForRaster(
+                      //Only show the popup for raster if its showRasterInfoPopup configuration is true
+                      showRasterInfoPopupArray[index] && rasterLayer && this.renderPopupLayerForRaster(
                         rasterLayer.data,
                         index
                       )

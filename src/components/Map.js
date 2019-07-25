@@ -535,6 +535,7 @@ class MapComponent extends Component {
             this.state.featureInfo.show === true ?
               <FeatureInfoPopup
                 rasters={rasters}
+                rastersInfo={(this.props.tile.rasters || [])}
                 wmsLayers={(this.props.tile.wmsLayers || [])}
                 featureInfo={this.state.featureInfo}
                 onClose={e => {
