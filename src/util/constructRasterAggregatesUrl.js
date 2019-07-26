@@ -10,10 +10,9 @@ export default function constructRasterAggregatesUrl(raster, latlng) {
     const shortUuid = raster.uuid.substr(0, 7)
 
     //For temporal rasters, need to include start & stop values
-    //stop value is 1 day ago and start value is 3 days ago from current date
-    const currentDate = new Date();
-    const stop = new Date(currentDate - 1 * 24 * 60 * 60 * 1000);
-    const start = new Date(currentDate - 3 * 24 * 60 * 60 * 1000);
+    //stop value is current date and start value is 2 days ago from current date
+    const stop = new Date();
+    const start = new Date(stop - 2 * 24 * 60 * 60 * 1000);
 
     //Formate date & time in the format of YYYY-MM-DDTHH:MM:SS
     const startTime = start.toLocaleDateString().split(/\//).reverse().join('-') + 'T' + start.toLocaleTimeString()
