@@ -388,10 +388,10 @@ class MapComponent extends Component {
 
     //In case of a raster layer
     const rasters = this.props.tile.rasters && this.props.tile.rasters.map(raster => this.props.rasters.data[`${raster.uuid}`])
-    const rasterUrls = rasters && rasters.map(raster => raster && constructRasterAggregatesUrl(raster, latlng));
+    const rasterUrls = rasters ? rasters.map(raster => raster && constructRasterAggregatesUrl(raster, latlng)) : [];
 
-    const rasterUrlsPromises = rasterUrls ? rasterUrls.map(url => getFromUrl(url)) : null;
-    rasterUrls && Promise.all(rasterUrlsPromises).then(promiseResults => {
+    const rasterUrlsPromises = rasterUrls.map(url => getFromUrl(url));
+    Promise.all(rasterUrlsPromises).then(promiseResults => {
       if (
         this.state.featureInfo.latlng.lat === latlng.lat &&
         this.state.featureInfo.latlng.lng === latlng.lng
@@ -431,7 +431,7 @@ class MapComponent extends Component {
             show: true,
             latlng: latlng,
             wmsData: promiseResults,
-            rasterData: this.state.rasterData,
+            rasterData: this.state.featureInfo.rasterData,
           }
         });
       }
