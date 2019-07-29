@@ -14,9 +14,9 @@ export default function constructRasterAggregatesUrl(raster, latlng) {
     const stop = new Date();
     const start = new Date(stop - 2 * 24 * 60 * 60 * 1000);
 
-    //Formate date & time in the format of YYYY-MM-DDTHH:MM:SS
-    const startTime = start.toLocaleDateString().split(/\//).reverse().join('-') + 'T' + start.toLocaleTimeString()
-    const stopTime = stop.toLocaleDateString().split(/\//).reverse().join('-') + 'T' + stop.toLocaleTimeString()
+    //Formate date & time into ISO format which is YYYY-MM-DDTHH:mm:ss.sssZ
+    const startTime = start.toISOString();
+    const stopTime = stop.toISOString();
 
     /*
     https://nxt3.staging.lizard.net/api/v3/raster-aggregates/?agg=curve&geom=POINT+(5.19+52.27)&rasters=f3e3c9c&srs=EPSG:4326&styles=dem_nl
@@ -30,5 +30,5 @@ export default function constructRasterAggregatesUrl(raster, latlng) {
     styles=dem_nl
     */
 
-    return `${layerUrl}agg=${aggType}&geom=POINT+(${latlng.lng}+${latlng.lat})&rasters=${shortUuid}&srs=${srs}&styles=${styles}&start=${startTime}&stop=${stopTime}`
-}
+    return `${layerUrl}agg=${aggType}&geom=POINT+(${latlng.lng}+${latlng.lat})&rasters=${shortUuid}&srs=${srs}&styles=${styles}&start=${startTime}&stop=${stopTime}`;
+};
