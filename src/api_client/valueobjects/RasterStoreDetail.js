@@ -10,7 +10,7 @@ export const RasterStoreDetailDefinition = {
   // Fields from the API
   'url': null,
   'uuid': null,
-
+  'aggregation_type': null,
   'name': null,
   'description': null,
   'organisation': 'Organisation',
@@ -24,7 +24,8 @@ export const RasterStoreDetailDefinition = {
   'last_modified': null,
   'observation_type': 'ObservationType',
   'wms_info': 'WmsInfo',
-  'options': null
+  'options': null,
+  'temporal': false,
 };
 
 const RasterStoreDetailRecord = definitionToRecord(
