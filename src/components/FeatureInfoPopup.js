@@ -134,6 +134,10 @@ class FeatureInfoPopup extends Component {
 
   renderPopupLayerForWMS(layer, layerProperties, layerName) {
     const features = layer.features;
+    
+    //If there is no features or user clicks outside of the wms layer then do not show the wms info popup
+    if (features.length === 0) return null;
+
     return (
       <li>
         <div>
@@ -182,6 +186,9 @@ class FeatureInfoPopup extends Component {
     //Get the raster from the rasters array by using its index number
     let raster = rasters[index];
 
+    //If there is no data retrieved from the raster or user clicks outside of the raster then do not show the raster info popup
+    if (data[0] === null) return null;
+
     const renderRasterInfo = (data) => {
       if (raster.temporal === false) {
         //This is a non-temporal raster
@@ -189,7 +196,7 @@ class FeatureInfoPopup extends Component {
           return (
             //if aggregation type is counts then show the label of the layer clicked on
             //as data is an array of only one object (with the values inside this object) so we use index number 0 to get data from this object
-            <p title="label">{data[0].label}</p>
+            <p title="label">{data[0] && data[0].label}</p>
           )
         } else {
           return (
