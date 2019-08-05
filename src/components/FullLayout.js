@@ -137,125 +137,7 @@ class FullLayout extends Component {
     return (
       <DocumentTitle title={`${title} | ${selectedTile.title}`}>
         <div className={styles.FullLayout}>
-          {!isMobile ? (
-            <div
-              className={styles.SidebarWrapper}
-              style={{ 
-                height: height - FULL_LAYOUT_HEADER_HEIGHT,
-                paddingTop: FULL_LAYOUT_HEADER_HEIGHT,
-               }}
-            >
-              <Scrollbars height={height}>
-                {allTiles.map((tile, i) => {
-                  let previewTile = null;
-
-                  // Show image if imageUrl is set
-                  if (tile.imageUrl) {
-                    const randomId =
-                      "img-id-" + parseInt(Math.random() * 10000, 10);
-                    previewTile = (
-                      <div
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <img
-                          id={randomId}
-                          onLoad={() =>
-                            this.updateExternalPreviewTile(randomId)}
-                          src={tile.imageUrl}
-                          alt="Preview"
-                        />
-                      </div>
-                    );
-                  } else {
-                    switch (tile.type) {
-                      case "map":
-                        previewTile = (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center"
-                            }}
-                          >
-                            <img
-                              style={{ width: PREVIEW_TILE_WIDTH / 2 }}
-                              src={mapIcon}
-                              alt="Map"
-                            />
-                          </div>
-                        );
-                        break;
-                      case "timeseries":
-                        previewTile = (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center"
-                            }}
-                          >
-                            <img
-                              style={{ width: PREVIEW_TILE_WIDTH / 2 }}
-                              src={timeIcon}
-                              alt="Timeseries"
-                            />
-                          </div>
-                        );
-                        break;
-                      case "statistics":
-                        previewTile = (
-                          <StatisticsTile
-                            alarms={this.props.alarms}
-                            title={tile.title}
-                          />
-                        );
-                        break;
-                      case "external":
-                        previewTile = (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "center"
-                            }}
-                          >
-                            <img
-                              style={{ width: PREVIEW_TILE_WIDTH / 2 }}
-                              src={externalIcon}
-                              alt="External"
-                            />
-                          </div>
-                        );
-                        break;
-                      default:
-                        previewTile = null;
-                        break;
-                    }
-                  }
-
-                  const shortTitle = tile.shortTitle || tile.title;
-
-                  return (
-                    <NavLink to={`/full/${tile.id}`} key={i}>
-                      <div
-                        className={styles.SidebarItemWrapper}
-                        title={shortTitle}
-                      >
-                        <div
-                          className={`${styles.SidebarItem} ${selectedTile.id ===
-                          tile.id
-                            ? styles.Active
-                            : null}`}
-                        >
-                          {previewTile}
-                        </div>
-                        <div className={styles.SidebarItemLabel}>
-                          {shortTitle}
-                        </div>
-                      </div>
-                    </NavLink>
-                  );
-                })}
-              </Scrollbars>
-            </div>
-          ) : null}
+          
           <div
             className={styles.TitleBar}
             style={{
@@ -288,7 +170,130 @@ class FullLayout extends Component {
               ""
             )}
           </div>
-          {element}
+          <div
+            className={styles.Content}
+          >
+            {!isMobile ? (
+              <div
+                className={styles.SidebarWrapper}
+                style={{ 
+                  height: height - FULL_LAYOUT_HEADER_HEIGHT,
+                  // paddingTop: FULL_LAYOUT_HEADER_HEIGHT,
+                }}
+              >
+                <Scrollbars height={height}>
+                  {allTiles.map((tile, i) => {
+                    let previewTile = null;
+
+                    // Show image if imageUrl is set
+                    if (tile.imageUrl) {
+                      const randomId =
+                        "img-id-" + parseInt(Math.random() * 10000, 10);
+                      previewTile = (
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img
+                            id={randomId}
+                            onLoad={() =>
+                              this.updateExternalPreviewTile(randomId)}
+                            src={tile.imageUrl}
+                            alt="Preview"
+                          />
+                        </div>
+                      );
+                    } else {
+                      switch (tile.type) {
+                        case "map":
+                          previewTile = (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center"
+                              }}
+                            >
+                              <img
+                                style={{ width: PREVIEW_TILE_WIDTH / 2 }}
+                                src={mapIcon}
+                                alt="Map"
+                              />
+                            </div>
+                          );
+                          break;
+                        case "timeseries":
+                          previewTile = (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center"
+                              }}
+                            >
+                              <img
+                                style={{ width: PREVIEW_TILE_WIDTH / 2 }}
+                                src={timeIcon}
+                                alt="Timeseries"
+                              />
+                            </div>
+                          );
+                          break;
+                        case "statistics":
+                          previewTile = (
+                            <StatisticsTile
+                              alarms={this.props.alarms}
+                              title={tile.title}
+                            />
+                          );
+                          break;
+                        case "external":
+                          previewTile = (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center"
+                              }}
+                            >
+                              <img
+                                style={{ width: PREVIEW_TILE_WIDTH / 2 }}
+                                src={externalIcon}
+                                alt="External"
+                              />
+                            </div>
+                          );
+                          break;
+                        default:
+                          previewTile = null;
+                          break;
+                      }
+                    }
+
+                    const shortTitle = tile.shortTitle || tile.title;
+
+                    return (
+                      <NavLink to={`/full/${tile.id}`} key={i}>
+                        <div
+                          className={styles.SidebarItemWrapper}
+                          title={shortTitle}
+                        >
+                          <div
+                            className={`${styles.SidebarItem} ${selectedTile.id ===
+                            tile.id
+                              ? styles.Active
+                              : null}`}
+                          >
+                            {previewTile}
+                          </div>
+                          <div className={styles.SidebarItemLabel}>
+                            {shortTitle}
+                          </div>
+                        </div>
+                      </NavLink>
+                    );
+                  })}
+                </Scrollbars>
+              </div>
+            ) : null}
+            {element}
+          </div>
         </div>
       </DocumentTitle>
     );
