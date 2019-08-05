@@ -578,8 +578,8 @@ class TimeseriesChartComponent extends Component {
         id={this.state.componentRef}
         ref={this.state.componentRef}
         style={{
-          marginTop: this.props.marginTop,
-          marginLeft: this.props.marginLeft,
+          // marginTop: this.props.marginTop,
+          // marginLeft: this.props.marginLeft,
           width: this.props.width,
           height: this.props.height
         }}

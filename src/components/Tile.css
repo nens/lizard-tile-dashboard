@@ -36,8 +36,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 14px;
-  color: #115E67;
+  color: #115E67CD;
   padding-bottom: 5px;
   border-bottom: 1px solid #70707033;
 
@@ -48,8 +47,8 @@
   top: 9px;
 }
 .TileHeaderText {
-  font-size: 18px !important;
-  line-height: 18px;
+  font-size: 19px;
+  font-weight: bold;
 }
 .TileBody {
   position: relative;

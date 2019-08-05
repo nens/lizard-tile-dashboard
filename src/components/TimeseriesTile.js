@@ -59,8 +59,8 @@ class TimeseriesTileComponent extends Component {
     if (this.allAssetsPresent()) {
       const newProps = {
         ...this.props,
-        width: width - this.props.marginLeft,
-        height: height - this.props.marginTop
+        width: width - (this.props.marginLeft? this.props.marginLeft: 0) ,
+        height: height - (this.props.marginTop? this.props.marginTop: 0)
       };
 
       return (
