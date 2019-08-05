@@ -96,12 +96,12 @@ class ExternalTileComponent extends Component {
               }}
             >
               <img
-                style={{
-                  marginTop: "40px", // Take into account the title bar
-                  height: "70%",
-                  padding: "5%",
-                  paddingTop: "5%"
-                }}
+                // style={{
+                //   marginTop: "40px", // Take into account the title bar
+                //   height: "70%",
+                //   padding: "5%",
+                //   paddingTop: "5%"
+                // }}
                 src={externalIcon}
                 alt="External"
               />
@@ -183,20 +183,21 @@ class ExternalTileComponent extends Component {
         />
       </div>
     ) : (
-      <div
-        className={styles.ExternalWrapperTile}
-        style={{
-          height: "100%"
-        }}
-      >
+      // <div
+      //   className={styles.ExternalWrapperTile}
+      //   style={{
+      //     height: "100%"
+      //   }}
+      // >
         <img
           id={this.state.randomId}
-          onLoad={this.setImgDimsTile}
+          // onLoad={this.setImgDimsTile}
           src={imageUrl}
           alt={title}
           className={styles.ExternalImageTile}
+          // style={{objectFit: "contain"}}
         />
-      </div>
+      // </div>
     );
   }
 }
