@@ -577,12 +577,6 @@ class TimeseriesChartComponent extends Component {
       <div
         id={this.state.componentRef}
         ref={this.state.componentRef}
-        style={{
-          // marginTop: this.props.marginTop,
-          // marginLeft: this.props.marginLeft,
-          width: this.props.width,
-          height: this.props.height
-        }}
       >
         <Plot
           data={combinedEvents}
