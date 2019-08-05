@@ -30,7 +30,11 @@ class Tile extends Component {
             {title}
           </div>
         </div>
-        {children}
+        <div
+          className={styles.TileBody}
+        >
+          {children}
+        </div>
       </div>
     );
   }

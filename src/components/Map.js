@@ -603,7 +603,6 @@ class MapComponent extends Component {
           zoomControl={false}
           attribution={false}
           className={styles.MapStyleTile}
-          style={{position: "relative", width: "100%", height: "100%"}}
         >
           <TileLayer url={this.props.mapBackground.url} />
           {tile.rasters
