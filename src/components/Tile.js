@@ -21,10 +21,10 @@ class Tile extends Component {
       >
         <div
           className={styles.TileTitle}
-          style={{ backgroundColor: headerColors.bg }}
+          // style={{ backgroundColor: headerColors.bg }}
         >
           <div
-            style={{ color: headerColors.fg }}
+            // style={{ color: headerColors.fg }}
             className={styles.TileHeaderText + " drag-handle"}
           >
             {title}

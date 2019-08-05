@@ -2,30 +2,36 @@
   cursor: pointer;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  /* background-color: #fff; */
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.29);
   overflow: hidden;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  border-radius: 10px;
-  padding: 20px;
+  /* border-top-right-radius: 10px; */
+  /* border-top-left-radius: 10px; */
+  border-radius: 5px;
+  padding: 5px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  
 }
 .Tile:hover div {
-  font-weight: 500;
+  /* font-weight: 500; */
 }
 
 .TileTitle {
   /* position: absolute; */
   width: 100%;
-  height: 15%;
-  border-bottom: 1px solid #cdcdcd;
+  height: 8%;
+  border-bottom: 1px solid #70707033;
   background-color: #fff;
-  overflow: hidden;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  z-index: 999999;
+  /* overflow: hidden; */
+  /* border-top-right-radius: 10px; */
+  /* border-top-left-radius: 10px; */
+  /* z-index: 999999; */
   font-size: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .TileTitle:active {
 }
@@ -38,6 +44,7 @@
   text-overflow: ellipsis;
   width: calc(100% - 40px);
   font-size: 14px;
+  color: #115E67;
 }
 .TileHandle {
   position: absolute;
@@ -51,5 +58,9 @@
 .TileBody {
   position: relative;
   width: 100%;
-  height: 85%;
+  height: 92%;
+  /* height: auto; */
+  /* flex-grow: 1; */
+  padding: 10px;
+  box-sizing: border-box;
 }
