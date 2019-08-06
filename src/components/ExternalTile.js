@@ -127,7 +127,8 @@ class ExternalTileComponent extends Component {
 
   renderImage(title, imageUrl, isFull, showingBar) {
     
-    // A comment why below code is needed would have been appreciated. 
+    // A comment why below code is needed would have been appreciated.
+    // For now I just comment it out, because it seems to have no other effect as being tiresome on the eyes. 
     // if (isFull) {
     //   const imgElem = document.getElementById(this.state.randomId);
     //   if (imgElem) {
