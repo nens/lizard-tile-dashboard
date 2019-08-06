@@ -266,7 +266,7 @@ class FullLayout extends Component {
           >
             <NavLink to="/">
               <div className={styles.BackButton}>
-                <i className="material-icons" style={{ color: fgColor }}>
+                <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
                   arrow_back
                 </i>
               </div>

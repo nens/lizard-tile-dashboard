@@ -9,9 +9,16 @@
   box-shadow: 2px 0px 4px 2px rgba(0, 0, 0, 0.29);
   background: #ffffff;
   font-size: 18px;
-  color: #747474;
+  color: #115E67CD;
+  font-size: 19px;
+  font-weight: bold;
   z-index: 999991;
 }
+
+.TitleBar .BackButton i {
+  color: #115E67CD;
+}
+
 .BackButton {
   position: absolute;
   cursor: pointer;
@@ -50,7 +57,7 @@
   font-size: 13px;
   padding: 8px;
   cursor: pointer;
-  color: #2196f3;
+  color: #115E67CD;
   text-decoration: none;
 }
 .SidebarWrapper {
