@@ -119,7 +119,7 @@ class ExternalTileComponent extends Component {
         className={styles.ExternalIframe}
         width={showingBar ? this.state.fullRenderWidth : window.innerWidth}
         height={this.state.fullRenderHeight}
-        style={{ left: showingBar ? fullLayoutSidebarWidth : 0 }}
+        // style={{ left: showingBar ? fullLayoutSidebarWidth : 0 }}
       />
     );
   }
