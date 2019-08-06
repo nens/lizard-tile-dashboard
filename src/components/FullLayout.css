@@ -1,7 +1,9 @@
 .FullLayout {
   position: relative;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .TitleBar {
   /* position: absolute; */
@@ -66,7 +68,7 @@
   /* position: absolute; */
   /* top: 0; */
   /* left: 0; */
-  min-height: 100%;
+  /* min-height: 100%; */
   background-color: #fff;
   box-shadow: 1px 5px 6px 2px rgba(0, 0, 0, 0.34);
   width: 195px;

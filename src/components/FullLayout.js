@@ -84,7 +84,7 @@ class FullLayout extends Component {
             {...this.props}
             isFull={true}
             width={width}
-            height={height}
+            // height={height}
             tile={selectedTile}
             bbox={selectedTile.bbox}
           />
@@ -177,7 +177,7 @@ class FullLayout extends Component {
               <div
                 className={styles.SidebarWrapper}
                 style={{ 
-                  height: height - FULL_LAYOUT_HEADER_HEIGHT,
+                  // height: height - FULL_LAYOUT_HEADER_HEIGHT,
                   // paddingTop: FULL_LAYOUT_HEADER_HEIGHT,
                 }}
               >
