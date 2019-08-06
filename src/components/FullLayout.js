@@ -296,7 +296,10 @@ class FullLayout extends Component {
             ) : null}
             <div
               style={{
-                "flex": 1,
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               {element}

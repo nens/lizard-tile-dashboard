@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styles from "./ExternalTile.css";
 import externalIcon from "../graphics/icon-external.svg";
+import dataStyles from "../style/Data.css";
 
 class ExternalTileComponent extends Component {
   constructor() {
@@ -37,15 +38,15 @@ class ExternalTileComponent extends Component {
   }
 
   alignImgVertically() {
-    const imgElem = document.getElementById(this.state.randomId);
-    if (imgElem === null) {
-      return;
-    }
+    // const imgElem = document.getElementById(this.state.randomId);
+    // if (imgElem === null) {
+    //   return;
+    // }
 
-    const verticalWhiteSpace = this.state.fullRenderHeight - imgElem.height;
-    const requiredTopOffset = Math.floor(verticalWhiteSpace / 2);
+    // const verticalWhiteSpace = this.state.fullRenderHeight - imgElem.height;
+    // const requiredTopOffset = Math.floor(verticalWhiteSpace / 2);
 
-    imgElem.style.top = requiredTopOffset + "px";
+    // imgElem.style.top = requiredTopOffset + "px";
   }
 
   render() {
@@ -116,39 +117,41 @@ class ExternalTileComponent extends Component {
         title="externalTile"
         referrerPolicy="no-referrer"
         src={url}
-        className={styles.ExternalIframe}
-        width={showingBar ? this.state.fullRenderWidth : window.innerWidth}
-        height={this.state.fullRenderHeight}
+        className={`${styles.ExternalIframe} ${dataStyles.UseAvailableWidthHeight}`}
+        // width={showingBar ? this.state.fullRenderWidth : window.innerWidth}
+        // height={this.state.fullRenderHeight}
         // style={{ left: showingBar ? fullLayoutSidebarWidth : 0 }}
       />
     );
   }
 
   renderImage(title, imageUrl, isFull, showingBar) {
-    if (isFull) {
-      const imgElem = document.getElementById(this.state.randomId);
-      if (imgElem) {
-        imgElem.style.opacity = 0;
-        setTimeout(() => {
-          imgElem.style.opacity = 1;
-        }, 150);
-        // const iv = setInterval(() => {
-        //   imgElem.style.opacity += 0.01
-        //   if (imgElem.style.opacity >= 1) {
-        //     clearInterval(iv);
-        //   }
-        // }, 5);
-      }
-    }
+    
+    // A comment why below code is needed would have been appreciated. 
+    // if (isFull) {
+    //   const imgElem = document.getElementById(this.state.randomId);
+    //   if (imgElem) {
+    //     imgElem.style.opacity = 0;
+    //     setTimeout(() => {
+    //       imgElem.style.opacity = 1;
+    //     }, 150);
+    //     // const iv = setInterval(() => {
+    //     //   imgElem.style.opacity += 0.01
+    //     //   if (imgElem.style.opacity >= 1) {
+    //     //     clearInterval(iv);
+    //     //   }
+    //     // }, 5);
+    //   }
+    // }
 
     return isFull ? (
       <div
         className={styles.ExternalWrapperFull}
-        style={{
-          height: this.state.fullRenderHeight + "px",
-          // top: this.props.fullLayoutHeaderHeight,
-          left: showingBar ? this.props.fullLayoutSidebarWidth * 0.5 + "px" : 0
-        }}
+        // style={{
+        //   // height: this.state.fullRenderHeight + "px",
+        //   // top: this.props.fullLayoutHeaderHeight,
+        //   // left: showingBar ? this.props.fullLayoutSidebarWidth * 0.5 + "px" : 0
+        // }}
       >
         <img
           id={this.state.randomId}

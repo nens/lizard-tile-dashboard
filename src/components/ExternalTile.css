@@ -1,15 +1,16 @@
 .ExternalWrapperFull {
-  position: relative;
+  /* position: relative; */
   /*background-color: #aaf;*/
+  /* display: flex; */
+  /* align-items: center; */
 }
 
 .ExternalWrapperTile {
 }
 
 .ExternalImageFull {
-  position: relative;
-  margin: 50px auto;
-  display: block;
+  /* position: relative;  */
+  /* display: block; */ /* seems not be needed */
   max-width: 100%;
   max-height: 100%;
   
@@ -24,6 +25,6 @@
 }
 
 .ExternalIframe {
-  position: relative;
+  /* position: relative; */
   /* top: 50px; */
 }
