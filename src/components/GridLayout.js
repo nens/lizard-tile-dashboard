@@ -327,8 +327,6 @@ class GridLayout extends Component {
                   timeseries={tile.timeseries}
                   tile={tile}
                   showAxis={true}
-                  // marginLeft={0}
-                  // marginTop={30}
                 />
               </Tile>
             );
