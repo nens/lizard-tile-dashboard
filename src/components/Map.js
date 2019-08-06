@@ -508,7 +508,7 @@ class MapComponent extends Component {
       <div
         className={styles.MapTileFull}
         key={"map-" + tile.id}
-        style={{ width, height }}
+        // style={{ width, height }}
       >
         <Map
           bounds={this.getBBox().toLeafletBounds()}

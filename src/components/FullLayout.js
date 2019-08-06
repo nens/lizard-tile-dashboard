@@ -83,8 +83,10 @@ class FullLayout extends Component {
           <Map
             {...this.props}
             isFull={true}
-            width={width}
+            // width={width}
             // height={height}
+            // width={"100%"}
+            // height={"100%"}
             tile={selectedTile}
             bbox={selectedTile.bbox}
           />
@@ -292,7 +294,14 @@ class FullLayout extends Component {
                 </Scrollbars>
               </div>
             ) : null}
-            {element}
+            <div
+              style={{
+                "flex": 1,
+              }}
+            >
+              {element}
+            </div>
+            
           </div>
         </div>
       </DocumentTitle>
