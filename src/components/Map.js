@@ -587,7 +587,9 @@ class MapComponent extends Component {
       : null;
 
     return (
-      <div className={styles.MapStyleTile}>
+      <div 
+        className={styles.MapStyleTile}
+      >
         <Map
           bounds={this.getBBox().toLeafletBounds()}
           attributionControl={false}

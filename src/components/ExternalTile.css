@@ -12,14 +12,15 @@
   display: block;
   max-width: 100%;
   max-height: 100%;
+  
 }
 
 .ExternalImageTile {
-  /*margin: 48px auto;*/
-  margin: 40px auto;
-  display: block;
   max-width: 100%;
   max-height: 100%;
+  height: 100%; /* needed to make work when parent uses flexbasis instead of height and image is wider then heigh */
+  /* object-fit: contain; */ /* Didnot help with any of the problems flexbox give together with images */ 
+  /* display: block; */ /* seems not be needed */
 }
 
 .ExternalIframe {

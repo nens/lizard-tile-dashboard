@@ -417,6 +417,6 @@ export const getConfiguredTileHeaderColors = function(state) {
   if (configuration && configuration.meta && configuration.meta.headerColors) {
     return configuration.meta.headerColors;
   } else {
-    return { bg: "#FFFFFF", fg: "#777777" };
+    return { bg: null, fg: null };
   }
 };

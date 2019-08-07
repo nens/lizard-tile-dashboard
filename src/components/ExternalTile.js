@@ -10,7 +10,6 @@ class ExternalTileComponent extends Component {
       fullRenderWidth: null,
       fullRenderHeight: null
     };
-    this.setImgDimsTile = this.setImgDimsTile.bind(this);
     this.alignImgVertically = this.alignImgVertically.bind(this);
   }
 
@@ -34,23 +33,6 @@ class ExternalTileComponent extends Component {
   componentWillUnmount() {
     if (this.props.isFull) {
       window.removeEventListener("resize", this.alignImgVertically);
-    }
-  }
-
-  setImgDimsTile() {
-    const TILE_INNER_HEIGHT = 270, // 310px (tileHeight) - 40px (=tileHeaderHeight)
-      imgElem = document.getElementById(this.state.randomId),
-      imgOriginalWidth = imgElem.width,
-      imgOriginalHeight = imgElem.height;
-
-    if (imgOriginalHeight !== TILE_INNER_HEIGHT) {
-      // We need to scale the image height (and width, to keep the aspect
-      // consistent) to fit the tile nicely:
-      const scaleFactor = TILE_INNER_HEIGHT / imgOriginalHeight,
-        adjustedWidth = Math.floor(imgOriginalWidth * scaleFactor),
-        adjustedHeight = Math.floor(imgOriginalHeight * scaleFactor);
-      imgElem.width = adjustedWidth;
-      imgElem.height = adjustedHeight;
     }
   }
 
@@ -96,12 +78,6 @@ class ExternalTileComponent extends Component {
               }}
             >
               <img
-                style={{
-                  marginTop: "40px", // Take into account the title bar
-                  height: "70%",
-                  padding: "5%",
-                  paddingTop: "5%"
-                }}
                 src={externalIcon}
                 alt="External"
               />
@@ -183,20 +159,13 @@ class ExternalTileComponent extends Component {
         />
       </div>
     ) : (
-      <div
-        className={styles.ExternalWrapperTile}
-        style={{
-          height: "100%"
-        }}
-      >
-        <img
-          id={this.state.randomId}
-          onLoad={this.setImgDimsTile}
-          src={imageUrl}
-          alt={title}
-          className={styles.ExternalImageTile}
-        />
-      </div>
+      
+      <img
+        id={this.state.randomId}
+        src={imageUrl}
+        alt={title}
+        className={styles.ExternalImageTile}
+      />
     );
   }
 }

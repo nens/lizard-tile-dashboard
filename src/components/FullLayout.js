@@ -140,7 +140,10 @@ class FullLayout extends Component {
           {!isMobile ? (
             <div
               className={styles.SidebarWrapper}
-              style={{ height: height - FULL_LAYOUT_HEADER_HEIGHT }}
+              style={{ 
+                height: height - FULL_LAYOUT_HEADER_HEIGHT,
+                paddingTop: FULL_LAYOUT_HEADER_HEIGHT,
+               }}
             >
               <Scrollbars height={height}>
                 {allTiles.map((tile, i) => {
@@ -263,7 +266,7 @@ class FullLayout extends Component {
           >
             <NavLink to="/">
               <div className={styles.BackButton}>
-                <i className="material-icons" style={{ color: fgColor }}>
+                <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
                   arrow_back
                 </i>
               </div>
