@@ -412,6 +412,20 @@ export const getConfiguredColumnCount = function(state) {
   }
 };
 
+export const getGridSizeIsConfigurablePerTile = function(state) {
+  const configuration = getConfiguration(state);
+  if (
+    configuration &&
+    configuration.meta &&
+    configuration.meta.gridView &&
+    configuration.meta.gridView.gridSizeIsConfigurablePerTile
+  ) {
+    return configuration.meta.gridView.gridSizeIsConfigurablePerTile;
+  } else {
+    return null;
+  }
+}
+
 export const getConfiguredTileHeaderColors = function(state) {
   const configuration = getConfiguration(state);
   if (configuration && configuration.meta && configuration.meta.headerColors) {

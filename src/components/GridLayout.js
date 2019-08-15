@@ -25,7 +25,8 @@ import {
   getConfiguredMapBackgrounds,
   getCurrentMapBackground,
   getConfiguredColumnCount,
-  getConfiguredTileHeaderColors
+  getConfiguredTileHeaderColors,
+  getGridSizeIsConfigurablePerTile,
 } from "../reducers";
 import {
   setDateAction,
@@ -54,6 +55,28 @@ class GridLayout extends Component {
   componentWillMount() {
     const { columnCount } = this.props;
     if (!this.state.layout) {
+      let layout;
+      if (this.props.gridSizeIsConfigurablePerTile === true) {
+        // use layout as configured on tile in client_configuaration json
+        layout = this.props.tiles.map((tile, i) => {
+          return tile.sizeAndLocaltionInGrid;
+        });
+      }
+       else {
+        layout = this.props.tiles.map((tile, i) => {
+          const W = Math.floor(12 / columnCount);
+          const H = 8;
+          return {
+            i: `${i}`,
+            x: (i * W) % (columnCount * W),
+            y: (i % columnCount) * H,
+            w: W,
+            h: H,
+            minW: 2,
+            maxW: W
+          };
+        });
+      }
       this.setState({
         mobileLayout: this.props.tiles.map((tile, i) => {
           const Y = 8;
@@ -67,19 +90,7 @@ class GridLayout extends Component {
             maxW: 12
           };
         }),
-        layout: this.props.tiles.map((tile, i) => {
-          const W = Math.floor(12 / columnCount);
-          const H = 8;
-          return {
-            i: `${i}`,
-            x: (i * W) % (columnCount * W),
-            y: (i % columnCount) * H,
-            w: W,
-            h: H,
-            minW: 2,
-            maxW: W
-          };
-        })
+        layout: layout,
       });
     }
   }
@@ -458,6 +469,7 @@ const mapStateToProps = (state, ownProps) => {
     title: getConfiguredTitle(state),
     logoPath: getConfiguredLogoPath(state),
     columnCount: getConfiguredColumnCount(state),
+    gridSizeIsConfigurablePerTile: getGridSizeIsConfigurablePerTile(state),
     headerColors: getConfiguredTileHeaderColors(state)
   };
 };
