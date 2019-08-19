@@ -56,11 +56,9 @@ class GridLayout extends Component {
     const { columnCount } = this.props;
     if (!this.state.layout) {
       let layout;
-      if (this.props.gridSizeIsConfigurablePerTile === true) {
+      if (this.props.gridSizeIsConfigurablePerTile == true) {
         // use layout as configured on tile in client_configuaration json
-        layout = this.props.tiles.map((tile, i) => {
-          return tile.sizeAndLocaltionInGrid;
-        });
+        layout = this.props.tiles.map((tile) => tile.sizeAndLocationInGrid);
       }
        else {
         layout = this.props.tiles.map((tile, i) => {

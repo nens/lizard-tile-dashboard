@@ -99,7 +99,7 @@ gridView
 - Object of the form {"columnCount": 3, "gridSizeIsConfigurablePerTile": false }
 - columnCount: defines columns for the grid (if gridSizeIsConfigurablePerTile != true then columnCount is Mandatory)
 - gridSizeIsConfigurablePerTile: set to true to configure individual tile size.
-- if gridSizeIsConfigurablePerTile = true then the following should mandatory be added to each tile on root level: {"i": "<i>", "x": <x>, "y": <y>, "w": <w>, "h": <h>}
+- if gridSizeIsConfigurablePerTile = true then the following should mandatory be added to each tile on root level: sizeAndLocationInGrid:{"i": "<i>", "x": <x>, "y": <y>, "w": <w>, "h": <h>}
 - where the letters represent:
 - i: order of tile starting from 0 (String)
 - x: x coordinate (integer)
