@@ -7,7 +7,7 @@ Client Configuration
 ====================
 
 This product is designed to be configurable for different customers, by configuring the json fields in the "client_configuration" table.
-For more information on how to configure the tile dashboards visit [the configuration README](./configuration/README.md)
+For more information on how to configure the tile dashboards visit [the configuration README](./configuration/clientConfiguration.rst)
 
 
 Installation

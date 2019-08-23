@@ -25,7 +25,8 @@ import {
   getConfiguredMapBackgrounds,
   getCurrentMapBackground,
   getConfiguredColumnCount,
-  getConfiguredTileHeaderColors
+  getConfiguredTileHeaderColors,
+  getGridSizeIsConfigurablePerTile,
 } from "../reducers";
 import {
   setDateAction,
@@ -37,9 +38,44 @@ import {
 class GridLayout extends Component {
   constructor(props) {
     super(props);
+
+    const { columnCount } = props;
+    let layout;
+    if (this.props.gridSizeIsConfigurablePerTile == true) {
+      // use layout as configured on tile in client_configuaration json
+      layout = this.props.tiles.map((tile) => tile.sizeAndLocationInGrid);
+    }
+      else {
+      layout = this.props.tiles.map((tile, i) => {
+        const W = Math.floor(12 / columnCount);
+        const H = 8;
+        return {
+          i: `${i}`,
+          x: (i * W) % (columnCount * W),
+          y: (i % columnCount) * H,
+          w: W,
+          h: H,
+          minW: 2,
+          maxW: W
+        };
+      });
+    }
+
     this.state = {
       canMove: false,
-      layout: null,
+      layout: layout,
+      mobileLayout: this.props.tiles.map((tile, i) => {
+        const Y = 8;
+        return {
+          i: `${i}`,
+          x: 0,
+          y: i * 8,
+          w: 12,
+          h: Y,
+          minW: 2,
+          maxW: 12
+        };
+      }),
       width: window.innerWidth,
       height: window.innerHeight,
       settingsMenu: false,
@@ -51,38 +87,7 @@ class GridLayout extends Component {
       this
     );
   }
-  componentWillMount() {
-    const { columnCount } = this.props;
-    if (!this.state.layout) {
-      this.setState({
-        mobileLayout: this.props.tiles.map((tile, i) => {
-          const Y = 8;
-          return {
-            i: `${i}`,
-            x: 0,
-            y: i * 8,
-            w: 12,
-            h: Y,
-            minW: 2,
-            maxW: 12
-          };
-        }),
-        layout: this.props.tiles.map((tile, i) => {
-          const W = Math.floor(12 / columnCount);
-          const H = 8;
-          return {
-            i: `${i}`,
-            x: (i * W) % (columnCount * W),
-            y: (i % columnCount) * H,
-            w: W,
-            h: H,
-            minW: 2,
-            maxW: W
-          };
-        })
-      });
-    }
-  }
+  
   componentDidMount() {
     window.addEventListener("resize", this.handleUpdateDimensions, false);
     document.addEventListener("keydown", this.handleKeyPress, false);
@@ -458,6 +463,7 @@ const mapStateToProps = (state, ownProps) => {
     title: getConfiguredTitle(state),
     logoPath: getConfiguredLogoPath(state),
     columnCount: getConfiguredColumnCount(state),
+    gridSizeIsConfigurablePerTile: getGridSizeIsConfigurablePerTile(state),
     headerColors: getConfiguredTileHeaderColors(state)
   };
 };

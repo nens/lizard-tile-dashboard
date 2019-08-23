@@ -95,9 +95,20 @@ logo
 gridView
 --------
 
-- To configure the grid layout; currently only the number of columns.
-- Object of the form {"columnCount": 3}
-- Mandatory
+- To configure the grid layout of the tiles.
+- Object of the form {"columnCount": 3, "gridSizeIsConfigurablePerTile": false }
+- columnCount: defines columns for the grid (if gridSizeIsConfigurablePerTile != true then columnCount is Mandatory)
+- gridSizeIsConfigurablePerTile: set to true to configure individual tile size.
+- if gridSizeIsConfigurablePerTile = true then the following should mandatory be added to each tile on root level: sizeAndLocationInGrid:{"i": "<i>", "x": <x>, "y": <y>, "w": <w>, "h": <h>}
+- where the letters represent:
+- i: order of tile starting from 0 (String)
+- x: x coordinate (integer)
+- y: y coordinate (integer)
+- w: width (integer)
+- h: height (integer)
+- example can be seen here:
+- https://strml.github.io/react-grid-layout/examples/2-no-dragging.html
+- https://nxt3.staging.lizard.net/admin/lizard_nxt/clientconfiguration/32/change/
 
 mapBackgrounds
 --------------
