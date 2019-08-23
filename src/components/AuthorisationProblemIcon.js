@@ -30,9 +30,9 @@ class AuthorisationProblemIcon extends Component {
     
     const rasterKeys = Object.keys(this.props.rasters.metadata);
     const errorKeys = rasterKeys.filter(key=> this.props.rasters.metadata[key].error !== null);
-    // const keyErrorPairs = errorKeys.map(key=> key + ' : ' + this.props.rasters.metadata[key].error)
+    const keyErrorPairs = errorKeys.map(key=> key + ' : ' + this.props.rasters.metadata[key].error)
+    // const keyErrorPairs = [1]
     // console.log('keyErrorPairs', keyErrorPairs)
-    const keyErrorPairs = [1]
 
 
     return (
