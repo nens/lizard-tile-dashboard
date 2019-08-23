@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import TimeseriesTile from "./TimeseriesTile";
 import StatisticsTile from "./StatisticsTile";
 import ExternalTile from "./ExternalTile";
+import AuthorisationProblemIcon from "./AuthorisationProblemIcon";
 import last from "lodash/last";
 import map from "lodash/map";
 import Map from "./Map";
@@ -371,7 +372,11 @@ class GridLayout extends Component {
             <img src={logoPath} alt="Logos for relevant organisations" />
           </div>
 
-          <div className={styles.GridLayoutHeaderTitle}>{title}</div>
+          
+          <div className={styles.GridLayoutHeaderTitle}>
+            <AuthorisationProblemIcon/>
+            {title}
+          </div>
 
           <div className={styles.GridLayoutHeaderButtons}>
             {width > 700 ? (

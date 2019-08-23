@@ -1,0 +1,12 @@
+.Icon {
+  color:red;
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0.15; }
+  100% { opacity: 1; }
+}
