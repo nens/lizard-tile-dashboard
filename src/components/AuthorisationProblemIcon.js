@@ -17,11 +17,16 @@ class AuthorisationProblemIcon extends Component {
     this.state = {}
   }
 
+  showAuthorisationProblems (keyErrorPairs) {
+    alert (
+      keyErrorPairs.map(item=>item + ' \n ')
+    );
+  }
+
   render () {
 
-    // const allUnfoundRasters = this.props.rasters.metadata.filter(raster=>raster.meta.error !== null);
-    // const allUnfoundRasters = [1];
-    // console.log('AuthorisationProblemIcon this.props.rasters', this.props.rasters)
+   
+    console.log('AuthorisationProblemIcon this.props.timeseries', this.props.timeseriesMetadata, this.props.timeseries, this.props.timeseriesEvents)
     
     const rasterKeys = Object.keys(this.props.rasters.metadata);
     const errorKeys = rasterKeys.filter(key=> this.props.rasters.metadata[key].error !== null);
@@ -35,7 +40,9 @@ class AuthorisationProblemIcon extends Component {
           {
             keyErrorPairs.length !== 0 ? 
             <i 
-              className={"material-icons"+ " " + styles.Icon} 
+              className={"material-icons"+ " " + styles.Icon}
+              title="You appear to be unauthorised for some data. Click to show which!"
+              onClick={e=>this.showAuthorisationProblems(keyErrorPairs)} 
             >
               lock
               &nbsp;
@@ -51,21 +58,17 @@ class AuthorisationProblemIcon extends Component {
 
 function mapStateToProps(state) {
   return {
+    // from map
     assets: state.assets,
     rasters: state.rasters,
     alarms: state.alarms,
     timeseriesMetadata: state.timeseries,
-    allTiles: getAllTiles(state),
-    mapBackground: (s => {
-      const current = getCurrentMapBackground(s);
-      if (current) {
-        return current;
-      } else {
-        return getConfiguredMapBackgrounds(state)[0];
-      }
-    })(state),
-    referenceLevels: getReferenceLevels(state),
-    portalBBox: getConfiguredPortalBBox(state)
+    // from TimeseriesChart
+    measuringstations: state.assets.measuringstation || {},
+    timeseries: state.timeseries,
+    rasterEvents: state.rasterEvents,
+    timeseriesEvents: state.timeseriesEvents,
+    alarms: state.alarms,
   };
 }
 
