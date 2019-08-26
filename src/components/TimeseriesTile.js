@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import TimeseriesChart from "./TimeseriesChart";
 import { makeGetter, getOrFetch } from "../api_client/index";
-import { getTimeseriesMetadataAction, fetchRaster } from "../actions";
+import { getTimeseriesMetadataAction, fetchRaster, fetchTimeseries } from "../actions";
 
 // Wrapper for TimeseriesChart.
 
@@ -13,8 +13,13 @@ import { getTimeseriesMetadataAction, fetchRaster } from "../actions";
 
 class TimeseriesTileComponent extends Component {
   componentWillMount() {
-    (this.props.tile.timeseries || []).map(
-      this.props.getTimeseriesMetadataAction
+    (this.props.tile.timeseries || []).map(uuid =>
+      // this.props.getTimeseriesMetadataAction
+      getOrFetch(
+        this.props.getTimeseries,
+        this.props.fetchTimeseries,
+        uuid
+      )
     );
 
     (this.props.tile.rasterIntersections || []).map(intersection => {
@@ -86,13 +91,15 @@ function mapStateToProps(state) {
     rasters: state.rasters,
     getTimeseriesMetadata: uuid => state.timeseries.data[uuid],
     // getTimeseriesMetadata: uuid => state.timeseries[uuid],
-    getRaster: makeGetter(state.rasters)
+    getRaster: makeGetter(state.rasters),
+    getTimeseries: makeGetter(state.timeseries)
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchRaster: uuid => fetchRaster(dispatch, uuid),
+    fetchTimeseries: uuid => fetchTimeseries(dispatch, uuid),
     getTimeseriesMetadataAction: uuid =>
       dispatch(getTimeseriesMetadataAction(uuid))
   };

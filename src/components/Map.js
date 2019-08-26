@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { find } from "lodash";
-import { updateTimeseriesMetadata, fetchRaster, addAsset } from "../actions";
+import { updateTimeseriesMetadata, fetchRaster, fetchTimeseries, addAsset } from "../actions";
 import {
   getReferenceLevels,
   getAllTiles,
@@ -624,7 +624,8 @@ function mapStateToProps(state) {
     getRaster: makeGetter(state.rasters),
     alarms: state.alarms,
     timeseriesMetadata: state.timeseries.data,
-    // timeseriesMetadata: state.timeseries,
+    updateTimeseries: makeGetter(state.timeseries),
+    
     allTiles: getAllTiles(state),
     mapBackground: (s => {
       const current = getCurrentMapBackground(s);
@@ -644,9 +645,9 @@ function mapDispatchToProps(dispatch) {
     addAsset: (assetType, id, instance) =>
       dispatch(addAsset(assetType, id, instance)),
     fetchRaster: uuid => fetchRaster(dispatch, uuid),
-    updateTimeseries: timeseries =>
-      dispatch(updateTimeseriesMetadata(timeseries.uuid))
-  };
+    // updateTimeseries: timeseries =>
+    //   dispatch(updateTimeseriesMetadata(timeseries.uuid))  };
+  }
 }
 
 export default withRouter(
