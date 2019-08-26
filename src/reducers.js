@@ -247,7 +247,8 @@ const rootReducer = combineReducers({
   legends,
   rasters: makeReducer("rasters"),
   session,
-  timeseries,
+  timeseries: makeReducer("timeseries"),
+  // timeseries,
   timeseriesEvents,
   rasterEvents,
   settings

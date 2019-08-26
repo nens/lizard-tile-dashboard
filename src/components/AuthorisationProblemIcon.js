@@ -19,18 +19,30 @@ class AuthorisationProblemIcon extends Component {
 
   showAuthorisationProblems (keyErrorPairs) {
     alert (
-      keyErrorPairs.map(item=>item + ' \n ')
+      'the following resources were not found: \n ' +
+      (keyErrorPairs.map(item=>item + ' \n ').join(''))
     );
+  }
+
+  getKeyErrorPairs () {
+    const rasterKeys = (this.props.rasters.metadata && this.transformMetadataToKeyErrorPairs(this.props.rasters.metadata)) || [];
+    const timeseriesKeys = (this.props.timeseries.metadata && this.transformMetadataToKeyErrorPairs(this.props.timeseries.metadata)) || [];
+    return rasterKeys.concat(timeseriesKeys);
+  }
+
+  transformMetadataToKeyErrorPairs (metadata) {
+    const keys = Object.keys(metadata);
+    const errorKeys = keys.filter(key=> metadata[key].error !== null);
+    const keyErrorPairs = errorKeys.map(key=> key + ' : ' + metadata[key].error);
+    return keyErrorPairs;
   }
 
   render () {
 
    
     console.log('AuthorisationProblemIcon this.props.timeseries', this.props.timeseriesMetadata, this.props.timeseries, this.props.timeseriesEvents)
+    const keyErrorPairs = this.getKeyErrorPairs();
     
-    const rasterKeys = Object.keys(this.props.rasters.metadata);
-    const errorKeys = rasterKeys.filter(key=> this.props.rasters.metadata[key].error !== null);
-    const keyErrorPairs = errorKeys.map(key=> key + ' : ' + this.props.rasters.metadata[key].error)
     // const keyErrorPairs = [1]
     // console.log('keyErrorPairs', keyErrorPairs)
 
@@ -62,10 +74,11 @@ function mapStateToProps(state) {
     assets: state.assets,
     rasters: state.rasters,
     alarms: state.alarms,
-    timeseriesMetadata: state.timeseries,
+    timeseriesMetadata: state.timeseries.metadata,
+    // timeseriesMetadata: state.timeseries,
     // from TimeseriesChart
     measuringstations: state.assets.measuringstation || {},
-    timeseries: state.timeseries,
+    timeseries: state.timeseries.data,
     rasterEvents: state.rasterEvents,
     timeseriesEvents: state.timeseriesEvents,
     alarms: state.alarms,

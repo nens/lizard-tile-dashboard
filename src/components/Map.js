@@ -187,6 +187,7 @@ class MapComponent extends Component {
     } else {
       link = this.getTileLinkForTimeseries(asset.timeseries.map(ts => ts.uuid));
 
+      console.log("timeseriesWithMetadata Map.js");
       const timeseriesWithMetadata = asset.timeseries.filter(
         ts => this.props.timeseriesMetadata[ts.uuid]
       );
@@ -622,7 +623,8 @@ function mapStateToProps(state) {
     rasters: state.rasters,
     getRaster: makeGetter(state.rasters),
     alarms: state.alarms,
-    timeseriesMetadata: state.timeseries,
+    timeseriesMetadata: state.timeseries.data,
+    // timeseriesMetadata: state.timeseries,
     allTiles: getAllTiles(state),
     mapBackground: (s => {
       const current = getCurrentMapBackground(s);

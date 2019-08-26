@@ -37,6 +37,7 @@ class TimeseriesTileComponent extends Component {
   }
 
   allAssetsPresent() {
+    console.log('allAssetsPresent');
     return (
       this.timeseries().every(this.props.getTimeseriesMetadata) &&
       this.rasters().every(uuid => this.props.getRaster(uuid).object)
@@ -83,7 +84,8 @@ class TimeseriesTileComponent extends Component {
 function mapStateToProps(state) {
   return {
     rasters: state.rasters,
-    getTimeseriesMetadata: uuid => state.timeseries[uuid],
+    getTimeseriesMetadata: uuid => state.timeseries.data[uuid],
+    // getTimeseriesMetadata: uuid => state.timeseries[uuid],
     getRaster: makeGetter(state.rasters)
   };
 }
