@@ -64,6 +64,7 @@ class TimeseriesChartComponent extends Component {
   /////////////////////////////////////////////////////////////////////////////
 
   componentWillMount() {
+    console.log('componentWillMount timeseries chart')
     this.updateTimeseries();
 
     const axes = this.getAxesData();
@@ -490,6 +491,8 @@ class TimeseriesChartComponent extends Component {
   render() {
     const { tile } = this.props;
 
+    console.log('render timeseriesChart');
+
     const timeseriesEvents = (tile.timeseries || [])
       .filter(
         uuid =>
@@ -594,7 +597,8 @@ function mapStateToProps(state, ownProps) {
   return {
     measuringstations: state.assets.measuringstation || {},
     getRaster: makeGetter(state.rasters),
-    timeseries: state.timeseries,
+    timeseries: state.timeseries.data,
+    // timeseries: state.timeseries,
     rasterEvents: state.rasterEvents,
     timeseriesEvents: state.timeseriesEvents,
     alarms: state.alarms,

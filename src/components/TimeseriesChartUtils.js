@@ -50,7 +50,7 @@ export function combineEventSeries(series, axes, colors, full, legendStrings) {
     }
   }
 
-  return series.map((serie, idx) => {
+  return series.filter(serie=>serie.observation_type).map((serie, idx) => {
     const isRatio = serie.observation_type.scale === "ratio";
 
     const events = {

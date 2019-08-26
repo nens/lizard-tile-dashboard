@@ -318,3 +318,4 @@ export function getRasterEvents(raster, geometry, start, end) {
 }
 
 export const fetchRaster = makeFetcher("rasters", getRasterDetail);
+export const fetchTimeseries = makeFetcher("timeseries", getTimeseries);

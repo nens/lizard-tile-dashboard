@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { find } from "lodash";
-import { updateTimeseriesMetadata, fetchRaster, addAsset } from "../actions";
+import { updateTimeseriesMetadata, fetchRaster, fetchTimeseries, addAsset } from "../actions";
 import {
   getReferenceLevels,
   getAllTiles,
@@ -187,6 +187,7 @@ class MapComponent extends Component {
     } else {
       link = this.getTileLinkForTimeseries(asset.timeseries.map(ts => ts.uuid));
 
+      console.log("timeseriesWithMetadata Map.js");
       const timeseriesWithMetadata = asset.timeseries.filter(
         ts => this.props.timeseriesMetadata[ts.uuid]
       );
@@ -622,7 +623,9 @@ function mapStateToProps(state) {
     rasters: state.rasters,
     getRaster: makeGetter(state.rasters),
     alarms: state.alarms,
-    timeseriesMetadata: state.timeseries,
+    timeseriesMetadata: state.timeseries.data,
+    updateTimeseries: makeGetter(state.timeseries),
+    
     allTiles: getAllTiles(state),
     mapBackground: (s => {
       const current = getCurrentMapBackground(s);
@@ -642,9 +645,9 @@ function mapDispatchToProps(dispatch) {
     addAsset: (assetType, id, instance) =>
       dispatch(addAsset(assetType, id, instance)),
     fetchRaster: uuid => fetchRaster(dispatch, uuid),
-    updateTimeseries: timeseries =>
-      dispatch(updateTimeseriesMetadata(timeseries.uuid))
-  };
+    // updateTimeseries: timeseries =>
+    //   dispatch(updateTimeseriesMetadata(timeseries.uuid))  };
+  }
 }
 
 export default withRouter(
