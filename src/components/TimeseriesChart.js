@@ -554,11 +554,11 @@ function mapStateToProps(state, ownProps) {
 
     if (axisId === -1) {
       axisId = observationTypes.length;
-      if (axisId >== 2) {
+      if (axisId >= 2) {
         // Already full
         console.error(
-          "Can't have a third Y axis for raster",
-          raster
+          "Can't have a third Y axis for timeseries",
+          timeseries
         );
         return;
       }
@@ -583,7 +583,7 @@ function mapStateToProps(state, ownProps) {
     let axisId = indexForType(observationTypes, observationType);
     if (axisId === -1) {
       axisId = observationTypes.length;
-      if (axisId >== 2) {
+      if (axisId >= 2) {
         // Already full
         console.error(
           "Can't have a third Y axis for raster",
