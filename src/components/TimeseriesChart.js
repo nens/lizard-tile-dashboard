@@ -97,12 +97,37 @@ class TimeseriesChartComponent extends Component {
     }
 
     for (let i=0; i < plotlyData.length; i++) {
-      // Events that stay the same are also still the same object, no
-      // processing is done on them. So we compare with ===.
+      // Assume that if data changes, that the length of the array changes
+      // or x or y value of the first data item.
       const events = plotlyData[i].events;
       const nextEvents = nextPlotlyData[i].events;
 
-      if (events !== nextEvents) {
+      if (!events || !nextEvents) {
+        // Update if their boolean value changed
+        if (!!events !== !!nextEvents) {
+          return true;
+        }
+      }
+
+      // x is an array of Data objects
+      const x = events.x;
+      const nextX = nextEvents.x;
+
+      if (x.length !== nextX.length) {
+        return true;
+      }
+
+      if (x.length > 0 && (x[0].getTime() !== nextX[0].getTime())) {
+        return true;
+      }
+
+      // y is an array of numbers, as strings with a fixed number of decimals
+      const y = events.y;
+      const nextY = nextEvents.y;
+      if (y.length !== nextY.length) {
+        return true;
+      }
+      if (y.length > 0 && (y[0] !== nextY[0])) {
         return true;
       }
     }
