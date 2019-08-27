@@ -37,7 +37,7 @@ export function indexForType(axes, observationType) {
   );
 }
 
-export function combineEventSeries(series, axes, colors, full, legendStrings) {
+export function combineEventSeries(series, colors, full, legendStrings) {
   function getNameForLegend(serie, legendStrings, idx) {
     if (legendStrings && legendStrings.length > idx) {
       if (serie.observation_type.unit) {
@@ -65,12 +65,9 @@ export function combineEventSeries(series, axes, colors, full, legendStrings) {
       }
     };
 
-    const yaxis = indexForType(axes, serie.observation_type);
     const color = getColor(colors, idx);
 
-    if (yaxis > 0) {
-      events.yaxis = "y2";
-    }
+    events.yaxis = ["y1", "y2"][serie.axisId];
 
     if (isRatio) {
       // Bar plot.

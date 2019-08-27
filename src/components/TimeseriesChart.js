@@ -2,13 +2,11 @@ import React, { Component } from "react";
 // import ReactDOM from "react-dom"; re-anbale for Plot hack??
 import { connect } from "react-redux";
 import {
-  addAsset,
   getRasterEvents,
-  getTimeseriesEvents,
-  fetchRaster
+  getTimeseriesEvents
 } from "../actions";
 import { MAX_TIMESERIES_POINTS } from "../config";
-import { getBootstrap, getNow, getCurrentPeriod } from "../reducers";
+import { getNow, getCurrentPeriod } from "../reducers";
 
 import { makeGetter } from "../api_client/index";
 import plotComponentFactory from "react-plotly.js/factory";
@@ -19,98 +17,133 @@ import {
   combineEventSeries
 } from "./TimeseriesChartUtils.js";
 
+const MODE_BAR_BUTTONS_TO_REMOVE = [
+  // Nice to have, always work as expected:
+  ///////////////////////////////////////////////////////////////////////
+  // 'toImage'               /* Download plot as png */,
+  "sendDataToCloud" /* Edit in chart studio */,
+
+  // Mutual exclusive; comment 0 or all 4:
+  ///////////////////////////////////////////////////////////////////////
+  "zoom2d",
+  "pan2d",
+  "select2d",
+  "lasso2d",
+
+  // Mutual exclusive; Comment 0 or both:
+  ///////////////////////////////////////////////////////////////////////
+  "zoomIn2d",
+  "zoomOut2d",
+
+  // Used to reset scaling (=achieved via zoomIn2d/zoomOut2d):
+  ///////////////////////////////////////////////////////////////////////
+  //'resetScale2d',
+
+  // Mutual exclusive; comment 0 or both:
+  ///////////////////////////////////////////////////////////////////////
+  "hoverClosestCartesian" /* Show closest data on hover */,
+  "hoverCompareCartesian" /* Compare data on hover */,
+
+  "toggleSpikelines"
+];
+
 class TimeseriesChartComponent extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      componentHasMountedOnce: false,
-      componentRef: "comp-" + parseInt(Math.random(), 10),
-      combinedEvents: null,
-      modeBarButtonsToRemove: [
-        // Nice to have, always work as expected:
-        ///////////////////////////////////////////////////////////////////////
-        // 'toImage'               /* Download plot as png */,
-        "sendDataToCloud" /* Edit in chart studio */,
-
-        // Mutual exclusive; comment 0 or all 4:
-        ///////////////////////////////////////////////////////////////////////
-        "zoom2d",
-        "pan2d",
-        "select2d",
-        "lasso2d",
-
-        // Mutual exclusive; Comment 0 or both:
-        ///////////////////////////////////////////////////////////////////////
-        "zoomIn2d",
-        "zoomOut2d",
-
-        // Used to reset scaling (=achieved via zoomIn2d/zoomOut2d):
-        ///////////////////////////////////////////////////////////////////////
-        //'resetScale2d',
-
-        // Mutual exclusive; comment 0 or both:
-        ///////////////////////////////////////////////////////////////////////
-        "hoverClosestCartesian" /* Show closest data on hover */,
-        "hoverCompareCartesian" /* Compare data on hover */,
-
-        "toggleSpikelines"
-      ]
-    };
-  }
-
   /////////////////////////////////////////////////////////////////////////////
   // Component - lifecycle functions //////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+    // Initially get the timeseries events
     this.updateTimeseries();
+  }
 
-    const axes = this.getAxesData();
+  componentDidUpdate() {
+    // This is safe because the actions in actions.js check if the
+    // data is still up to date
+    // this.updateTimeseries();
+  }
 
-    const timeseriesEvents = (this.props.tile.timeseries || [])
-      .filter(
-        uuid =>
-          this.props.timeseries[uuid] &&
-          this.props.timeseriesEvents[uuid] &&
-          this.props.timeseriesEvents[uuid].events
-      )
-      .map(uuid => {
-        return {
-          uuid: uuid,
-          observation_type: this.props.timeseries[uuid].observation_type,
-          events: this.props.timeseriesEvents[uuid].events
-        };
-      });
+  shouldComponentUpdate(nextProps) {
+    // Only update if actual data changed for speed, otherwise
+    // React constantly thinks we need updating
+    // Note that the component is only shown if all assets are present,
+    // so we don't have to check that. Alarms we do.
+    const {
+      alarms,
+      now,
+      start,
+      end,
+      plotlyData
+    } = this.props;
+    const nextAlarms = nextProps.alarms;
+    const nextNow = nextProps.now;
+    const nextStart = nextProps.start;
+    const nextEnd = nextProps.end;
+    const nextPlotlyData = nextProps.plotlyData;
 
-    const rasterEvents = (this.props.tile.rasterIntersections || [])
-      .map(intersection => {
-        const raster = this.props.getRaster(intersection.uuid).object;
-        if (!raster) {
-          return null;
+    // The following if statements are split for debugging purposes
+
+    if (alarms !== nextAlarms) {
+      return true;
+    }
+
+    if (now !== nextNow) {
+      return true;
+    }
+
+    if (start !== nextStart) {
+      return true;
+    }
+
+    if (end !== nextEnd) {
+      return true;
+    }
+
+    // Check if plotlyData changed.
+    if (plotlyData.length !== nextPlotlyData.length) {
+      return true;
+    }
+
+    for (let i=0; i < plotlyData.length; i++) {
+      // Assume that if data changes, that the length of the array changes
+      // or x or y value of the first data item.
+      const events = plotlyData[i].events;
+      const nextEvents = nextPlotlyData[i].events;
+
+      if (!events || !nextEvents) {
+        // Update if their boolean value changed
+        if (!!events !== !!nextEvents) {
+          return true;
+        }
+      }
+
+      if (events && nextEvents) {
+        // x is an array of Data objects
+        const x = events.x;
+        const nextX = nextEvents.x;
+
+        if (x.length !== nextX.length) {
+          return true;
         }
 
-        const events = this.getRasterEvents(raster, intersection.geometry);
-        if (!events) return null;
+        if (x.length > 0 && (x[0].getTime() !== nextX[0].getTime())) {
+          return true;
+        }
 
-        return {
-          uuid: intersection.uuid,
-          observation_type: raster.observation_type,
-          events: events
-        };
-      })
-      .filter(e => e !== null); // Remove nulls
+        // y is an array of numbers, as strings with a fixed number of decimals
+        const y = events.y;
+        const nextY = nextEvents.y;
+        if (y.length !== nextY.length) {
+          return true;
+        }
+        if (y.length > 0 && (y[0] !== nextY[0])) {
+          return true;
+        }
+      }
+    }
 
-    const combinedEvents = combineEventSeries(
-      timeseriesEvents.concat(rasterEvents),
-      axes,
-      this.props.tile.colors,
-      this.props.isFull
-    );
-
-    this.setState({
-      combinedEvents
-    });
+    return false;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -118,75 +151,25 @@ class TimeseriesChartComponent extends Component {
   /////////////////////////////////////////////////////////////////////////////
 
   updateTimeseries() {
-    (this.props.tile.timeseries || []).map(uuid =>
+    const {
+      tile,
+      rastersForTile
+    } = this.props;
+
+    (tile.timeseries || []).map(uuid =>
       this.props.getTimeseriesEvents(uuid, this.props.start, this.props.end, {
         minpoints: MAX_TIMESERIES_POINTS
       })
     );
 
-    (this.props.tile.rasterIntersections || []).map(intersection =>
+    (tile.rasterIntersections || []).map(intersection =>
       this.props.getRasterEvents(
-        this.props.getRaster(intersection.uuid).object,
+        rastersForTile[intersection.uuid],
         intersection.geometry,
         this.props.start,
         this.props.end
       )
     );
-  }
-
-  allUuids() {
-    // Return UUIDs of all timeseries plus those of all rasters
-    return (this.props.tile.timeseries || []).concat(
-      (this.props.tile.rasterIntersections || []).map(
-        intersection => intersection.uuid
-      )
-    );
-  }
-
-  observationType(uuid) {
-    if (
-      this.props.tile.timeseries &&
-      this.props.tile.timeseries.indexOf(uuid) !== -1
-    ) {
-      // It's a timeseries.
-      if (this.props.timeseries[uuid]) {
-        return this.props.timeseries[uuid].observation_type;
-      } else {
-        return null;
-      }
-    } else {
-      // It's a raster.
-      const raster = this.props.getRaster(uuid).object;
-      return raster ? raster.observation_type : null;
-    }
-  }
-
-  getAxesData() {
-    const axes = [];
-
-    this.allUuids().forEach(uuid => {
-      const observationType = this.observationType(uuid);
-      if (!observationType) {
-        return null;
-      }
-
-      const axis = indexForType(axes, observationType);
-
-      if (axis === -1) {
-        if (axes.length >= 2) {
-          console.error(
-            "Can't have a third Y axis for timeseries: ",
-            uuid,
-            " have:",
-            axes
-          );
-          return axes;
-        }
-        axes.push(observationType);
-      }
-    });
-
-    return axes;
   }
 
   isRelevantTimeseriesAlarm(alarm) {
@@ -199,14 +182,17 @@ class TimeseriesChartComponent extends Component {
   }
 
   isRelevantRasterAlarm(alarm) {
-    const { tile } = this.props;
+    const {
+      tile,
+      rastersForTile
+    } = this.props;
 
     if (!tile.rasterIntersections) return false;
 
     return (
       !alarm.isTimeseriesAlarm() &&
       tile.rasterIntersections.some(rasterIntersection => {
-        const raster = this.props.getRaster(rasterIntersection.uuid).object;
+        const raster = rastersForTile[rasterIntersection.uuid];
         return (
           raster &&
           alarm.sameIntersection(raster.url, rasterIntersection.geometry)
@@ -215,8 +201,12 @@ class TimeseriesChartComponent extends Component {
     );
   }
 
-  alarmReferenceLines(axes) {
-    const { alarms, isFull } = this.props;
+  alarmReferenceLines() {
+    const {
+      alarms,
+      isFull,
+      observationTypes
+    } = this.props;
 
     if (!alarms.data || !alarms.data.length) {
       return null;
@@ -227,7 +217,7 @@ class TimeseriesChartComponent extends Component {
     const relevantAlarms = alarms.data.filter(
       alarm =>
         this.isRelevantTimeseriesAlarm(alarm) ||
-        this.isRelevantRasterAlarm(alarm)
+             this.isRelevantRasterAlarm(alarm)
     );
 
     const shapes = [];
@@ -253,10 +243,10 @@ class TimeseriesChartComponent extends Component {
         // the same as that of the timeseries, but I think using the timeseries' observation
         // type is more robust as we used those to construct the Y axes.
         const observationType = alarm.isTimeseriesAlarm()
-          ? this.observationType(alarm.timeseries.uuid)
-          : alarm.observation_type;
+                              ? this.observationType(alarm.timeseries.uuid)
+                              : alarm.observation_type;
 
-        const axisIndex = indexForType(axes, observationType);
+        const axisIndex = indexForType(observationTypes, observationType);
 
         if (axisIndex === 0 || axisIndex === 1) {
           shapes.push({
@@ -279,19 +269,6 @@ class TimeseriesChartComponent extends Component {
     });
 
     return { shapes, annotations };
-  }
-
-  getRasterEvents(raster, geometry) {
-    const allEvents = this.props.rasterEvents;
-    const geomKey = `${geometry.coordinates[0]}-${geometry.coordinates[1]}`;
-
-    if (allEvents[raster.uuid] && allEvents[raster.uuid][geomKey]) {
-      const events = allEvents[raster.uuid][geomKey];
-      if (events.start === this.props.start && events.end === this.props.end) {
-        return events.events;
-      }
-    }
-    return null;
   }
 
   getThresholdLine(threshold, yref) {
@@ -325,8 +302,11 @@ class TimeseriesChartComponent extends Component {
     };
   }
 
-  getAnnotationsAndShapes(axes, thresholds) {
-    const { isFull } = this.props;
+  getAnnotationsAndShapes(thresholds) {
+    const {
+      isFull,
+      observationTypes
+    } = this.props;
 
     let annotations = [];
     let shapes = [];
@@ -334,13 +314,14 @@ class TimeseriesChartComponent extends Component {
 
     // Return lines for alarms and for "now".
     const now = new Date(this.props.now).getTime();
-    const alarmReferenceLines = this.alarmReferenceLines(axes);
+    const alarmReferenceLines = this.alarmReferenceLines();
 
     if (thresholds) {
       thresholdLines = thresholds.map(th => {
         // Welke y as?
         let yref;
-        if (axes.length === 2 && axes[1].unit === th.unitReference) {
+        if (observationTypes.length === 2 &&
+            observationTypes[1].unit === th.unitReference) {
           yref = "y2";
         } else {
           yref = "y";
@@ -352,7 +333,8 @@ class TimeseriesChartComponent extends Component {
       thresholdAnnotations = thresholds.map(th => {
         // Welke y as?
         let yref;
-        if (axes.length === 2 && axes[1].unit === th.unitReference) {
+        if (observationTypes.length === 2 &&
+            observationTypes[1].unit === th.unitReference) {
           yref = "y2";
         } else {
           yref = "y";
@@ -406,10 +388,14 @@ class TimeseriesChartComponent extends Component {
     return { annotations, shapes };
   }
 
-  getYAxis(axes, idx) {
-    if (idx >= axes.length) return null;
+  getYAxis(idx) {
+    const {
+      observationTypes
+    } = this.props;
 
-    const observationType = axes[idx];
+    if (idx >= observationTypes.length) return null;
+
+    const observationType = observationTypes[idx];
 
     const isRatio = observationType.scale === "ratio";
 
@@ -433,13 +419,15 @@ class TimeseriesChartComponent extends Component {
     return yaxis;
   }
 
-  getLayout(axes, thresholds = null) {
-    const { width, height, isFull, showAxis } = this.props;
+  getLayout(thresholds = null) {
+    const {
+      width, height, isFull, showAxis, start, end
+    } = this.props;
 
     // We have a bunch of lines with labels, the labels are annotations and
     // the lines are shapes, that's why we have one function to make them.
     // Only full mode shows the labels.
-    const annotationsAndShapes = this.getAnnotationsAndShapes(axes, thresholds);
+    const annotationsAndShapes = this.getAnnotationsAndShapes(thresholds);
 
     let margin = {};
 
@@ -463,11 +451,11 @@ class TimeseriesChartComponent extends Component {
       width: width,
       height: height,
       yaxis: {
-        ...this.getYAxis(axes, 0),
+        ...this.getYAxis(0),
         visible: showAxis
       },
       yaxis2: {
-        ...this.getYAxis(axes, 1),
+        ...this.getYAxis(1),
         visible: showAxis
       },
       showlegend: isFull,
@@ -480,7 +468,7 @@ class TimeseriesChartComponent extends Component {
         visible: showAxis,
         type: "date",
         showgrid: true,
-        range: [this.props.start, this.props.end]
+        range: [start, end]
       },
       shapes: annotationsAndShapes.shapes,
       annotations: isFull ? annotationsAndShapes.annotations : []
@@ -488,85 +476,53 @@ class TimeseriesChartComponent extends Component {
   }
 
   render() {
-    const { tile } = this.props;
+    const {
+      isFull,
+      tile
+    } = this.props;
 
-    const timeseriesEvents = (tile.timeseries || [])
-      .filter(
-        uuid =>
-          this.props.timeseries[uuid] &&
-          this.props.timeseriesEvents[uuid] &&
-          this.props.timeseriesEvents[uuid].events
-      )
-      .map(uuid => {
-        return {
-          uuid: uuid,
-          observation_type: this.props.timeseries[uuid].observation_type,
-          events: this.props.timeseriesEvents[uuid].events
-        };
-      });
-
-    const rasterEvents = (tile.rasterIntersections || [])
-      .map(intersection => {
-        const raster = this.props.getRaster(intersection.uuid).object;
-        if (!raster) {
-          return null;
-        }
-
-        const events = this.getRasterEvents(raster, intersection.geometry);
-        if (!events) return null;
-
-        return {
-          uuid: intersection.uuid,
-          observation_type: raster.observation_type,
-          events: events
-        };
-      })
-      .filter(e => e !== null); // Remove nulls
-
-    const axes = this.getAxesData();
-
-    const combinedEvents = combineEventSeries(
-      timeseriesEvents.concat(rasterEvents),
-      axes,
-      tile.colors,
-      this.props.isFull,
-      tile.legendStrings
-    );
-
-    return this.props.isFull
-      ? this.renderFull(axes, combinedEvents, tile.thresholds)
-      : this.renderTile(axes, combinedEvents);
+    return isFull ?
+           this.renderFull(this.getLayout(tile.thresholds))
+         : this.renderTile(this.getLayout());
   }
 
-  renderFull(axes, combinedEvents, thresholds) {
+  renderFull(plotlyLayout) {
+    const {
+      plotlyData,
+      marginTop,
+      marginLeft,
+      width,
+      height
+    } = this.props;
+
     const Plot = plotComponentFactory(window.Plotly);
-    const layout = this.getLayout(axes, thresholds);
-    const { modeBarButtonsToRemove } = this.state;
 
     return (
       <div
-        id={this.state.componentRef}
-        ref={this.state.componentRef}
         style={{
-          marginTop: this.props.marginTop,
-          marginLeft: this.props.marginLeft,
-          width: this.props.width,
-          height: this.props.height
+          marginTop,
+          marginLeft,
+          width,
+          height
         }}
       >
         <Plot
-          data={combinedEvents}
-          layout={layout}
+          data={plotlyData}
+          layout={plotlyLayout}
           config={{
             displayModeBar: true,
-            modeBarButtonsToRemove
+            modeBarButtonsToRemove: MODE_BAR_BUTTONS_TO_REMOVE
           }}
         />
       </div>
     );
   }
 
-  renderTile(axes, combinedEvents) {
+  renderTile(plotlyLayout) {
+    const {
+      plotlyData
+    } = this.props;
+
     if (!this.props.height || !this.props.width || !window.Plotly) {
       return null;
     }
@@ -574,13 +530,10 @@ class TimeseriesChartComponent extends Component {
     const Plot = plotComponentFactory(window.Plotly);
 
     return (
-      <div
-        id={this.state.componentRef}
-        ref={this.state.componentRef}
-      >
+      <div>
         <Plot
-          data={combinedEvents}
-          layout={this.getLayout(axes)}
+          data={plotlyData}
+          layout={plotlyLayout}
           config={{ displayModeBar: false }}
         />
       </div>
@@ -589,27 +542,109 @@ class TimeseriesChartComponent extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const currentPeriod = getCurrentPeriod(state, ownProps.tile);
+  const {
+    tile,
+    isFull
+  } = ownProps;
+
+  const currentPeriod = getCurrentPeriod(state, tile);
+  const start = currentPeriod.start;
+  const end = currentPeriod.end;
+
+  const rastersForTile = new Map();
+  const observationTypes = [];
+  const timeseriesEvents = [];
+  const rasterEvents = [];
+
+  (tile.timeseries || []).forEach(timeseriesUuid => {
+    const timeseries = state.timeseries[timeseriesUuid];
+    const events = state.timeseriesEvents[timeseriesUuid];
+    const observationType = timeseries.observation_type;
+
+    let axisId = indexForType(observationTypes, observationType);
+
+    if (axisId === -1) {
+      axisId = observationTypes.length;
+      if (axisId >= 2) {
+        // Already full
+        console.error(
+          "Can't have a third Y axis for timeseries",
+          timeseries
+        );
+        return;
+      }
+      observationTypes.push(observationType);
+    }
+
+    if (events && events.events) {
+      timeseriesEvents.push({
+        uuid: timeseriesUuid,
+        axisId: axisId,
+        observation_type: observationType,
+        events: events.events
+      });
+    }
+  });
+
+  const getRaster = makeGetter(state.rasters);
+  (tile.rasterIntersections || []).forEach(intersection => {
+    const raster = getRaster(intersection.uuid).object;
+    rastersForTile[intersection.uuid] = raster;
+    const observationType = raster.observation_type;
+
+    let axisId = indexForType(observationTypes, observationType);
+    if (axisId === -1) {
+      axisId = observationTypes.length;
+      if (axisId >= 2) {
+        // Already full
+        console.error(
+          "Can't have a third Y axis for raster",
+          raster
+        );
+        return;
+      }
+      observationTypes.push(observationType);
+    }
+
+    const allEvents = state.rasterEvents;
+    const geometry = intersection.geometry;
+    const geomKey = `${geometry.coordinates[0]}-${geometry.coordinates[1]}`;
+
+    if (allEvents[raster.uuid] && allEvents[raster.uuid][geomKey]) {
+      const events = allEvents[raster.uuid][geomKey];
+      if (events.start === start && events.end === end && events.events) {
+        rasterEvents.push({
+          uuid: raster.uuid,
+          axisId: axisId,
+          observation_type: observationType,
+          events: events.events
+        });
+      }
+    }
+  });
+
+  const plotlyData = combineEventSeries(
+    timeseriesEvents.concat(rasterEvents),
+    tile.colors,
+    isFull,
+    tile.legendStrings
+  );
 
   return {
-    measuringstations: state.assets.measuringstation || {},
-    getRaster: makeGetter(state.rasters),
-    timeseries: state.timeseries,
-    rasterEvents: state.rasterEvents,
-    timeseriesEvents: state.timeseriesEvents,
+    rastersForTile,
+    observationTypes,
+    timeseriesEvents,
+    rasterEvents,
     alarms: state.alarms,
-    now: getNow(state, ownProps.tile),
-    start: currentPeriod.start,
-    end: currentPeriod.end,
-    bootstrap: getBootstrap(state)
+    now: getNow(state, tile),
+    start,
+    end,
+    plotlyData
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addAsset: (assetType, id, instance) =>
-      dispatch(addAsset(assetType, id, instance)),
-    fetchRaster: uuid => fetchRaster(dispatch, uuid),
     getTimeseriesEvents: (uuid, start, end) =>
       dispatch(getTimeseriesEvents(uuid, start, end)),
     getRasterEvents: (raster, geometry, start, end) =>
