@@ -569,6 +569,7 @@ function mapStateToProps(state, ownProps) {
       timeseriesEvents.push({
         uuid: timeseriesUuid,
         axisId: axisId,
+        observation_type: observationType,
         events: events.events
       });
     }
@@ -604,6 +605,7 @@ function mapStateToProps(state, ownProps) {
         rasterEvents.push({
           uuid: raster.uuid,
           axisId: axisId,
+          observation_type: observationType,
           events: events.events
         });
       }
