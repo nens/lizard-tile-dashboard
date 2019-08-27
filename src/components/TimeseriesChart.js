@@ -76,18 +76,27 @@ class TimeseriesChartComponent extends Component {
       end,
       plotlyData
     } = this.props;
-    const {
-      nextAlarms,
-      nextNow,
-      nextStart,
-      nextEnd,
-      nextPlotlyData
-    } = nextProps;
+    const nextAlarms = nextProps.alarms;
+    const nextNow = nextProps.now;
+    const nextStart = nextProps.start;
+    const nextEnd = nextProps.end;
+    const nextPlotlyData = nextProps.plotlyData;
 
-    console.log('shouldComponentUpdate tile #', this.props.tile.id);
+    // The following if statements are split for debugging purposes
 
-    if (alarms !== nextAlarms || now !== nextNow || start !== nextStart ||
-        end !== nextEnd) {
+    if (alarms !== nextAlarms) {
+      return true;
+    }
+
+    if (now !== nextNow) {
+      return true;
+    }
+
+    if (start !== nextStart) {
+      return true;
+    }
+
+    if (end !== nextEnd) {
       return true;
     }
 
@@ -109,26 +118,28 @@ class TimeseriesChartComponent extends Component {
         }
       }
 
-      // x is an array of Data objects
-      const x = events.x;
-      const nextX = nextEvents.x;
+      if (events && nextEvents) {
+        // x is an array of Data objects
+        const x = events.x;
+        const nextX = nextEvents.x;
 
-      if (x.length !== nextX.length) {
-        return true;
-      }
+        if (x.length !== nextX.length) {
+          return true;
+        }
 
-      if (x.length > 0 && (x[0].getTime() !== nextX[0].getTime())) {
-        return true;
-      }
+        if (x.length > 0 && (x[0].getTime() !== nextX[0].getTime())) {
+          return true;
+        }
 
-      // y is an array of numbers, as strings with a fixed number of decimals
-      const y = events.y;
-      const nextY = nextEvents.y;
-      if (y.length !== nextY.length) {
-        return true;
-      }
-      if (y.length > 0 && (y[0] !== nextY[0])) {
-        return true;
+        // y is an array of numbers, as strings with a fixed number of decimals
+        const y = events.y;
+        const nextY = nextEvents.y;
+        if (y.length !== nextY.length) {
+          return true;
+        }
+        if (y.length > 0 && (y[0] !== nextY[0])) {
+          return true;
+        }
       }
     }
 
