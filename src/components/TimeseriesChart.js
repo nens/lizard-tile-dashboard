@@ -525,17 +525,25 @@ function mapStateToProps(state, ownProps) {
     const events = state.timeseriesEvents[timeseriesUuid];
     const observationType = timeseries.observation_type;
 
-    if (indexForType(observationTypes, observationType) === -1) {
+    let axisId = indexForType(observationTypes, observationType);
+
+    if (axisId === -1) {
+      axisId = observationTypes.length;
+      if (axisId >== 2) {
+        // Already full
+        console.error(
+          "Can't have a third Y axis for raster",
+          raster
+        );
+        return;
+      }
       observationTypes.push(observationType);
     }
 
     if (events && events.events) {
       timeseriesEvents.push({
         uuid: timeseriesUuid,
-        // XXX It is unnecessary that we use this to find the axis index
-        // later even though we already know what it is based on the
-        // lines above
-        observation_type: observationType,
+        axisId: axisId,
         events: events.events
       });
     }
@@ -547,7 +555,17 @@ function mapStateToProps(state, ownProps) {
     rastersForTile[intersection.uuid] = raster;
     const observationType = raster.observation_type;
 
-    if (indexForType(observationTypes, observationType) === -1) {
+    let axisId = indexForType(observationTypes, observationType);
+    if (axisId === -1) {
+      axisId = observationTypes.length;
+      if (axisId >== 2) {
+        // Already full
+        console.error(
+          "Can't have a third Y axis for raster",
+          raster
+        );
+        return;
+      }
       observationTypes.push(observationType);
     }
 
@@ -560,24 +578,15 @@ function mapStateToProps(state, ownProps) {
       if (events.start === start && events.end === end && events.events) {
         rasterEvents.push({
           uuid: raster.uuid,
-          observation_type: observationType,
+          axisId: axisId,
           events: events.events
         });
       }
     }
   });
 
-  if (observationTypes.length > 2) {
-    console.error(
-      "Can't have a third Y axis for timeseries",
-      observationTypes
-    );
-    observationTypes.splice(2);
-  }
-
   const plotlyData = combineEventSeries(
     timeseriesEvents.concat(rasterEvents),
-    observationTypes,
     tile.colors,
     isFull,
     tile.legendStrings
