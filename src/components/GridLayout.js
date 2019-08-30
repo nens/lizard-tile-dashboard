@@ -87,7 +87,7 @@ class GridLayout extends Component {
       this
     );
   }
-  
+
   componentDidMount() {
     window.addEventListener("resize", this.handleUpdateDimensions, false);
     document.addEventListener("keydown", this.handleKeyPress, false);
@@ -435,7 +435,6 @@ class GridLayout extends Component {
                   <Image
                     src={logo_Lizard}
                     className={styles.logo}
-                    responsive
                     title="Lizard"
                     style={{ margin: "auto" }}
                   />

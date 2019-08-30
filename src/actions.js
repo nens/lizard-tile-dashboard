@@ -244,21 +244,26 @@ export function getTimeseriesEvents(uuid, start, end, params) {
 
     if (events && events.start === start && events.end === end) {
       return; // Up to date.
-    } else if (!events || !events.isFetching) {
-      // Fetch it
-      dispatch(fetchTimeseriesEventsAction(uuid, start, end));
-
-      getTimeseries(uuid, start, end, params).then(results => {
-        if (results && results.length === 1) {
-          const result = results[0];
-
-          // Events
-          dispatch(
-            receiveTimeseriesEventsAction(uuid, start, end, result.events)
-          );
-        }
-      });
     }
+
+    if (events && events.isFetching) {
+      // Already fetching
+      return;
+    }
+
+    // Fetch it
+    dispatch(fetchTimeseriesEventsAction(uuid, start, end));
+
+    getTimeseries(uuid, start, end, params).then(results => {
+      if (results && results.length === 1) {
+        const result = results[0];
+
+        // Events
+        dispatch(
+          receiveTimeseriesEventsAction(uuid, start, end, result.events)
+        );
+      }
+    });
   };
 }
 
@@ -287,33 +292,38 @@ export function getRasterEvents(raster, geometry, start, end) {
     if (events && events.start === start && events.end === end) {
       // Up to date.
       return;
-    } else if (!events || !events.isFetching) {
-      // Fetch it.
-      dispatch(fetchRasterEventsAction(raster.uuid, geomKey, start, end));
-
-      raster.getDataAtPoint(geometry, start, end).then(results => {
-        let data;
-
-        if (results && results.data) {
-          // Rewrite to a format compatible with normal timeseries.
-          data = results.data.map(event => {
-            return {
-              timestamp: event[0],
-              sum: event[1],
-              max: event[1]
-            };
-          });
-        } else {
-          // No data returned, treat as if an empty array was returned.
-          // Happens e.g. when there is no data during the selected time period.
-          data = [];
-        }
-
-        dispatch(
-          receiveRasterEventsAction(raster.uuid, geomKey, start, end, data)
-        );
-      });
     }
+
+    if (events && events.isFetching) {
+      // Already fetching
+      return;
+    }
+
+    // Fetch it.
+    dispatch(fetchRasterEventsAction(raster.uuid, geomKey, start, end));
+
+    raster.getDataAtPoint(geometry, start, end).then(results => {
+      let data;
+
+      if (results && results.data) {
+        // Rewrite to a format compatible with normal timeseries.
+        data = results.data.map(event => {
+          return {
+            timestamp: event[0],
+            sum: event[1],
+            max: event[1]
+          };
+        });
+      } else {
+        // No data returned, treat as if an empty array was returned.
+        // Happens e.g. when there is no data during the selected time period.
+        data = [];
+      }
+
+      dispatch(
+        receiveRasterEventsAction(raster.uuid, geomKey, start, end, data)
+      );
+    });
   };
 }
 

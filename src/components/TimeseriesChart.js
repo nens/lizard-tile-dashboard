@@ -74,15 +74,25 @@ class TimeseriesChartComponent extends Component {
       now,
       start,
       end,
-      plotlyData
+      plotlyData,
+      isFull,
+      height,
+      width
     } = this.props;
     const nextAlarms = nextProps.alarms;
     const nextNow = nextProps.now;
     const nextStart = nextProps.start;
     const nextEnd = nextProps.end;
     const nextPlotlyData = nextProps.plotlyData;
+    const nextIsFull = nextProps.isFull;
+    const nextHeight = nextProps.height;
+    const nextWidth = nextProps.width;
 
     // The following if statements are split for debugging purposes
+
+    if (isFull !== nextIsFull || height !== nextHeight || width !== nextWidth) {
+      return true;
+    }
 
     if (alarms !== nextAlarms) {
       return true;
