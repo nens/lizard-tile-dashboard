@@ -145,150 +145,72 @@ class GridLayout extends Component {
       );
     }
   }
+  checkRadioButtonMapSelection(mapBackground) {
+    if (mapBackground.description === this.props.currentMapBackground.description) return true;
+  }
   getLayout() {
     return this.state.width < 700 ? this.state.mobileLayout : this.state.layout;
   }
   render() {
-    const { width, height, canMove, settingsMenu, settingsMenuId } = this.state;
+    const { width, height, canMove, settingsMenu } = this.state;
 
     const { tiles, history, title, logoPath } = this.props;
 
     const mapBackgrounds = this.props.availableMapBackgrounds;
 
-    const nensMail = () => unescape("servicedesk%40nelen%2Dschuurmans%2Enl");
-
     if (settingsMenu) {
       return (
         <DocumentTitle title={title + " | Settings"}>
           <div className={styles.SettingsMenu} style={{ height: height }}>
-            <img
-              src={logoPath}
-              alt="Rijkswaterstaat logo"
-              className={styles.HeaderImage}
-            />
             <div
-              className={styles.CloseSettings}
               onClick={() => this.setState({ settingsMenu: false })}
+              className={styles.SettingsMenuBackButton}
             >
-              <i className="material-icons">close</i>
+              <i className="material-icons">keyboard_backspace</i>
             </div>
-
-            <div className={styles.SettingsInner}>
-              <nav style={{ height: height - 100 }}>
-                <div
-                  onClick={() =>
-                    this.setState({
-                      settingsMenuId: 0
-                    })}
-                >
-                  <i className="material-icons">access_time</i>
-                  <span
-                    className={`${settingsMenuId === 0
-                      ? styles.ActiveMenu
-                      : null}`}
-                  >
-                    Date/Time settings
-                  </span>
+            <h1>Peilbeheer instellingen</h1>
+            <div className={styles.SettingsMenuMain}>
+              <div className={styles.DateTimeSettings}>
+                <h2>Datum en tijdsinstellingen</h2>
+                <div className={styles.DateTimePicker}>
+                  <input
+                    type="date"
+                    name="date"
+                    value={this.props.date}
+                    onChange={event => this.props.changeDate(event.target.value)}
+                  />
+                  &nbsp;&nbsp;
+                  <input
+                    type="time"
+                    name="time"
+                    value={this.props.time}
+                    onChange={event => this.props.changeTime(event.target.value)}
+                  />
                 </div>
-
-                <div
-                  onClick={() =>
-                    this.setState({
-                      settingsMenuId: 1
-                    })}
-                >
-                  <i className="material-icons">layers</i>
-                  <span
-                    className={`${settingsMenuId === 1
-                      ? styles.ActiveMenu
-                      : null}`}
-                  >
-                    Background layers
-                  </span>
-                </div>
-
-                <div
-                  className={styles.ContactInfoLogoParent}
-                  onClick={() =>
-                    this.setState({
-                      settingsMenuId: 2
-                    })}
-                >
-                  <i className={styles.ContactInfoLogo}>&copy;</i>
-                  <span
-                    className={`${settingsMenuId === 2
-                      ? styles.ActiveMenu
-                      : null}`}
-                  >
-                    Contact
-                  </span>
-                </div>
-              </nav>
-              <main style={{ height: height - 100 }}>
-                {settingsMenuId === 0 ? (
-                  <div>
-                    <h4 style={{ padding: 0, margin: 0 }}>
-                      Date/time settings &nbsp;
-                      <button onClick={this.props.resetDateTime}>Reset</button>
-                    </h4>
-                    <hr />
-                    <div className={styles.DateTimePicker}>
-                      <div>
-                        <h5>Date (e.g. "23/12/2018")</h5>
-                        <input
-                          type="date"
-                          name="date"
-                          value={this.props.date}
-                          onChange={event =>
-                            this.props.changeDate(event.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <h5>Time (e.g. "09:15 AM")</h5>
-                        <input
-                          type="time"
-                          name="time"
-                          value={this.props.time}
-                          onChange={event =>
-                            this.props.changeTime(event.target.value)}
-                        />
-                      </div>
+              </div>
+              <div className={styles.MapSettings}>
+                <h2>Achtergrond</h2>
+                <div className={styles.MapStyleSelection}>
+                  {mapBackgrounds.map(mapBackground =>
+                    <div key={mapBackground.description}>
+                      <input
+                        type="radio"
+                        name="map"
+                        id={mapBackground.description}
+                        onChange={() => this.props.setMapBackground(mapBackground)}
+                        checked={this.checkRadioButtonMapSelection(mapBackground)}
+                      />
+                      <label htmlFor={mapBackground.description}>{mapBackground.description}</label>
                     </div>
-                  </div>
-                ) : null}
-                {settingsMenuId === 1 ? (
-                  <div>
-                    <h4 style={{ padding: 0, margin: 0 }}>Map settings</h4>
-                    <hr />
-                    <div className={styles.MapSettings}>
-                      <p>{this.getMapBackgroundsDescription()}</p>
-                      <p>
-                        Currently selected:&nbsp;
-                        <strong>
-                          {this.props.currentMapBackground.description}
-                        </strong>.
-                      </p>
-                      <button
-                        onClick={this.toggleMapBackground.bind(this)}
-                        disabled={mapBackgrounds.length < 2}
-                      >
-                        Switch
-                      </button>
-                    </div>
-                  </div>
-                ) : null}
-
-                {settingsMenuId === 2 ? (
-                  <div>
-                    <h4 style={{ padding: 0, margin: 0 }}>Contact info</h4>
-                    <hr />
-                    <p>
-                      For software issues with the dashboard please contact
-                      Nelen & Schuurmans on {nensMail()}.
-                    </p>
-                  </div>
-                ) : null}
-              </main>
+                  )}
+                </div>
+                <button
+                  className={styles.SettingsMenuSaveButton}
+                  onClick={() => this.setState({ settingsMenu: false })}
+                >
+                  Alles Opslaan
+                </button>
+              </div>
             </div>
           </div>
         </DocumentTitle>
