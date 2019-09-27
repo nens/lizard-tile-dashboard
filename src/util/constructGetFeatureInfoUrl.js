@@ -6,7 +6,7 @@ export default function constructGetFeatureInfoUrl(mapLayer, mapRef, latlng) {
   // therefore we prepend /proxy/ to the url so it will be send to lizard and lizard will know that it should proxy it
   const layerUrl = '/proxy/'+ mapLayer.url;
   const layerName = mapLayer.name;
-  const srs = mapLayer.srs;
+  // const srs = mapLayer.srs; // for now hardcode EPSG:4326 as the value of srs
   const size = mapRef.getSize();
   const bbox = mapRef.getBounds().toBBoxString();
   const point = mapRef.latLngToContainerPoint(latlng, mapRef.getZoom());

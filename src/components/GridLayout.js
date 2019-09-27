@@ -41,11 +41,11 @@ class GridLayout extends Component {
 
     const { columnCount } = props;
     let layout;
-    if (this.props.gridSizeIsConfigurablePerTile == true) {
+    if (this.props.gridSizeIsConfigurablePerTile === true) {
       // use layout as configured on tile in client_configuaration json
       layout = this.props.tiles.map((tile) => tile.sizeAndLocationInGrid);
     }
-      else {
+    else {
       layout = this.props.tiles.map((tile, i) => {
         const W = Math.floor(12 / columnCount);
         const H = 8;
@@ -394,21 +394,19 @@ class GridLayout extends Component {
               </div>
             ) : null}
 
-            {!this.props.session.bootstrap.configuration.isPublic ? (
-              <div
-                className={styles.LogoutButton}
-                onClick={() => this.props.session.bootstrap.doLogout()}
-              >
-                {width > 700 ? (
-                  <span>
-                    <i className="material-icons">lock</i>&nbsp;&nbsp;Log out
+            <a
+              className={styles.BackButton}
+              href="/dashboards"
+            >
+              {width > 700 ? (
+                <span>
+                  <i className="material-icons">arrow_back</i>&nbsp;&nbsp;Back to overview
                   </span>
-                ) : (
-                  <i className="material-icons">lock</i>
+              ) : (
+                  <i className="material-icons">arrow_back</i>
                 )}
-                <Ink />
-              </div>
-            ) : null}
+              <Ink />
+            </a>
           </div>
 
           <ReactGridLayout
