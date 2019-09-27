@@ -10,14 +10,11 @@
   flex-direction: column;
   
 }
-.Tile:hover div {
-  font-weight: 500;
-}
 
 .TileTitle {
   width: 100%;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 10px;
   padding-bottom: 0px;
   /* height: 8%; */
   flex-basis: 8%;
