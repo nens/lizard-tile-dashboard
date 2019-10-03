@@ -218,6 +218,7 @@ class GridLayout extends Component {
     }
 
     const tileComponents = tiles.map(tile => {
+      console.log('whole layout updated _ _ - _ ');
       const shortTitle = tile.shortTitle || tile.title;
       if (tile.imageUrl) {
         return (

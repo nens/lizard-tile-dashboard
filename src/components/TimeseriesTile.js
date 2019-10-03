@@ -44,24 +44,44 @@ class TimeseriesTileComponent extends Component {
   }
 
   render() {
+    if (this.props.tile.id===6) {
+      console.log('timeseries tile with id 6 rendered');
+    }
+
     let { width, height } = this.props;
 
     if (!width && !height) {
+      if (this.props.tile.id===6) {
+        console.log('widht height not set');
+      }
       if (this.props.isFull) {
         width = window.innerWidth;
         height = window.innerHeight;
+        if (this.props.tile.id===6) {
+          console.log('this.props.isFull');
+        }
       } else if (this.theDiv) {
         width = this.theDiv.clientWidth;
         height = this.theDiv.clientHeight;
+        if (this.props.tile.id===6) {
+          console.log('the div');
+        }
       }
+    }
+    if (this.props.tile.id===6) {
+      console.log('the div2', this.theDiv);
     }
 
     if (this.allAssetsPresent()) {
+      
       const newProps = {
         ...this.props,
         width: width - (this.props.marginLeft? this.props.marginLeft: 0) ,
         height: height - (this.props.marginTop? this.props.marginTop: 0)
       };
+      if (this.props.tile.id===6) {
+        console.log('timeseries tile with id 6 rendered Also all assets present', newProps, width, height);
+      }
 
       return (
         <div

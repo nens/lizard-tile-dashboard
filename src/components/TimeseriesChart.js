@@ -65,6 +65,9 @@ class TimeseriesChartComponent extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    if (this.props.tile.id === 6) {
+      console.log('should component update runs for tile 6');
+    }
     // Only update if actual data changed for speed, otherwise
     // React constantly thinks we need updating
     // Note that the component is only shown if all assets are present,
@@ -118,6 +121,7 @@ class TimeseriesChartComponent extends Component {
     for (let i=0; i < plotlyData.length; i++) {
       // Assume that if data changes, that the length of the array changes
       // or x or y value of the first data item.
+      console.log('plotlyData[i]plotlyData[i]', this.props.tile.id,  plotlyData[i], nextPlotlyData[i]);
       const events = plotlyData[i];
       const nextEvents = nextPlotlyData[i];
       if (!events || !nextEvents) {
