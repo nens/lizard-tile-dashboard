@@ -118,9 +118,8 @@ class TimeseriesChartComponent extends Component {
     for (let i=0; i < plotlyData.length; i++) {
       // Assume that if data changes, that the length of the array changes
       // or x or y value of the first data item.
-      const events = plotlyData[i].events;
-      const nextEvents = nextPlotlyData[i].events;
-
+      const events = plotlyData[i];
+      const nextEvents = nextPlotlyData[i];
       if (!events || !nextEvents) {
         // Update if their boolean value changed
         if (!!events !== !!nextEvents) {
