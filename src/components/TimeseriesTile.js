@@ -25,6 +25,14 @@ class TimeseriesTileComponent extends Component {
       );
     });
   }
+  // Fix for tile not being updated when switching between tiles after a F5
+  componentWillUpdate(nextProps) {
+    if (nextProps.tile.title !== this.props.tile.title) {
+      (nextProps.tile.timeseries || []).map(
+        nextProps.getTimeseriesMetadataAction
+      );
+    };
+  }
 
   timeseries() {
     return this.props.tile.timeseries || [];
