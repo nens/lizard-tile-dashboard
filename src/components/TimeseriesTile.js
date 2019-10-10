@@ -13,45 +13,39 @@ import { getTimeseriesMetadataAction, fetchRaster } from "../actions";
 
 class TimeseriesTileComponent extends Component {
   state = {
-    width: null,
-    height: null
+    width: 0,
+    height: 0,
+    fetch: false,
   }
 
-  // componentDidMount() {
-  //   if (this.props.isFull) {
+  componentDidMount() {
+    if (this.props.isFull) {
+      this.setState({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    } else if (this.theDiv) {
+      this.setState({
+        width: this.theDiv.clientWidth,
+        height: this.theDiv.clientHeight,
+        // fetch: true
+      })
+    };
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { fetch } = this.state;
+
+  //   if (this.theDiv && !fetch && prevState.width !== this.theDiv.clientWidth) {
   //     this.setState({
-  //       width: window.innerWidth,
-  //       height: window.innerHeight
-  //     })
-  //   }
-  //   if (!this.props.isFull && this.theDiv) {
-  //     this.setState({
+  //       fetch: true,
   //       width: this.theDiv.clientWidth,
   //       height: this.theDiv.clientHeight
   //     })
-  //   }
-  // }
-
-  // shouldComponentUpdate(nextState) {
-  //   const { width, height } = this.state;
-
-  //   if (width !== nextState.width) return true;
-  //   if (height !== nextState.height) return true;
+  //   };
   // }
 
   componentWillMount() {
-    // if (this.props.isFull) {
-    //   this.setState({
-    //     width: window.innerWidth,
-    //     height: window.innerHeight
-    //   })
-    // }
-    // if (!this.props.isFull && this.theDiv) {
-    //   this.setState({
-    //     width: this.theDiv.clientWidth,
-    //     height: this.theDiv.clientHeight
-    //   })
-    // }
     (this.props.tile.timeseries || []).map(
       this.props.getTimeseriesMetadataAction
     );
@@ -66,7 +60,13 @@ class TimeseriesTileComponent extends Component {
   }
   // Fix for tile not being updated when switching between tiles after a F5
   componentWillUpdate(nextProps) {
-    
+    if (!this.props.isFull && this.theDiv && !this.state.fetch && this.state.width !== this.theDiv.clientWidth) {
+      this.setState({
+        fetch: true,
+        width: this.theDiv.clientWidth,
+        height: this.theDiv.clientHeight
+      });
+    };
     if (nextProps.tile.title !== this.props.tile.title) {
       (nextProps.tile.timeseries || []).map(
         nextProps.getTimeseriesMetadataAction
@@ -93,42 +93,6 @@ class TimeseriesTileComponent extends Component {
 
   render() {
     const { width, height } = this.state;
-
-    console.log(width, height)
-    // console.log(this.theDiv)
-
-    // if (this.props.tile.id === 27) {
-    //   console.log(this)
-    //   console.log(this.theDiv)
-    // }
-
-    if (!width && !height) {
-      if (this.props.isFull) {
-        this.setState({
-          width: window.innerWidth,
-          height: window.innerHeight
-        })
-      } 
-      if (!this.props.isFull && this.theDiv) {
-        this.setState({
-          width: this.theDiv.clientWidth,
-          height: this.theDiv.clientHeight
-        })
-      }
-    }
-
-    // console.log(width, height)
-
-    // if (this.props.tile.id === 27) {
-    //   console.log(this)
-    //   console.log(this.theDiv)
-    //   setTimeout(() => {
-    //     console.log(this.theDiv && this.theDiv.clientHeight)
-    //   }, 100)
-    //   // console.log(JSON.stringify(this.theDiv))
-    //   // console.log(this.theDiv && this.theDiv.clientWidth, this.theDiv && this.theDiv.clientHeight)
-    //   // console.log('width height: ', width, height)
-    // }
 
     if (this.allAssetsPresent()) {
       const newProps = {
