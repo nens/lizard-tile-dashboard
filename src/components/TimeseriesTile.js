@@ -12,6 +12,8 @@ import { getTimeseriesMetadataAction, fetchRaster } from "../actions";
 // This is a fix for various "do-this-async-first-then-that-async" issues.
 
 class TimeseriesTileComponent extends Component {
+  // Add state in TimeseriesTileComponent and use lifecycle methods 
+  // (componentDidMount and componentWillUpdate) to update tile size
   state = {
     width: 0,
     height: 0,
