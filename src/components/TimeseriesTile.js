@@ -28,22 +28,10 @@ class TimeseriesTileComponent extends Component {
       this.setState({
         width: this.theDiv.clientWidth,
         height: this.theDiv.clientHeight,
-        // fetch: true
+        fetch: true
       })
     };
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   const { fetch } = this.state;
-
-  //   if (this.theDiv && !fetch && prevState.width !== this.theDiv.clientWidth) {
-  //     this.setState({
-  //       fetch: true,
-  //       width: this.theDiv.clientWidth,
-  //       height: this.theDiv.clientHeight
-  //     })
-  //   };
-  // }
 
   componentWillMount() {
     (this.props.tile.timeseries || []).map(
@@ -60,7 +48,7 @@ class TimeseriesTileComponent extends Component {
   }
   // Fix for tile not being updated when switching between tiles after a F5
   componentWillUpdate(nextProps) {
-    if (!this.props.isFull && this.theDiv && !this.state.fetch && this.state.width !== this.theDiv.clientWidth) {
+    if (!this.props.isFull && !this.state.fetch && this.theDiv && this.state.width !== this.theDiv.clientWidth) {
       this.setState({
         fetch: true,
         width: this.theDiv.clientWidth,
