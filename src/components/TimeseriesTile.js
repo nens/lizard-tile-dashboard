@@ -21,17 +21,18 @@ class TimeseriesTileComponent extends Component {
   }
 
   componentDidMount() {
+    console.log('componentDidMount', this.props.tile.id);
     if (this.props.isFull) {
       this.setState({
         width: window.innerWidth,
         height: window.innerHeight
       })
     } else if (this.theDiv) {
-      this.setState({
-        width: this.theDiv.clientWidth,
-        height: this.theDiv.clientHeight,
-        fetch: true
-      })
+      // this.setState({
+      //   width: this.theDiv.clientWidth,
+      //   height: this.theDiv.clientHeight,
+      //   fetch: true
+      // })
     };
   }
 
@@ -50,18 +51,37 @@ class TimeseriesTileComponent extends Component {
   }
   // Fix for tile not being updated when switching between tiles after a F5
   componentWillUpdate(nextProps) {
+    console.log('componentWillUpdate', this.props.tile.id);
     if (!this.props.isFull && !this.state.fetch && this.theDiv && this.state.width !== this.theDiv.clientWidth) {
-      this.setState({
-        fetch: true,
-        width: this.theDiv.clientWidth,
-        height: this.theDiv.clientHeight
-      });
+      // this.setState({
+      //   fetch: true,
+      //   width: this.theDiv.clientWidth,
+      //   height: this.theDiv.clientHeight
+      // });
     };
     if (nextProps.tile.title !== this.props.tile.title) {
       (nextProps.tile.timeseries || []).map(
         nextProps.getTimeseriesMetadataAction
       );
     };
+  }
+
+  refCallback (theDiv) {
+    console.log('refcallback', this.props.tile.id , theDiv);
+    if (this.props.tile.id === 6) {
+      console.log('refcallback 6', theDiv);
+    }
+    if (this.props.tile.id === 15) {
+      console.log('refcallback 15', theDiv);
+    }
+    if (!this.props.isFull && !this.state.fetch && theDiv && this.state.width !== this.theDiv.clientWidth) {
+      this.setState({
+        fetch: true,
+        width: this.theDiv.clientWidth,
+        height: this.theDiv.clientHeight
+      });
+    };
+    
   }
 
   timeseries() {
@@ -93,7 +113,11 @@ class TimeseriesTileComponent extends Component {
 
       return (
         <div
-          ref={theDiv => (this.theDiv = theDiv)}
+          ref={theDiv => {
+            (this.theDiv = theDiv);
+            this.refCallback(theDiv);
+          
+          }}
           style={{
             width: "100%",
             height: "100%"
