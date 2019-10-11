@@ -17,20 +17,24 @@ class TimeseriesTileComponent extends Component {
   state = {
     width: 0,
     height: 0,
-    fetch: false,
+    tileSizeIsAvailable: false,
+    // Boolean value to check if the height and width of the tile
+    // have been defined. If not, then set the height and width in
+    // componentWillUpdate with the values coming from theDiv ref
   }
 
   componentDidMount() {
     if (this.props.isFull) {
       this.setState({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
+        tileSizeIsAvailable: true
       })
     } else if (this.theDiv) {
       this.setState({
         width: this.theDiv.clientWidth,
         height: this.theDiv.clientHeight,
-        fetch: true
+        tileSizeIsAvailable: true
       })
     };
   }
@@ -50,9 +54,9 @@ class TimeseriesTileComponent extends Component {
   }
   // Fix for tile not being updated when switching between tiles after a F5
   componentWillUpdate(nextProps) {
-    if (!this.props.isFull && !this.state.fetch && this.theDiv && this.state.width !== this.theDiv.clientWidth) {
+    if (!this.props.isFull && !this.state.tileSizeIsAvailable && this.theDiv && this.state.width !== this.theDiv.clientWidth) {
       this.setState({
-        fetch: true,
+        tileSizeIsAvailable: true,
         width: this.theDiv.clientWidth,
         height: this.theDiv.clientHeight
       });
