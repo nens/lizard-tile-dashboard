@@ -12,6 +12,33 @@ import { getTimeseriesMetadataAction, fetchRaster } from "../actions";
 // This is a fix for various "do-this-async-first-then-that-async" issues.
 
 class TimeseriesTileComponent extends Component {
+  // Add state in TimeseriesTileComponent and use lifecycle methods 
+  // (componentDidMount and componentWillUpdate) to update tile size
+  state = {
+    width: 0,
+    height: 0,
+    tileSizeIsAvailable: false,
+    // Boolean value to check if the height and width of the tile
+    // have been defined. If not, then set the height and width in
+    // componentWillUpdate with the values coming from theDiv ref
+  }
+
+  componentDidMount() {
+    if (this.props.isFull) {
+      this.setState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        tileSizeIsAvailable: true
+      })
+    } else if (this.theDiv) {
+      this.setState({
+        width: this.theDiv.clientWidth,
+        height: this.theDiv.clientHeight,
+        tileSizeIsAvailable: true
+      })
+    };
+  }
+
   componentWillMount() {
     (this.props.tile.timeseries || []).map(
       this.props.getTimeseriesMetadataAction
@@ -25,8 +52,17 @@ class TimeseriesTileComponent extends Component {
       );
     });
   }
-  // Fix for tile not being updated when switching between tiles after a F5
+  
   componentWillUpdate(nextProps) {
+    // Fix for tile not being visible after clicking on Go Back from the full view
+    if (!this.props.isFull && !this.state.tileSizeIsAvailable && this.theDiv && this.state.width !== this.theDiv.clientWidth) {
+      this.setState({
+        tileSizeIsAvailable: true,
+        width: this.theDiv.clientWidth,
+        height: this.theDiv.clientHeight
+      });
+    };
+    // Fix for tile not being updated when switching between tiles after a F5
     if (nextProps.tile.title !== this.props.tile.title) {
       (nextProps.tile.timeseries || []).map(
         nextProps.getTimeseriesMetadataAction
@@ -52,17 +88,7 @@ class TimeseriesTileComponent extends Component {
   }
 
   render() {
-    let { width, height } = this.props;
-
-    if (!width && !height) {
-      if (this.props.isFull) {
-        width = window.innerWidth;
-        height = window.innerHeight;
-      } else if (this.theDiv) {
-        width = this.theDiv.clientWidth;
-        height = this.theDiv.clientHeight;
-      }
-    }
+    const { width, height } = this.state;
 
     if (this.allAssetsPresent()) {
       const newProps = {
