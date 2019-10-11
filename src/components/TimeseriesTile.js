@@ -52,8 +52,9 @@ class TimeseriesTileComponent extends Component {
       );
     });
   }
-  // Fix for tile not being updated when switching between tiles after a F5
+  
   componentWillUpdate(nextProps) {
+    // Fix for tile not being visible after clicking on Go Back from the full view
     if (!this.props.isFull && !this.state.tileSizeIsAvailable && this.theDiv && this.state.width !== this.theDiv.clientWidth) {
       this.setState({
         tileSizeIsAvailable: true,
@@ -61,6 +62,7 @@ class TimeseriesTileComponent extends Component {
         height: this.theDiv.clientHeight
       });
     };
+    // Fix for tile not being updated when switching between tiles after a F5
     if (nextProps.tile.title !== this.props.tile.title) {
       (nextProps.tile.timeseries || []).map(
         nextProps.getTimeseriesMetadataAction
