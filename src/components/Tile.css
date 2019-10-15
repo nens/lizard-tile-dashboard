@@ -27,8 +27,6 @@
   flex-direction: column;
   justify-content: center;
 }
-.TileTitle:active {
-}
 .TileTitle div {
   white-space: nowrap;
   overflow: hidden;

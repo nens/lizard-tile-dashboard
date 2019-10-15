@@ -56,22 +56,26 @@
   color: #d8d8d8;
 }
 .BackButton {
+  position: relative;
   cursor: pointer;
-  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  right: 10px;
-  top: 20px;
-  width: 185px;
-  height: 40px;
+  width: 140px;
+  height: 38px;
   text-align: center;
   background: #ffffff;
   color: #333;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   text-decoration: none;
+  margin: 0 5px;
+}
+.BackButton span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 @media only screen and (max-width: 700px) {
   .BackButton {
@@ -80,32 +84,31 @@
   }
 }
 .BackButton i {
-  position: absolute;
   font-size: 20px;
   font-weight: bold;
-  top: 10px;
-  left: 10px;
 }
 .BackButton:hover {
   background: #eeeeee;
 }
 
 .SettingsButton {
+  position: relative;
   cursor: pointer;
-  position: absolute;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  right: 200px;
-  top: 20px;
-  width: 145px;
-  height: 40px;
-  text-align: center;
+  width: 140px;
+  height: 38px;
   background: #ffffff;
   color: #333;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.4);
   border-radius: 10px;
+  margin: 0 5px;
+}
+.SettingsButton span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 @media only screen and (max-width: 700px) {
   .SettingsButton {
@@ -115,10 +118,7 @@
   }
 }
 .SettingsButton i {
-  position: absolute;
   font-size: 20px;
-  top: 10px;
-  left: 20px;
 }
 .SettingsButton:hover {
   background: #eeeeee;
@@ -190,33 +190,46 @@
   height: 82px;
 }
 
+.GridLayoutHeader {
+  display: flex;
+  max-width: 100vw;
+}
+
 .GridLayoutLogoContainer {
-  position: relative;
-  float: left;
-  height: 72px;
-  width: 234px;
-  padding: 10px;
+  flex: 1;
 }
 
 .GridLayoutHeaderTitle {
-  white-space: nowrap;
-  text-align: center;
-  color: #313131;
+  flex: 6;
   height: 82px;
   font-weight: 600;
-  font-size: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto 25%;
+  font-size: 30px;
+  color: #313131;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.GridLayoutHeaderTitle div {
+  padding: 10px;
 }
 
 .GridLayoutHeaderButtons {
+  flex: 2;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
 }
 
-.GridLayoutContainer {
+@media only screen and (max-width: 700px) {
+  .GridLayoutLogoContainer {
+    width: auto;
+  }
+
+  .GridLayoutHeaderTitle {
+    font-size: 24px;
+  }
 }
 
 .logo {
