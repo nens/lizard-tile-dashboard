@@ -16,7 +16,8 @@
   box-sizing: border-box;
   padding: 10px;
   padding-bottom: 0px;
-  flex: 1;
+  /* flex: 1; */
+  height: 12%;
   background-color: #fff;
   font-size: 40px;
   display: flex;
@@ -44,7 +45,9 @@
 .TileBody {
   position: relative;
   width: 100%;
-  flex: 10;
+  /* flex property not working with flex item containing image in safari */
+  /* flex: 10; */
+  height: 88%;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
