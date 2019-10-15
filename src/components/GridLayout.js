@@ -149,7 +149,7 @@ class GridLayout extends Component {
     if (mapBackground.description === this.props.currentMapBackground.description) return true;
   }
   getLayout() {
-    return this.state.width < 700 ? this.state.mobileLayout : this.state.layout;
+    return this.state.width < 820 ? this.state.mobileLayout : this.state.layout;
   }
   render() {
     const { width, height, canMove, settingsMenu } = this.state;
@@ -309,7 +309,7 @@ class GridLayout extends Component {
                     settingsMenu: true
                   })}
               >
-                {width > 700 ? (
+                {width > 820 ? (
                   <span><i className="material-icons">settings</i>&nbsp;&nbsp;Settings</span>
                 ) : (
                   <span title="Settings"><i className="material-icons">settings</i></span>
@@ -320,7 +320,7 @@ class GridLayout extends Component {
                 className={styles.BackButton}
                 href="/dashboards"
               >
-                {width > 700 ? (
+                {width > 820 ? (
                   <span><i className="material-icons">arrow_back</i>&nbsp;&nbsp;Back</span>
                 ) : (
                   <span title="Back"><i className="material-icons">arrow_back</i></span>

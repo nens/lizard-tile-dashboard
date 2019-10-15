@@ -71,7 +71,7 @@ class FullLayout extends Component {
     const { height, width } = this.state;
     const tilesById = getTileById(id);
     const selectedTile = tilesById[0];
-    const isMobile = width < 700 ? true : false;
+    const isMobile = width < 820 ? true : false;
     if (tilesById.length === 0) {
       return <div />;
     }
