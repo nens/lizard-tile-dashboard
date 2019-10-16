@@ -149,12 +149,15 @@ class GridLayout extends Component {
     if (mapBackground.description === this.props.currentMapBackground.description) return true;
   }
   getLayout() {
-    return this.state.width < 820 ? this.state.mobileLayout : this.state.layout;
+    const maxMobileWidth = 820; // Width of IphoneX screen when rotated
+    return this.state.width < maxMobileWidth ? this.state.mobileLayout : this.state.layout;
   }
   render() {
     const { width, height, canMove, settingsMenu } = this.state;
 
     const { tiles, history, title, logoPath } = this.props;
+
+    const maxMobileWidth = 820; // Width of IphoneX screen when rotated
 
     const mapBackgrounds = this.props.availableMapBackgrounds;
 
@@ -309,7 +312,7 @@ class GridLayout extends Component {
                     settingsMenu: true
                   })}
               >
-                {width > 820 ? (
+                {width > maxMobileWidth ? (
                   <span><i className="material-icons">settings</i>&nbsp;&nbsp;Settings</span>
                 ) : (
                   <span title="Settings"><i className="material-icons">settings</i></span>
@@ -320,7 +323,7 @@ class GridLayout extends Component {
                 className={styles.BackButton}
                 href="/dashboards"
               >
-                {width > 820 ? (
+                {width > maxMobileWidth ? (
                   <span><i className="material-icons">arrow_back</i>&nbsp;&nbsp;Back</span>
                 ) : (
                   <span title="Back"><i className="material-icons">arrow_back</i></span>

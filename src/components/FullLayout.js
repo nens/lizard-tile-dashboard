@@ -71,7 +71,8 @@ class FullLayout extends Component {
     const { height, width } = this.state;
     const tilesById = getTileById(id);
     const selectedTile = tilesById[0];
-    const isMobile = width < 820 ? true : false;
+    const maxMobileWidth = 820; // Width of IphoneX screen when rotated
+    const isMobile = width < maxMobileWidth ? true : false;
     if (tilesById.length === 0) {
       return <div />;
     }
