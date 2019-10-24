@@ -39,8 +39,9 @@
   top: 9px;
 }
 .TileHeaderText {
-  font-size: 19px;
-  font-weight: bold;
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 2px;
 }
 .TileBody {
   position: relative;
