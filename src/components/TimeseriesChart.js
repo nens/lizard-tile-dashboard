@@ -58,6 +58,12 @@ class TimeseriesChartComponent extends Component {
     this.updateTimeseries();
   }
 
+  observationType = (timeseriesUuid) => {
+    const timeseries = this.props.timeseriesEvents.find(event => event.uuid === timeseriesUuid);
+
+    return timeseries && timeseries.observation_type;
+  }
+
   componentDidUpdate() {
     // This is safe because the actions in actions.js check if the
     // data is still up to date
