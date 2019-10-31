@@ -251,9 +251,9 @@ class TimeseriesChartComponent extends Component {
         // The TimeseriesAlarm also have an ObservationType itself, it should be exactly
         // the same as that of the timeseries, but I think using the timeseries' observation
         // type is more robust as we used those to construct the Y axes.
-        const observationType = alarm.isTimeseriesAlarm()
-                              ? this.props.timeseries[alarm.timeseries.uuid].observation_type
-                              : alarm.observation_type;
+        // UPDATE: both TimeseriesAlarm and RasterAlarm have an ObservationType. So use
+        // this observation type to know which Y axis to plot it.
+        const observationType = alarm.observation_type;
 
         const axisIndex = indexForType(observationTypes, observationType);
 
@@ -642,7 +642,6 @@ function mapStateToProps(state, ownProps) {
   return {
     rastersForTile,
     observationTypes,
-    timeseries: state.timeseries,
     timeseriesEvents,
     rasterEvents,
     alarms: state.alarms,
