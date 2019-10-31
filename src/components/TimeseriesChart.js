@@ -58,12 +58,6 @@ class TimeseriesChartComponent extends Component {
     this.updateTimeseries();
   }
 
-  observationType = (timeseriesUuid) => {
-    const timeseries = this.props.timeseriesEvents.find(event => event.uuid === timeseriesUuid);
-
-    return timeseries && timeseries.observation_type;
-  }
-
   componentDidUpdate() {
     // This is safe because the actions in actions.js check if the
     // data is still up to date
@@ -258,7 +252,7 @@ class TimeseriesChartComponent extends Component {
         // the same as that of the timeseries, but I think using the timeseries' observation
         // type is more robust as we used those to construct the Y axes.
         const observationType = alarm.isTimeseriesAlarm()
-                              ? this.observationType(alarm.timeseries.uuid)
+                              ? this.props.timeseries[alarm.timeseries.uuid].observation_type
                               : alarm.observation_type;
 
         const axisIndex = indexForType(observationTypes, observationType);
@@ -648,6 +642,7 @@ function mapStateToProps(state, ownProps) {
   return {
     rastersForTile,
     observationTypes,
+    timeseries: state.timeseries,
     timeseriesEvents,
     rasterEvents,
     alarms: state.alarms,
