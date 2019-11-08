@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.47"></a>
+## [0.0.47](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.46...v0.0.47) (2019-11-08)
+
+
+
 <a name="0.0.46"></a>
 ## [0.0.46](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.44...v0.0.46) (2019-10-31)
 
