@@ -157,7 +157,6 @@ class GridLayout extends Component {
     const { width, height, canMove, settingsMenu } = this.state;
 
     const { tiles, history, title, logoPath, titleHidden } = this.props;
-    console.log(titleHidden)
 
     const maxMobileWidth = 820; // Width of IphoneX screen when rotated
 
