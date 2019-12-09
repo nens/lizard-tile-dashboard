@@ -302,14 +302,11 @@ class GridLayout extends Component {
             <div className={styles.GridLayoutLogoContainer}>
               <img src={logoPath} alt="Logo" />
             </div>
-            <div
-              className={styles.GridLayoutHeaderTitle}
-              style={{
-                visibility: titleHidden ? 'hidden' : 'visible'
-              }}
-            >
-              <div>{title}</div>
-            </div>
+            {titleHidden ? null : (
+              <div className={styles.GridLayoutHeaderTitle}>
+                <div>{title}</div>
+              </div>
+            )}
             <div className={styles.GridLayoutHeaderButtons}>
               <div
                 className={styles.SettingsButton}
