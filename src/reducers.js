@@ -366,6 +366,11 @@ export const getConfiguredTitle = state => {
       window.location.href.split("/")[2].split(".")[0];
 };
 
+export const getConfiguredTitleHidden = state => {
+  const configuration = getConfiguration(state);
+  return configuration && configuration.meta && configuration.meta.titleHidden;
+};
+
 export const getConfiguredLogoPath = state => {
   const configuration = getConfiguration(state);
   return configuration && configuration.meta && configuration.meta.logo

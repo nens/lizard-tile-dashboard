@@ -27,6 +27,7 @@ import {
   getConfiguredColumnCount,
   getConfiguredTileHeaderColors,
   getGridSizeIsConfigurablePerTile,
+  getConfiguredTitleHidden,
 } from "../reducers";
 import {
   setDateAction,
@@ -155,7 +156,7 @@ class GridLayout extends Component {
   render() {
     const { width, height, canMove, settingsMenu } = this.state;
 
-    const { tiles, history, title, logoPath } = this.props;
+    const { tiles, history, title, logoPath, titleHidden } = this.props;
 
     const maxMobileWidth = 820; // Width of IphoneX screen when rotated
 
@@ -301,9 +302,11 @@ class GridLayout extends Component {
             <div className={styles.GridLayoutLogoContainer}>
               <img src={logoPath} alt="Logo" />
             </div>
-            <div className={styles.GridLayoutHeaderTitle}>
-              <div>{title}</div>
-            </div>
+            {titleHidden ? null : (
+              <div className={styles.GridLayoutHeaderTitle}>
+                <div>{title}</div>
+              </div>
+            )}
             <div className={styles.GridLayoutHeaderButtons}>
               <div
                 className={styles.SettingsButton}
@@ -382,6 +385,7 @@ const mapStateToProps = (state, ownProps) => {
       return getCurrentMapBackground(s) || getConfiguredMapBackgrounds(s)[0];
     })(state),
     title: getConfiguredTitle(state),
+    titleHidden: getConfiguredTitleHidden(state),
     logoPath: getConfiguredLogoPath(state),
     columnCount: getConfiguredColumnCount(state),
     gridSizeIsConfigurablePerTile: getGridSizeIsConfigurablePerTile(state),
