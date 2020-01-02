@@ -172,7 +172,7 @@ class GridLayout extends Component {
             >
               <i className="material-icons">keyboard_backspace</i>
             </div>
-            <h1>Peilbeheer instellingen</h1>
+            <h1>Instellingen</h1>
             <div className={styles.SettingsMenuMain}>
               <div className={styles.DateTimeSettings}>
                 <h2>Datum en tijdsinstellingen</h2>
