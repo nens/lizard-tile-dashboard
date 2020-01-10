@@ -535,6 +535,7 @@ class TimeseriesChartComponent extends Component {
     if (!this.props.height || !this.props.width || !window.Plotly) {
       return null;
     }
+    const modeBarButtonsToRemove = this.state.modeBarButtonsToRemove;
 
     const Plot = plotComponentFactory(window.Plotly);
 
