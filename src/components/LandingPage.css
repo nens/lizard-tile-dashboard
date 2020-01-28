@@ -73,17 +73,6 @@
   position: relative;
 }
 
-.DashboardList .Spinner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
 .LandingPageBackground {
   height: 100%;
   width: 100%;
@@ -118,8 +107,7 @@
 .Dashboard:nth-child(1) {
   margin-top: 0;
 }
-
-.Dashboard .DashboardLogo {
+.DashboardLogo {
   padding: 24px;
   flex-basis: 15%;
   flex-shrink: 0;
@@ -127,23 +115,28 @@
   align-items: center;
   box-sizing: border-box;
 }
-.Dashboard .DashboardLogo.CompanyLogo {
+.CompanyLogo {
   padding: 24px;
   flex-basis: 15%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
 }
-.Dashboard .DashboardLogo img {
+.DashboardLogo img {
   max-width: 100%;
 }
-
-.Dashboard .DashboardInfo {
+.CompanyLogo img {
+  max-width: 100%;
+}
+.DashboardInfo {
   box-sizing: border-box;
   width: 60%;
   min-width: 100px;
   flex-grow: 1;
   flex-shrink: 0;
 }
-
-.Dashboard .DashboardInfo h2 {
+.DashboardInfo h2 {
   margin-top: 0;
   margin-bottom: 10px;
   width: 100%;
@@ -151,9 +144,9 @@
   text-overflow: ellipsis;
 }
 
-.Dashboard .DashboardInfo p,
-.Dashboard .DashboardInfo .DashboardMetaTags div,
-.Dashboard .DashboardInfo .DashboardMetaTags span {
+.DashboardInfo p,
+.DashboardMetaTags div,
+.DashboardMetaTags span {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -162,14 +155,22 @@
 
 .Spinner {
   height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 820px) {
   .LandingPage header {
     padding: 0 20px;
   }
 
-  .LandingPage .LandingPageBody {
+  .LandingPageBody {
     padding: 20px;
   }
 
@@ -177,11 +178,11 @@
     margin-right: 30px;
   }
 
-  .ApLandingPagep header div a {
+  .LandingPagep header div a {
     font-size: 1rem;
   }
-
-  .LandingPage header .Dropdown .DropdownOpen .DropdownContent {
+  
+  .DropdownContent {
     left: 14px;
   }
 
@@ -192,25 +193,25 @@
   .Dashboard {
     padding: 20px 10px;
   }
-
-  .Dashboard .DashboardLogo {
+  
+  .DashboardLogo {
     padding: 10px;
     flex-basis: 20%;
   }
 
-  .Dashboard .DashboardLogo.CompanyLogo {
+  .CompanyLogo {
     display: none;
   }
-
-  .Dashboard .DashboardInfo {
+  
+  .DashboardInfo {
     font-size: 12px;
     max-width: 80%;
     max-height: 310px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
-  .Dashboard .DashboardInfo p {
+  
+  .DashboardInfo p {
     max-height: 60%;
   }
 }
