@@ -324,7 +324,7 @@ class GridLayout extends Component {
               </div>
               <a
                 className={styles.BackButton}
-                href="/dashboards"
+                href="/"
               >
                 {width > maxMobileWidth ? (
                   <span><i className="material-icons">arrow_back</i>&nbsp;&nbsp;Back</span>

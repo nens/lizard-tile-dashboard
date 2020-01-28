@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import LandingPage from "./components/LandingPage";
 import GridLayout from "./components/GridLayout";
 import FullLayout from "./components/FullLayout";
 import { connect } from "react-redux";
@@ -39,7 +40,8 @@ class App extends Component<AppProps, {}> {
   render() {
     return (
       <div className={styles.App}>
-        <Route exact path="/" component={GridLayout} />
+        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/:dashboardName" component={GridLayout} />
         <Route exact path="/full/:id" component={FullLayout} />
       </div>
     );
