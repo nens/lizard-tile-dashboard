@@ -6,6 +6,9 @@ import styles from "./LandingPage.css";
 import { fetchClientConfigurations, fetchDashboardJSONs } from '../actions';
 
 class LandingPage extends Component {
+  state = {
+    showUserDropdown: false
+  }
   componentDidMount() {
     if (!this.props.landingPage.fetchClientConfigs) {
       this.props.fetchClientConfigurations();
@@ -26,6 +29,18 @@ class LandingPage extends Component {
       return url;
     } else {
       return "/dashboard/" + url;
+    };
+  }
+
+  openOrCloseUserDropdown = (bol) => {
+    if (bol) {
+      this.setState({
+        showUserDropdown: true
+      });
+    } else {
+      this.setState({
+        showUserDropdown: false
+      });
     };
   }
 
@@ -54,47 +69,31 @@ class LandingPage extends Component {
           <img src={backgroundImage} alt="background" className={styles.LandingPageBackgroundImage} />
         </div>
         <header>
-          <div>
-            <a className={styles.GoBack} href="/dashboards">&larr;</a>
-            {/* eslint-disable-next-line */}
-            <a
-              id="user_dropdown_toggle"
-              href="#"
-            >
-              {/* 
-                - This is the pageblocker that shows when the dropdown is shown. It captures clicks for the dropdown to close.
-                - The id is required to be on this element because the browser will scroll to the element with the id.
-                In this case the element is positioned to the top so there wil be no annoying scroll. 
-              */}
-            </a>
-            {authenticated === true ?
-              <div className={styles.Dropdown}>
+          <div className={styles.UserDropdown}>
+            {authenticated === true ? (
+              !this.state.showUserDropdown ? (
                 <div
-                  className={styles.DropdownClosed}
+                  className={styles.UserDropdownClosed}
+                  onClick={() => this.openOrCloseUserDropdown(true)}
                 >
-                  <a 
-                    href="#user_dropdown_toggle" 
-                  >
-                    <i className="fa fa-caret-down" />
-                    &nbsp;&nbsp;
-                    <i className="fa fa-user" />
-                    &nbsp;&nbsp;
-                    {first_name}
-                  </a>
+                  <i className="fa fa-caret-down" />
+                  &nbsp;&nbsp;
+                  <i className="fa fa-user" />
+                  &nbsp;&nbsp;
+                  {first_name}
                 </div>
+              ) : (
                 <div
-                  className={styles.DropdownOpen}
+                  className={styles.UserDropdownOpen}
+                  onClick={() => this.openOrCloseUserDropdown(false)}
                 >
-                  {/* eslint-disable-next-line */}
-                  <a href="#">
-                    <i className="fa fa-caret-up" />
-                    &nbsp;&nbsp;
-                    <i className="fa fa-user" />
-                    &nbsp;&nbsp;
-                    {first_name}
-                  </a>
+                  <i className="fa fa-caret-up" />
+                  &nbsp;&nbsp;
+                  <i className="fa fa-user" />
+                  &nbsp;&nbsp;
+                  {first_name}
                   <div
-                    className={styles.DropdownContent}
+                    className={styles.UserDropdownContent}
                   >
                     <a href="https://sso.lizard.net/edit_profile/"
                       target="_blank"
@@ -109,18 +108,14 @@ class LandingPage extends Component {
                     </a>
                   </div>
                 </div>
-              </div>
-              :
-              this.state.fetchSlugs === "RECEIVED" &&
-              this.state.fetchJSONS === "RECEIVED" ?
-              <a href={login}>Login</a>
-              : 
-              null
-            }
+              )
+            ) : (
+              this.state.fetchSlugs === "RECEIVED" && this.state.fetchJSONS === "RECEIVED" ? (
+                <a href={login}>Login</a>
+              ) : null
+            )}
           </div>
-          <div>
-            <h1 className={styles.LandingPageTitle}>Dashboards</h1>
-          </div>
+          <h1 className={styles.LandingPageTitle}>Dashboards</h1>
         </header>
         <div className={styles.LandingPageBody}>
           <div className={styles.DashboardList}>

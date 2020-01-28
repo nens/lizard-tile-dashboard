@@ -15,7 +15,7 @@
 
 .LandingPage header > div:nth-child(1) {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-right: 120px;
 }
@@ -28,20 +28,24 @@
   text-decoration: none;
   cursor: pointer;
 }
-.LandingPage header .GoBack {
-  font-size: 2rem;
-  visibility: hidden;
-}
 .LandingPage header div a {
   font-size: 1.3rem;
 }
-.LandingPage header .Dropdown .DropdownOpen {
-  display: none;
-  flex-direction: column;
-  position: relative;
+.UserDropdown {
+  font-size: 1.3rem;
+  color: #115E67;
+  text-decoration: none;
+  cursor: pointer;
 }
-
-.LandingPage header .Dropdown .DropdownOpen .DropdownContent {
+.UserDropdownOpen {
+  display: flex;
+  position: relative;
+  z-index: 20;
+}
+.UserDropdownClosed {
+  display: flex;
+}
+.UserDropdownContent {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -49,31 +53,8 @@
   top: 28px;
   left: 20px;
 }
-.LandingPage header .Dropdown .DropdownOpen .DropdownContent a {
+.UserDropdownContent a {
   margin-bottom: 4px;
-}
-
-#user_dropdown_toggle:target+.Dropdown .DropdownOpen {
-  display: flex;
-  z-index: 20;
-}
-#user_dropdown_toggle:target+.Dropdown .DropdownClosed {
-  display: none;
-}
-#user_dropdown_toggle {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  display: block;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  visibility: hidden;
-  cursor: default;
-}
-
-#user_dropdown_toggle:target{
-  visibility: visible;
 }
 
 .LandingPage .LandingPageBody {
