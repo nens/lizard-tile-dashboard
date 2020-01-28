@@ -42,7 +42,7 @@ class App extends Component<AppProps, {}> {
       <div className={styles.App}>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/:dashboardName" component={GridLayout} />
-        <Route exact path="/full/:id" component={FullLayout} />
+        <Route exact path="/:dashboardName/full/:id" component={FullLayout} />
       </div>
     );
   }
