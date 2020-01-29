@@ -198,16 +198,27 @@ export function fetchBootstrap(dispatch, sessionState, dashboardName) {
 
   dispatch(fetchBootstrapAction());
 
-  const finalDashboardName = dashboardName || "dashboard";
-  getBootstrap(finalDashboardName).then(
-    bootstrap => {
-      dispatch(receiveBootstrapSuccessAction(bootstrap));
-    },
-    error => {
-      dispatch(receiveBootstrapErrorAction(error));
-      console.error(error);
-    }
-  );
+  if (dashboardName) {
+    getBootstrap(dashboardName).then(
+      bootstrap => {
+        dispatch(receiveBootstrapSuccessAction(bootstrap));
+      },
+      error => {
+        dispatch(receiveBootstrapErrorAction(error));
+        console.error(error);
+      }
+    );
+  } else {
+    getBootstrap().then(
+      bootstrap => {
+        dispatch(receiveBootstrapSuccessAction(bootstrap));
+      },
+      error => {
+        dispatch(receiveBootstrapErrorAction(error));
+        console.error(error);
+      }
+    );
+  }
 }
 
 // Timeseries

@@ -46,6 +46,14 @@ class LoginOrAppComponent extends Component {
         </div>
       );
     } else if (
+      !this.props.sessionState.bootstrap.configuration // only happen if we land at the landing page
+    ) {
+      return (
+        <Router>
+          <App />
+        </Router>
+      );
+    } else if (
       !this.props.sessionState.bootstrap.authenticated &&
       !this.props.sessionState.bootstrap.configuration.isPublic
     ) {
