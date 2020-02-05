@@ -23,15 +23,8 @@ class LoginOrAppComponent extends Component {
   }
 
   getDashboardName = () => {
-    // // URL paths are either "/dashboards/" or "/dashboards/dashboardName/" or "/dashboards/dashboardName/full/id/"
-    const dashboardName = window.location.pathname.split("/").includes('dashboards') ? (
-      window.location.pathname.split("/")[2]
-    ) : (
-      // Only happen in dev when the URL does not include dashboards
-      window.location.pathname.split("/")[1]
-    );
-
-    return dashboardName;
+    // URL paths are either "/dashboards/" or "/dashboards/dashboardName/" or "/dashboards/dashboardName/full/id/"
+    return window.location.pathname.split("/")[2];
   }
 
   hasBootstrap() {
