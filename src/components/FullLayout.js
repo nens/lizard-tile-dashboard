@@ -234,7 +234,7 @@ class FullLayout extends Component {
                   const shortTitle = tile.shortTitle || tile.title;
 
                   return (
-                    <NavLink to={`/${dashboardName}/full/${tile.id}`} key={i}>
+                    <NavLink to={`/dashboards/${dashboardName}/full/${tile.id}`} key={i}>
                       <div
                         className={styles.SidebarItemWrapper}
                         title={shortTitle}
