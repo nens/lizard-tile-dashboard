@@ -124,7 +124,7 @@ class LandingPage extends Component {
                 <a 
                   className={styles.Dashboard}
                   key={i}
-                  href={`/${dashboard.slug.client_slug}`}
+                  href={`/dashboards/${dashboard.slug.client_slug}`}
                 >
                   <div className={styles.DashboardLogo}>
                     {dashboard.logo ? <img src={this.getImageUrl(dashboard.logo)} alt="logo" /> : null}

@@ -265,7 +265,7 @@ class FullLayout extends Component {
               height: FULL_LAYOUT_HEADER_HEIGHT + "px"
             }}
           >
-            <NavLink to={`/${dashboardName}`}>
+            <NavLink to={`/dashboards/${dashboardName}`}>
               <div className={styles.BackButton}>
                 <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
                   arrow_back
