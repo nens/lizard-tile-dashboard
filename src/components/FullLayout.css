@@ -11,19 +11,22 @@
   font-size: 18px;
   color: #115E67CD;
   font-size: 19px;
-  font-weight: bold;
   z-index: 999991;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
+.TitleBarLeft {
+  display: flex;
+  padding-left: 10px;
+}
 .TitleBar .BackButton i {
   color: #115E67CD;
+  padding-right: 15px;
 }
 
 .BackButton {
-  position: absolute;
   cursor: pointer;
-  left: 15px;
-  top: 15px;
 }
 .BackButton i {
   font-size: 22px;
@@ -33,18 +36,13 @@
   font-weight: 700;
 }
 .Title {
-  position: absolute;
-  left: 50px;
-  top: 15px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 90%;
 }
 .ViewInLizardButton {
-  position: absolute;
-  right: 10px;
-  top: 14px;
+  display: flex;
+  padding-right: 10px;
 }
 @media only screen and (max-width: 820px) {
   .ViewInLizardButton {

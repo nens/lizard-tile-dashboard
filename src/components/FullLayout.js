@@ -265,14 +265,16 @@ class FullLayout extends Component {
               height: FULL_LAYOUT_HEADER_HEIGHT + "px"
             }}
           >
-            <NavLink to={`/dashboards/${dashboardName}`}>
+            <div className={styles.TitleBarLeft}>
               <div className={styles.BackButton}>
-                <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
-                  arrow_back
-                </i>
+                <NavLink to={`/dashboards/${dashboardName}`}>
+                  <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
+                    arrow_back
+                  </i>
+                </NavLink>
               </div>
-            </NavLink>
-            <div className={styles.Title}>{selectedTile.title}</div>
+              <div className={styles.Title}>{selectedTile.title}</div>
+            </div>
             {selectedTile.viewInLizardLink ? (
               <div className={styles.ViewInLizardButton}>
                 <a

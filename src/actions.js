@@ -116,10 +116,17 @@ const getRelevantDashboardDataFromJSON = (dashboardJSONS, clientConfigurations) 
 }
 
 export const fetchClientConfigurations = () => (dispatch) => {
+  // if on dev then filter on portal domain of nxt3.staging.lizard.net
+  const portalDomain = window.location.hostname === "localhost" ? (
+    "nxt3.staging.lizard.net"
+  ) : (
+    window.location.hostname
+  );
+
   dispatch({
     type: FETCH_CLIENT_CONFIGURATIONS
   });
-  fetch("/api/v4/clientconfigurations/?page_size=1000")
+  fetch("/api/v4/clientconfigurations/?page_size=1000&portal__domain=" + portalDomain)
   .then(response => response.json())
   .then(parsedJSON => {
     dispatch({
