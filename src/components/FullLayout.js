@@ -234,7 +234,7 @@ class FullLayout extends Component {
                   const shortTitle = tile.shortTitle || tile.title;
 
                   return (
-                    <NavLink to={`/${dashboardName}/full/${tile.id}`} key={i}>
+                    <NavLink to={`/dashboards/${dashboardName}/full/${tile.id}`} key={i}>
                       <div
                         className={styles.SidebarItemWrapper}
                         title={shortTitle}
@@ -265,7 +265,7 @@ class FullLayout extends Component {
               height: FULL_LAYOUT_HEADER_HEIGHT + "px"
             }}
           >
-            <NavLink to={`/${dashboardName}`}>
+            <NavLink to={`/dashboards/${dashboardName}`}>
               <div className={styles.BackButton}>
                 <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
                   arrow_back

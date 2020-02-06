@@ -231,7 +231,7 @@ class GridLayout extends Component {
             {...this.props}
             title={shortTitle}
             backgroundColor={"#FFFFFF"}
-            onClick={() => history.push(`/${dashboardName}/full/${tile.id}`)}
+            onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
           >
             <ExternalTile isFull={false} tile={tile} source={"GridLayout"} />
           </Tile>
@@ -243,7 +243,7 @@ class GridLayout extends Component {
               <Tile
                 {...this.props}
                 title={shortTitle}
-                onClick={() => history.push(`/${dashboardName}/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <Map isFull={false} bbox={tile.bbox} tile={tile} />
               </Tile>
@@ -253,7 +253,7 @@ class GridLayout extends Component {
               <Tile
                 {...this.props}
                 title={shortTitle}
-                onClick={() => history.push(`/${dashboardName}/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <TimeseriesTile
                   isFull={false}
@@ -268,7 +268,7 @@ class GridLayout extends Component {
               <Tile
                 {...this.props}
                 title={shortTitle}
-                onClick={() => history.push(`/${dashboardName}/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <StatisticsTile
                   alarms={this.props.alarms}
@@ -282,7 +282,7 @@ class GridLayout extends Component {
                 {...this.props}
                 title={shortTitle}
                 backgroundColor={"#FFFFFF"}
-                onClick={() => history.push(`/${dashboardName}/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <ExternalTile
                   isFull={false}
@@ -326,7 +326,7 @@ class GridLayout extends Component {
               </div>
               <a
                 className={styles.BackButton}
-                href="/"
+                href="/dashboards"
               >
                 {width > maxMobileWidth ? (
                   <span><i className="material-icons">arrow_back</i>&nbsp;&nbsp;Back</span>
