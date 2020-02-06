@@ -18,7 +18,8 @@
 }
 .TitleBarLeft {
   display: flex;
-  padding-left: 10px;
+  padding-left: 15px;
+  padding-top: 5px;
 }
 .TitleBar .BackButton i {
   color: #115E67CD;
@@ -43,6 +44,7 @@
 .ViewInLizardButton {
   display: flex;
   padding-right: 10px;
+  padding-top: 5px;
 }
 @media only screen and (max-width: 820px) {
   .ViewInLizardButton {
