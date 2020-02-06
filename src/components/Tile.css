@@ -14,8 +14,7 @@
 .TileTitle {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px;
-  padding-bottom: 0px;
+  padding-left: 10px;
   /* flex: 1; */
   height: 12%;
   background-color: #fff;
@@ -28,10 +27,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #115E67CD;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #70707033;
-
 }
 .TileHandle {
   position: absolute;
