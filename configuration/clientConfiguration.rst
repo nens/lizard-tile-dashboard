@@ -335,7 +335,7 @@ from WSM layers can be rendered inside popups:
 - feature_title_property the name of this layer, used as a header above the layer's properties
 - getfeatureinfo_properties is an array of objects like
   [{ "key": "height", "name": "Height above sea level"}] that define which items from the features to show.
-  The key should be present in the GetFeatureInfo response. You can also add isUrl: true to getfeatureinfo_properties to show the value (the key) as a clickable url, where the value of the key is used as url to link to. isUrl is optional and can be used for any getfeature property. An example for a getfeature property with isUrl: {"key":"energy reeks", "name":"energie reeks", "isUrl":true}
+  The key should be present in the GetFeatureInfo response. You can also add `"isUrl": true` to getfeatureinfo_properties to show the value (the key) as a clickable url, where the value of the key is used as url to link to. isUrl is optional and can be used for any getfeature property. An example for a getfeature property with isUrl: {"key":"energy reeks", "name":"energie reeks", "isUrl":true}
 
 
 Tile type: timeseries
