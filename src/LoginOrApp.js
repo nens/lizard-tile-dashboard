@@ -23,50 +23,9 @@ class LoginOrAppComponent extends Component {
   }
 
   getDashboardName = () => {
-    // gets dashboard name from url as defined in /admin/lizard_nxt/clientconfiguration/ "client slug" field
-    // the url should be in format of /dashboard/<dashboard_name>/
-
-    // if no dashboard name is given this function should return undefined
-    // this is required to create the basename of the JSX Router component (see in this file)
-
-    //  if a dashboard name of undefined is returned then the default name 'dashboard' will be used by function getBootstrap (in file actions.js).
-    // when no dashboard is in the url at all this function should return undefined. this should only be the case on dev
-
-    // if dashboardname = 'full' we assume it is not really the dashboardname but the url path to a full tile
-    // this rule should ensures that the url /dashboard/full/ returns  undefined
-
-    // examples:
-    // /dashboard/my_name/ -> my_name
-    // /dashboard/my_name -> my_name
-    // /dashboard/dashboard/ -> dashboard
-    // /dashboard/dashboard -> dashboard
-    // /dashboard/full/1 -> undefined
-    // /dashboard/ -> undefined
-    // /dashboard -> undefined
-    // / -> undefined
-
-    // split on /dashboard/
-    // slashes are included in split so we do not also split on the second dashboard in /dashboard/dashboard
-    const urlPreQueryParameters = window.location.href.split("?")[0];
-    const urlPostDashboard = urlPreQueryParameters.split("/dashboard/")[1];
-    
-    if (
-      !urlPostDashboard // if there was no /dashboard/ in the url, should only happen in dev or with a url of /dashboard (no tailing slash)
-    ) {
-      return undefined;
-    }
-    const dashboardName = urlPostDashboard.split("/")[0];
-    // if dashboardname = 'full' we assume it is not really the dashboardname but the url path to a full tile
-    // this rule should ensures that the url /dashboard/full/ returns  undefined
-    if (dashboardName === "full") {
-      return undefined;
-    } else if (dashboardName === "") {
-      // if dashboardname = '' then we assume that no dashboard name is given and we return undefined which will resolve to the default
-      return undefined;
-    } else {
-      return dashboardName;
-    }
-  };
+    // URL paths are either "/dashboards/" or "/dashboards/dashboardName/" or "/dashboards/dashboardName/full/id/"
+    return window.location.pathname.split("/")[2];
+  }
 
   hasBootstrap() {
     const session = this.props.sessionState;
@@ -75,17 +34,19 @@ class LoginOrAppComponent extends Component {
   }
 
   render() {
-    const dashboardName = this.getDashboardName();
-
-    const basename = dashboardName
-      ? "/dashboard/" + dashboardName
-      : "/dashboard";
-
     if (!this.hasBootstrap()) {
       return (
         <div className={styles.LoadingIndicator}>
           <MDSpinner size={24} />
         </div>
+      );
+    } else if (
+      !this.props.sessionState.bootstrap.configuration // only happen if we land at the landing page
+    ) {
+      return (
+        <Router>
+          <App />
+        </Router>
       );
     } else if (
       !this.props.sessionState.bootstrap.authenticated &&
@@ -94,7 +55,7 @@ class LoginOrAppComponent extends Component {
       this.props.sessionState.bootstrap.doLogin();
     } else {
       return (
-        <Router basename={basename}>
+        <Router>
           <App />
         </Router>
       );

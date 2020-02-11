@@ -66,7 +66,7 @@ class FullLayout extends Component {
     imgTag.style.height = h + "px";
   }
   render() {
-    const { id } = this.props.match.params;
+    const { id, dashboardName } = this.props.match.params;
     const { getTileById, allTiles, title } = this.props;
     const { height, width } = this.state;
     const tilesById = getTileById(id);
@@ -234,7 +234,7 @@ class FullLayout extends Component {
                   const shortTitle = tile.shortTitle || tile.title;
 
                   return (
-                    <NavLink to={`/full/${tile.id}`} key={i}>
+                    <NavLink to={`/dashboards/${dashboardName}/full/${tile.id}`} key={i}>
                       <div
                         className={styles.SidebarItemWrapper}
                         title={shortTitle}
@@ -265,14 +265,16 @@ class FullLayout extends Component {
               height: FULL_LAYOUT_HEADER_HEIGHT + "px"
             }}
           >
-            <NavLink to="/">
+            <div className={styles.TitleBarLeft}>
               <div className={styles.BackButton}>
-                <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
-                  arrow_back
-                </i>
+                <NavLink to={`/dashboards/${dashboardName}`}>
+                  <i className="material-icons" style={fgColor? { color: fgColor }: {}}>
+                    arrow_back
+                  </i>
+                </NavLink>
               </div>
-            </NavLink>
-            <div className={styles.Title}>{selectedTile.title}</div>
+              <div className={styles.Title}>{selectedTile.title}</div>
+            </div>
             {selectedTile.viewInLizardLink ? (
               <div className={styles.ViewInLizardButton}>
                 <a

@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.57"></a>
+## [0.0.57](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.56...v0.0.57) (2020-02-06)
+
+
+
+<a name="0.0.56"></a>
+## [0.0.56](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.55...v0.0.56) (2020-02-06)
+
+
+
+<a name="0.0.55"></a>
+## [0.0.55](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.54...v0.0.55) (2020-02-06)
+
+
+
+<a name="0.0.54"></a>
+## [0.0.54](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.50...v0.0.54) (2020-02-06)
+
+
+
+<a name="0.0.53"></a>
+## [0.0.53](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.50...v0.0.53) (2020-02-06)
+
+
+
+<a name="0.0.52"></a>
+## [0.0.52](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.51...v0.0.52) (2020-02-04)
+
+
+
+<a name="0.0.51"></a>
+## [0.0.51](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.50...v0.0.51) (2020-02-04)
+
+
+
+<a name="0.0.50"></a>
+## [0.0.50](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.49...v0.0.50) (2020-02-04)
+
+
+
+<a name="0.0.49"></a>
+## [0.0.49](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.48...v0.0.49) (2020-02-04)
+
+
+
 <a name="0.0.48"></a>
 ## [0.0.48](https://github.com/nens/lizard-tile-dashboard/compare/v0.0.47...v0.0.48) (2019-12-09)
 
