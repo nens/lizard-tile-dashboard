@@ -44,7 +44,8 @@ ol.HideListDesign {
   flex-grow: 1; /* grow forever, since no max-width is specified */
   flex-shrink: 0; /* never shrink smaller then flex-basis */
   text-align: left;
-  word-wrap: break-word; /* make sure the link in the FeatureInfoPopup gets
-  broken into small pieces in Chrome so that it stays in the right column,
-  instead of going over the entire row */
+  max-width: 40%;
+  word-wrap: break-word; /* make sure the url in the FeatureInfoPopup gets
+  broken into small pieces and uses max 40% width in Chrome so that it stays
+  in the right column, instead of going over the entire row */
 }
