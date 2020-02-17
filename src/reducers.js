@@ -16,7 +16,13 @@ import {
   FETCH_BOOTSTRAP,
   FETCH_LEGEND,
   RECEIVE_BOOTSTRAP_ERROR,
-  RECEIVE_BOOTSTRAP_SUCCESS
+  RECEIVE_BOOTSTRAP_SUCCESS,
+  FETCH_CLIENT_CONFIGURATIONS,
+  RECEIVE_CLIENT_CONFIGURATIONS,
+  FETCH_CLIENT_CONFIGURATIONS_FAILED,
+  FETCH_DASHBOARD_JSONS,
+  RECEIVE_DASHBOARD_JSONS,
+  FETCH_DASHBOARD_JSONS_FAILED,
 } from "./actions";
 
 import { BoundingBox } from "./util/bounds";
@@ -36,6 +42,53 @@ function assets(
       newAssetsOfType[action.id] = action.instance;
       newAssets[action.assetType] = newAssetsOfType;
       return newAssets;
+    default:
+      return state;
+  }
+}
+
+function landingPage(
+  state = {
+    fetchClientConfigs: null, // "SENT" "RECEIVED" "FAILED"
+    fetchDashboardJSONs: null, // "SENT" "RECEIVED" "FAILED"
+    clientConfigurations: [], // from api/v4/clientconfiguration
+    dashboardJSONs: [], // from /bootstrap
+  },
+  action
+) {
+  switch (action.type) {
+    case FETCH_CLIENT_CONFIGURATIONS:
+      return {
+        ...state,
+        fetchClientConfigs: "SENT"
+      }
+    case RECEIVE_CLIENT_CONFIGURATIONS:
+      return {
+        ...state,
+        fetchClientConfigs: "RECEIVED",
+        clientConfigurations: action.clientConfigurations
+      }
+    case FETCH_CLIENT_CONFIGURATIONS_FAILED:
+      return {
+        ...state,
+        fetchClientConfigs: "FAILED"
+      }
+    case FETCH_DASHBOARD_JSONS:
+      return {
+        ...state,
+        fetchDashboardJSONs: "SENT"
+      }
+    case RECEIVE_DASHBOARD_JSONS:
+      return {
+        ...state,
+        fetchDashboardJSONs: "RECEIVED",
+        dashboardJSONs: action.dashboardJSONs
+      }
+    case FETCH_DASHBOARD_JSONS_FAILED:
+      return {
+        ...state,
+        fetchDashboardJSONs: "FAILED"
+      }
     default:
       return state;
   }
@@ -244,6 +297,7 @@ function alarms(
 const rootReducer = combineReducers({
   alarms,
   assets,
+  landingPage,
   legends,
   rasters: makeReducer("rasters"),
   session,

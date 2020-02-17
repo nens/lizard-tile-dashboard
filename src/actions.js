@@ -13,6 +13,14 @@ export const RECEIVE_ALARMS = "RECEIVE_ALARMS";
 // AssetActions
 export const ADD_ASSET = "ADD_ASSET";
 
+// LandingPageActions
+export const FETCH_CLIENT_CONFIGURATIONS = "FETCH_CLIENT_CONFIGURATIONS"
+export const RECEIVE_CLIENT_CONFIGURATIONS = "RECEIVE_CLIENT_CONFIGURATIONS"
+export const FETCH_CLIENT_CONFIGURATIONS_FAILED = "FETCH_CLIENT_CONFIGURATIONS_FAILED"
+export const FETCH_DASHBOARD_JSONS = "FETCH_DASHBOARD_JSONS"
+export const RECEIVE_DASHBOARD_JSONS = "RECEIVE_DASHBOARD_JSONS"
+export const FETCH_DASHBOARD_JSONS_FAILED = "FETCH_DASHBOARD_JSONS_FAILED"
+
 // LegendActions
 export const FETCH_LEGEND = "FETCH_LEGEND";
 export const ADD_LEGEND = "ADD_LEGEND";
@@ -77,6 +85,81 @@ export const addAsset = (assetType, id, instance) => {
   };
 };
 
+// Landing Page
+const getRelevantDashboardDataFromJSON = (dashboardJSONS, clientConfigurations) => {
+  // save slug next to json in same object because it is needed later to create url href
+  return dashboardJSONS.map((dashboardJSON, i)=>{
+    return {
+      json: dashboardJSON,
+      slug: clientConfigurations[i],
+    }
+  })
+  // filter out those dashboards that do not have a meta object
+  .filter(dashboardJsonObj=>{
+    return dashboardJsonObj.json &&
+      dashboardJsonObj.json.configuration &&
+      dashboardJsonObj.json.configuration.meta
+  })
+  // map the required fields needed to generate the html
+  .map(dashboardJsonObj => {
+    return {
+      title: dashboardJsonObj.json.configuration.meta.title,
+      description: dashboardJsonObj.json.configuration.meta.description,
+      tags: dashboardJsonObj.json.configuration.meta.tags,
+      metadata: dashboardJsonObj.json.configuration.meta.metadata,
+      logo: dashboardJsonObj.json.configuration.meta.logo,
+      logoCompanies: dashboardJsonObj.json.configuration.meta.logoCompanies,
+      slug: dashboardJsonObj.slug,
+      isPublic: dashboardJsonObj.json.configuration.isPublic
+    }
+  })
+}
+
+export const fetchClientConfigurations = () => (dispatch) => {
+  // if on dev then filter on portal domain of nxt3.staging.lizard.net
+  const portalDomain = window.location.hostname === "localhost" ? (
+    "nxt3.staging.lizard.net"
+  ) : (
+    window.location.hostname
+  );
+
+  dispatch({
+    type: FETCH_CLIENT_CONFIGURATIONS
+  });
+  fetch("/api/v4/clientconfigurations/?page_size=1000&portal__domain=" + portalDomain)
+  .then(response => response.json())
+  .then(parsedJSON => {
+    dispatch({
+      type: RECEIVE_CLIENT_CONFIGURATIONS,
+      clientConfigurations: parsedJSON ? parsedJSON.results : []
+    });
+  })
+  .catch(e => {
+    console.error('Error:', e);
+    dispatch({
+      type: FETCH_CLIENT_CONFIGURATIONS_FAILED
+    });
+  })
+}
+
+export const fetchDashboardJSONs = () => (dispatch, getState) => {
+  const clientConfigurations = getState().landingPage.clientConfigurations;
+  const relativeUrls = clientConfigurations.map(clientConfig => `/bootstrap/${clientConfig.client_slug}/`);
+  const requestPromises = relativeUrls.map(url => fetch(url));
+  dispatch({
+    type: FETCH_DASHBOARD_JSONS
+  });
+  Promise.all(requestPromises).then(results => {
+    const parsedPromises = results.map(result => result.json())
+    Promise.all(parsedPromises).then(parsedResults => {
+      dispatch({
+        type: RECEIVE_DASHBOARD_JSONS,
+        dashboardJSONs: parsedResults ? getRelevantDashboardDataFromJSON(parsedResults, clientConfigurations) : []
+      })
+    })
+  })
+}
+
 // Legend
 export const fetchLegend = uuid => {
   return {
@@ -122,16 +205,27 @@ export function fetchBootstrap(dispatch, sessionState, dashboardName) {
 
   dispatch(fetchBootstrapAction());
 
-  const finalDashboardName = dashboardName || "dashboard";
-  getBootstrap(finalDashboardName).then(
-    bootstrap => {
-      dispatch(receiveBootstrapSuccessAction(bootstrap));
-    },
-    error => {
-      dispatch(receiveBootstrapErrorAction(error));
-      console.error(error);
-    }
-  );
+  if (dashboardName) {
+    getBootstrap(dashboardName).then(
+      bootstrap => {
+        dispatch(receiveBootstrapSuccessAction(bootstrap));
+      },
+      error => {
+        dispatch(receiveBootstrapErrorAction(error));
+        console.error(error);
+      }
+    );
+  } else {
+    getBootstrap().then(
+      bootstrap => {
+        dispatch(receiveBootstrapSuccessAction(bootstrap));
+      },
+      error => {
+        dispatch(receiveBootstrapErrorAction(error));
+        console.error(error);
+      }
+    );
+  }
 }
 
 // Timeseries

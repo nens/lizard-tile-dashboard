@@ -1,6 +1,6 @@
 {
   "name": "lizard-tile-dashboard",
-  "version": "0.0.48",
+  "version": "0.0.57",
   "repository": {
     "type": "git",
     "name": "nens/lizard-tile-dashboard",
@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/nens/lizard-tile-dashboard/issues"
   },
-  "homepage": "https://demo.lizard.net/dashboard",
+  "homepage": "https://demo.lizard.net/dashboards",
   "private": true,
   "dependencies": {
     "@babel/core": "7.2.2",

@@ -156,7 +156,9 @@ class GridLayout extends Component {
   render() {
     const { width, height, canMove, settingsMenu } = this.state;
 
-    const { tiles, history, title, logoPath, titleHidden } = this.props;
+    const { tiles, history, title, logoPath, titleHidden, match } = this.props;
+
+    const { dashboardName } = match.params;
 
     const maxMobileWidth = 820; // Width of IphoneX screen when rotated
 
@@ -229,7 +231,7 @@ class GridLayout extends Component {
             {...this.props}
             title={shortTitle}
             backgroundColor={"#FFFFFF"}
-            onClick={() => history.push(`/full/${tile.id}`)}
+            onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
           >
             <ExternalTile isFull={false} tile={tile} source={"GridLayout"} />
           </Tile>
@@ -241,7 +243,7 @@ class GridLayout extends Component {
               <Tile
                 {...this.props}
                 title={shortTitle}
-                onClick={() => history.push(`/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <Map isFull={false} bbox={tile.bbox} tile={tile} />
               </Tile>
@@ -251,7 +253,7 @@ class GridLayout extends Component {
               <Tile
                 {...this.props}
                 title={shortTitle}
-                onClick={() => history.push(`/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <TimeseriesTile
                   isFull={false}
@@ -266,7 +268,7 @@ class GridLayout extends Component {
               <Tile
                 {...this.props}
                 title={shortTitle}
-                onClick={() => history.push(`/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <StatisticsTile
                   alarms={this.props.alarms}
@@ -280,7 +282,7 @@ class GridLayout extends Component {
                 {...this.props}
                 title={shortTitle}
                 backgroundColor={"#FFFFFF"}
-                onClick={() => history.push(`/full/${tile.id}`)}
+                onClick={() => history.push(`/dashboards/${dashboardName}/full/${tile.id}`)}
               >
                 <ExternalTile
                   isFull={false}
