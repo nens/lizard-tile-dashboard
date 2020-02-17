@@ -169,7 +169,10 @@ class FeatureInfoPopup extends Component {
                           </label>
                           {
                             propertyName.isUrl===true
-                            ? <a href={feature.properties[propertyName.key]}>
+                            ? <a href={feature.properties[propertyName.key]}
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                              >
                                 <span>{feature.properties[propertyName.key] + ''}</span>
                               </a>
                             : <span>{feature.properties[propertyName.key] + ''}</span>
