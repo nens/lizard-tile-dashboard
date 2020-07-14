@@ -152,7 +152,7 @@ export function makeGetter(objectState, params = {}) {
       // We don't have it.
       if (!metadata[id] || !metadata[id].isFetching) {
         // We're not yet fetching it. Get it unless there was an error we don't retry.
-        if (!RETRY_ERROR && metadata[id] && metadata[id].error) {
+        if (RETRY_ERROR && metadata[id] && metadata[id].error) {
           shouldFetch = false;
         } else {
           shouldFetch = true;
