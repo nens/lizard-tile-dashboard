@@ -127,7 +127,7 @@ export function makeReducer(objectName) {
 export function makeGetter(objectState, params = {}) {
   const FETCH_TIMEOUT_MS = (params.fetchTimeout || 0) * 1000;
   const STORE_TIMEOUT_MS = (params.storeTimeout || 0) * 1000;
-  const RETRY_ERROR = params.retryError || true;
+  const RETRY_ERROR = params.retryError || false;
 
   return function getter(id) {
     const { data, metadata } = objectState;
@@ -152,7 +152,7 @@ export function makeGetter(objectState, params = {}) {
       // We don't have it.
       if (!metadata[id] || !metadata[id].isFetching) {
         // We're not yet fetching it. Get it unless there was an error we don't retry.
-        if (RETRY_ERROR && metadata[id] && metadata[id].error) {
+        if (!RETRY_ERROR && metadata[id] && metadata[id].error) {
           shouldFetch = false;
         } else {
           shouldFetch = true;
