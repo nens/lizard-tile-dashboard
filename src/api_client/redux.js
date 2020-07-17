@@ -127,7 +127,7 @@ export function makeReducer(objectName) {
 export function makeGetter(objectState, params = {}) {
   const FETCH_TIMEOUT_MS = (params.fetchTimeout || 0) * 1000;
   const STORE_TIMEOUT_MS = (params.storeTimeout || 0) * 1000;
-  const RETRY_ERROR = params.retryError || true;
+  const RETRY_ERROR = params.retryError || false;
 
   return function getter(id) {
     const { data, metadata } = objectState;
