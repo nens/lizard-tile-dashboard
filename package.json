@@ -35,7 +35,6 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^7.0.2",
     "bfj": "6.1.1",
-    "buck-trap": "^1.0.15",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "css-loader": "1.0.0",
     "dotenv": "6.0.0",
@@ -83,6 +82,7 @@
     "react-router-dom": "^5.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "release-it": "^14.2.2",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",
@@ -98,7 +98,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "release": "buck-trap -a",
+    "release": "release-it --verbose",
     "i18n:extract": "NODE_ENV=production npx extract-messages --locales=nl -d --output src/translations/locales 'src/**/*.js*' 'src/**/*.ts*'"
   },
   "eslintConfig": {
