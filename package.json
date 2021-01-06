@@ -98,7 +98,7 @@
     "start": "node scripts/start.js",
     "build": "mkdir -p dist/ && rm -rf dist/*.zip && node scripts/build.js && scripts/makedist.sh",
     "test": "node scripts/test.js",
-    "release": "release-it --verbose --dry-run",
+    "release": "release-it --verbose",
     "i18n:extract": "NODE_ENV=production npx extract-messages --locales=nl -d --output src/translations/locales 'src/**/*.js*' 'src/**/*.ts*'"
   },
   "eslintConfig": {
