@@ -1,11 +1,14 @@
 {
-  "git": {
-    "commitMessage": "chore: release v${version}"
+  "prompt": {
+    "src": {
+      "status": true
+    }
   },
   "github": {
-    "release": true
+    "release": true,
+    "assets": "dist/lizard-tile-dashboard.zip"
   },
   "npm": {
-    "publish": false,
+    "publish": false
   }
 }
