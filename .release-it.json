@@ -1,0 +1,14 @@
+{
+  "prompt": {
+    "src": {
+      "status": true
+    }
+  },
+  "github": {
+    "release": true,
+    "assets": "dist/lizard-tile-dashboard.zip"
+  },
+  "npm": {
+    "publish": false
+  }
+}
