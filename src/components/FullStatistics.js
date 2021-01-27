@@ -74,7 +74,14 @@ class FullStatistics extends Component {
     return (
       <div
         className={styles.FullStatistics}
-        style={{ height, paddingLeft: isMobile ? 0 : 200 }}
+        style={{ 
+          height, 
+          paddingLeft: isMobile ? 0 : 200, 
+          overflowY: "auto", 
+          // we need this as soon as someone complains over the horizontal scroll, but it might break things
+          // https://github.com/nens/lizard-tile-dashboard/issues/183
+          // overflowX: hidden, 
+        }}
       >
         <div
           style={{
