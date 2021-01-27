@@ -74,7 +74,7 @@ class FullStatistics extends Component {
     return (
       <div
         className={styles.FullStatistics}
-        style={{ height, paddingLeft: isMobile ? 0 : 200 }}
+        style={{ height, paddingLeft: isMobile ? 0 : 200, overflowY: "auto" }}
       >
         <div
           style={{
