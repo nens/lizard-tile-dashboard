@@ -96,6 +96,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "startauth": "./startauth.sh",
     "build": "mkdir -p dist/ && rm -rf dist/*.zip && node scripts/build.js && scripts/makedist.sh",
     "test": "node scripts/test.js",
     "release": "release-it --verbose",
