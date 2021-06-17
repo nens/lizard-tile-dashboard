@@ -14,15 +14,14 @@ Installation
 ============
 
 - Required: A working nodejs and yarn installation.
-- (temporarily, until release of lizard-api-client) make sure that you have the github repository `lizard-api-client` as a folder parallel to the root directory of this repository, see [lizard-api-client](https://github.com/nens/lizard-api-client)
-
-- Inside `lizard-api-client` repository: do `$ yarn install` followed by `$ npm run start` 
-
-- In the root directory of this repository (lizard-tile-dashboard): do
-- `$ npm link lizard-api-client`
 - `$ yarn install`
-- ...followed by either `$ ./start`
-or `$ PROXY_USERNAME=<your_sso_username> PROXY_PASSWORD=<your_sso_password> yarn start`
+- copy the file `startauth.sh.example` and rename it `startauth.sh`
+- In the newly created file `startauth.sh` fill out the values for the api keys:   
+    Replace `123456789STAGINGKEY` with a key created with [api-key-management-page](https://nxt3.staging.lizard.net/management/#/personal_api_keys).  
+    Replace `123456789PRODKEY` with a key created with [production_api-key-management-page](https://demo.lizard.net/management/#/personal_api_keys). 
+- In the newly created file `startauth.sh` make sure one and one line only is uncommented.  
+(based on to which url you want to proxy) 
+- Now run `yarn run startauth`
 
 
 create-react-app
