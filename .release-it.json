@@ -10,5 +10,8 @@
   },
   "npm": {
     "publish": false
+  },
+  "hooks": {
+    "after:version:bump": "GENERATE_SOURCEMAP=false yarn build"
   }
 }
