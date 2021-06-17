@@ -10,6 +10,9 @@
 /dist
 /build
 
+# authentication api key
+startauth.sh
+
 # misc
 .DS_Store
 .env.local

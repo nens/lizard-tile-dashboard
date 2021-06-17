@@ -11,7 +11,7 @@ const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 // const host = process.env.HOST || '0.0.0.0';
 const host = 'localhost'; // Om toegang andere computers tegen te gaan
 
-const PROXY_SERVER = "https://nxt3.staging.lizard.net/"
+const PROXY_SERVER = process.env.PROXY_URL; //"https://nxt3.staging.lizard.net/"
 const PROXY_SETTING = {
   "/bootstrap": {
     "target": PROXY_SERVER,
@@ -48,8 +48,8 @@ const PROXY_SETTING = {
   },
 };
 
-const password = process.env.PROXY_PASSWORD;
-const username = process.env.PROXY_USERNAME;
+const password = process.env.PROXY_API_KEY;
+const username = "__key__";
 
 if (password && username) {
   Object.keys(PROXY_SETTING).forEach(function(proxy) {

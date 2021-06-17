@@ -4,6 +4,7 @@ import MDSpinner from "react-md-spinner";
 import backgroundImage from '../graphics/background.svg';
 import styles from "./LandingPage.css";
 import { fetchClientConfigurations, fetchDashboardJSONs } from '../actions';
+import packageJson from '../../package.json';
 
 class LandingPage extends Component {
   state = {
@@ -115,7 +116,7 @@ class LandingPage extends Component {
               ) : null
             )}
           </div>
-          <h1 className={styles.LandingPageTitle}>Dashboards</h1>
+          <h1 title={"client-version: " +packageJson.version} className={styles.LandingPageTitle}>Dashboards</h1>
         </header>
         <div className={styles.LandingPageBody}>
           <div className={styles.DashboardList}>

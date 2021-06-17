@@ -1,6 +1,6 @@
 {
   "name": "lizard-tile-dashboard",
-  "version": "0.0.64",
+  "version": "0.0.65",
   "repository": {
     "type": "git",
     "name": "nens/lizard-tile-dashboard",
@@ -82,7 +82,7 @@
     "react-router-dom": "^5.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "release-it": "^14.2.2",
+    "release-it": "^14.5.0",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",
@@ -96,6 +96,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "startauth": "./startauth.sh",
     "build": "mkdir -p dist/ && rm -rf dist/*.zip && node scripts/build.js && scripts/makedist.sh",
     "test": "node scripts/test.js",
     "release": "release-it --verbose",
