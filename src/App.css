@@ -1,4 +1,6 @@
-.App {}
+.App {
+  height: 100%;
+}
 .LoadingIndicator {
   position: relative;
   top: 50px;
